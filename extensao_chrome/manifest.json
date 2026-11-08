@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Superliga do Fabião – Login Globo",
+  "version": "2.0",
+  "description": "Entrega ao painel local (localhost) a sessão do Cartola/Globo do seu navegador, sem você copiar tokens.",
+  "permissions": ["cookies", "webRequest", "storage"],
+  "host_permissions": ["https://*.globo.com/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["http://localhost/*", "http://127.0.0.1/*"], "js": ["content.js"], "run_at": "document_start" }
+  ]
+}

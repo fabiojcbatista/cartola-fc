@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superliga do Fabião | Painel Cartola FC</title>
+<style>
+:root{--navy:#071d49;--blue:#0757c8;--orange:#ff7900;--gold:#ffc21a;--green:#12622d;--purple:#51208d;--bg:#eef2f8;--ink:#102044;--muted:#6d7890;--line:#d9e0ec;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#e9eef7,#f7f9fc);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+header{background:linear-gradient(110deg,#06183b,#073d85 58%,#06183b);color:white;padding:22px 28px;border-bottom:5px solid var(--orange);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:16px}.crest{width:62px;height:62px;border-radius:18px;background:linear-gradient(145deg,#0874ff,#06265e);border:3px solid #f5bd27;display:grid;place-items:center;font-size:34px;box-shadow:0 5px 18px #0005}
+h1{margin:0;font-size:clamp(23px,3vw,36px);font-weight:900;letter-spacing:.4px}.brand small{display:block;color:#dce8ff;margin-top:4px;font-weight:600}.metrics{display:flex;gap:10px;flex-wrap:wrap}.metric{min-width:125px;padding:12px 16px;border:1px solid #6c91c9;border-radius:13px;background:#061a3d99;text-align:center}.metric b{display:block;font-size:24px;color:#ffd45a}.metric span{font-size:12px;color:#e0e9fa}
+main{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18px;max-width:1800px;margin:auto}.panel{background:var(--white);border:1px solid #dce3ee;border-radius:15px;box-shadow:0 5px 18px #0b255011;overflow:hidden}.panel-title{padding:13px 16px;background:linear-gradient(100deg,#08285d,#0753b6);color:white;font-weight:800;font-size:17px}
+.team-list{padding:10px}.team{display:flex;align-items:center;gap:10px;padding:12px 9px;border-bottom:1px solid var(--line)}.team:last-child{border:0}.team .num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#edf2fa;font-weight:900}.team .name{font-weight:750;flex:1}.team .state{font-size:11px;color:var(--muted)}
+.side-note{margin-top:14px;padding:16px;border-radius:14px;background:linear-gradient(130deg,#09224e,#0755ad);color:#fff;text-align:center}.side-note b{font-size:18px;color:#ffd35b}
+.content{min-width:0}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar button,.toolbar select,.toolbar input{border:1px solid #cbd5e4;border-radius:10px;padding:10px 13px;background:white;color:var(--ink);font-weight:700}.toolbar button{cursor:pointer;background:var(--orange);color:white;border-color:var(--orange)}.toolbar button.secondary{background:#fff;color:var(--ink);border-color:#cbd5e4}.toolbar input{min-width:220px;flex:1}
+.status{padding:10px 13px;border-radius:10px;background:#e9f1ff;color:#173e7c;font-size:13px;margin-bottom:14px}.status.error{background:#fff0ed;color:#a32c1d}.status.ok{background:#e8f7ed;color:#176238}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.tab{border:1px solid #cbd5e4;background:#fff;padding:13px;border-radius:12px;font-weight:850;color:#283753;cursor:pointer}.tab.active{background:linear-gradient(100deg,#ff8b00,#ff6500);color:#fff;border-color:#ff7900}
+.section{margin-bottom:16px}.section-head{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;color:white;font-weight:850}.classic .section-head{background:linear-gradient(100deg,#0647a5,#08275a)}.knockout .section-head{background:linear-gradient(100deg,#17652f,#073d20)}.points .section-head{background:linear-gradient(100deg,#54218e,#24104e)}.section-head small{font-weight:600;opacity:.85}
+.table-wrap{overflow:auto;max-width:100%}table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}th{background:#e9edf4;color:#243653;padding:10px 9px;text-align:center;white-space:nowrap;border:1px solid #d4dce8}td{padding:9px;border:1px solid #e0e5ed;text-align:center;white-space:nowrap}td.team-cell{text-align:left;font-weight:750;min-width:175px}tbody tr:nth-child(even){background:#f8faff}tbody tr:hover{background:#fff4e6}.rank{font-weight:900}.gold{color:#c58b00}.silver{color:#788397}.bronze{color:#b65a21}.points-val{font-weight:900;color:#092b68}.position{font-weight:900;color:#1458a8}.phase{font-weight:750}.empty{color:#a0a8b5}
+.section-tools{display:flex;align-items:center;gap:8px}.section-tools select{border:1px solid #ffffff77;border-radius:8px;padding:6px;background:#ffffffee;color:#102044;font-weight:700}
+.footnote{font-size:12px;color:var(--muted);padding:10px 13px;background:#fafbfd;border-top:1px solid var(--line)}
+.hidden{display:none!important}.loading{opacity:.6;pointer-events:none}
+@media(max-width:900px){main{grid-template-columns:1fr;padding:10px}.team-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.team{padding:8px}.metrics{width:100%}.metric{flex:1}}
+@media(max-width:560px){header{padding:16px}.brand{align-items:flex-start}.crest{width:48px;height:48px;font-size:26px}.team-list{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.toolbar input{min-width:100%}.metric{min-width:0}}
+
+.authbox{display:flex;align-items:center;gap:10px;font-size:13px;color:#e0e9fa;margin-left:auto}.authbox b{color:#ffd45a}.authbox button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#fff;color:#06183b}.authbox button.primary{background:var(--orange);color:#fff}
+.badge{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:#ffefd9;color:#b35400;font-size:10px;font-weight:800;vertical-align:middle}
+dialog{border:0;border-radius:16px;padding:0;width:min(400px,92vw);box-shadow:0 20px 60px #0007;color:var(--ink)}dialog::backdrop{background:#06183bb3}
+.dlg-head{padding:16px 20px;background:linear-gradient(100deg,#08285d,#0753b6);color:#fff;font-weight:850;font-size:18px}
+.dlg-body{padding:18px 20px;display:grid;gap:12px}.dlg-body label{display:grid;gap:5px;font-size:13px;font-weight:700}.dlg-body a{color:var(--blue);font-weight:800}.dlg-body input{border:1px solid #cbd5e4;border-radius:10px;padding:11px 12px;font-size:15px}
+.dlg-note{font-size:12px;color:var(--muted);line-height:1.45}.dlg-error{display:none;padding:9px 11px;border-radius:9px;background:#fff0ed;color:#a32c1d;font-size:13px}.dlg-error.show{display:block}
+.dlg-actions{display:flex;gap:8px;justify-content:flex-end}.dlg-actions button{border:1px solid #cbd5e4;border-radius:10px;padding:10px 16px;font-weight:800;cursor:pointer;background:#fff;color:var(--ink)}.dlg-actions button.go{background:var(--orange);border-color:var(--orange);color:#fff}.dlg-actions button:disabled{opacity:.6;cursor:wait}
+.sub{display:block;font-size:11px;color:var(--muted);font-weight:600}.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:800;background:#e9edf4;color:#243653}.pill.run{background:#e1f5e8;color:#176238}.pill.end{background:#ececec;color:#555}.pill.wait{background:#fff3d6;color:#8a5a00}
+td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-decoration:underline}.me-row{background:#fff8e8!important}
+.diag{width:100%;height:260px;font:12px/1.4 ui-monospace,Consolas,monospace;border:1px solid #cbd5e4;border-radius:10px;padding:10px}
+.scores .section-head{background:linear-gradient(100deg,#7a3a00,#3d1d00)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="crest">⚽</div><div><h1>SUPERLIGA DO FABIÃO</h1><small>Juntos pelo futebol e pela diversão!</small></div></div>
+  <div class="authbox" id="authBox"></div>
+  <div class="metrics">
+    <div class="metric"><b id="metricTeams">3</b><span>Times monitorados</span></div>
+    <div class="metric"><b>38</b><span>Rodadas da temporada</span></div>
+    <div class="metric"><b id="marketRound">—</b><span>Rodada atual</span></div>
+  </div>
+</header>
+<main>
+<aside>
+  <div class="panel">
+    <div class="panel-title">🏆 Times cadastrados</div>
+    <div class="team-list" id="teamList"></div>
+  </div>
+  <div class="side-note"><div style="font-size:36px">🏆</div><b>1 TIME • 3 MODALIDADES</b><div style="margin-top:5px;font-size:12px">Uma só Superliga!</div></div>
+</aside>
+<div class="content">
+  <div class="toolbar">
+    <input id="searchInput" placeholder="Buscar outro time no Cartola..." aria-label="Buscar time">
+    <button id="searchBtn">Buscar time</button>
+    <select id="roundRange" aria-label="Rodadas exibidas">
+      <option value="1-5">Rodadas 1–5</option><option value="6-10">Rodadas 6–10</option>
+      <option value="11-15">Rodadas 11–15</option><option value="16-20">Rodadas 16–20</option>
+      <option value="21-25">Rodadas 21–25</option><option value="26-30">Rodadas 26–30</option>
+      <option value="31-35">Rodadas 31–35</option><option value="34-38" selected>Rodadas 34–38</option>
+      <option value="1-38">Todas (rolagem horizontal)</option>
+    </select>
+    <button class="secondary" id="refreshBtn">↻ Atualizar dados</button>
+    <button class="secondary hidden" id="diagBtn" title="Mostra o JSON que a API devolveu, para conferência">{ } Dados brutos</button>
+  </div>
+  <div class="status" id="status">Preparando conexão com a API pública do Cartola FC…</div>
+  <div class="tabs">
+    <button class="tab active" data-target="classic">🏆 Ligas Clássicas</button>
+    <button class="tab" data-target="knockout">⚔️ Mata-Mata</button>
+    <button class="tab" data-target="points">📊 Pontos Corridos</button>
+  </div>
+
+  <section class="panel section classic" id="classic">
+    <div class="section-head"><span>🏆 Ligas Clássicas <small>(suas ligas no Cartola)</small></span><small>Classificação oficial</small></div>
+    <div class="table-wrap"><table id="classicTable"></table></div>
+    <div class="footnote" id="classicNote"></div>
+  </section>
+
+  <section class="panel section knockout hidden" id="knockout">
+    <div class="section-head"><span>⚔️ Ligas Mata-Mata <small>(fase por rodada)</small></span><small>Fase da disputa</small></div>
+    <div class="table-wrap"><table id="knockoutTable"></table></div>
+    <div class="footnote" id="knockoutNote"></div>
+  </section>
+
+  <section class="panel section points hidden" id="points">
+    <div class="section-head"><span>📊 Ligas Pontos Corridos <small>(suas ligas no Cartola)</small></span><small>Classificação oficial</small></div>
+    <div class="table-wrap"><table id="pointsTable"></table></div>
+    <div class="footnote" id="pointsNote"></div>
+  </section>
+
+  <section class="panel section scores" id="scores">
+    <div class="section-head"><span>📈 Pontuação por rodada <small>(times monitorados)</small></span><small>Pontos de cada rodada</small></div>
+    <div class="table-wrap"><table id="scoresTable"></table></div>
+    <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas.</div>
+  </section>
+</div>
+</main>
+<dialog id="loginDialog">
+  <div class="dlg-head">Entrar com sua conta Globo</div>
+  <div class="dlg-body">
+    <div class="dlg-note"><b>1.</b> Entre no Cartola no seu navegador de sempre (Google, Facebook ou e-mail funcionam normalmente):<br><a href="https://cartola.globo.com" target="_blank" rel="noopener">Abrir cartola.globo.com ↗</a></div>
+    <div class="dlg-note"><b>2.</b> Volte aqui e clique em <b>Conectar</b>. A extensão pega a sessão do Cartola sozinha (pode recarregar a aba do Cartola por alguns segundos).</div>
+    <div class="dlg-note" id="extStatus">Verificando extensão…</div>
+    <details class="dlg-note" id="extHelp"><summary><b>Como instalar a extensão (uma vez só)</b></summary>
+      1. No Chrome/Edge, abra <b>chrome://extensions</b> (ou edge://extensions).<br>
+      2. Ligue o <b>Modo do desenvolvedor</b>.<br>
+      3. Clique em <b>Carregar sem compactação</b> e escolha a pasta <b>extensao_chrome</b> deste projeto. Se já havia uma versão instalada, clique em <b>Atualizar</b> nela.<br>
+      4. Recarregue esta página.
+    </details>
+    <div class="dlg-error" id="loginError" role="alert"></div>
+    <div class="dlg-actions"><button type="button" id="loginCancel">Cancelar</button><button type="button" class="go" id="extConnect">Conectar</button></div>
+    <div class="dlg-note">Sua senha e seu login social ficam só na página da Globo. O painel guarda apenas a sessão, na memória do servidor local. A sessão da Globo dura cerca de 1 hora.</div>
+  </div>
+</dialog>
+<dialog id="diagDialog">
+  <div class="dlg-head">Dados brutos das ligas</div>
+  <div class="dlg-body">
+    <div class="dlg-note">É o que a API do Cartola devolveu para a sua conta (nomes de ligas e de alguns participantes; nenhum token ou senha). Útil para conferir ou para pedir ajustes.</div>
+    <textarea class="diag" id="diagText" readonly></textarea>
+    <div class="dlg-actions"><button type="button" id="diagCopy">Copiar</button><button type="button" class="go" id="diagClose">Fechar</button></div>
+  </div>
+</dialog>
+<script>
+/*
+  CONFIGURAÇÃO:
+  - Os nomes iniciais já estão cadastrados.
+  - A página usa o servidor local (server.js) como intermediário para evitar CORS.
+    Execute "node server.js" e abra http://localhost:3000.
+  - Para fases reais do mata-mata, preencha KNOCKOUT_PHASES com os dados da sua competição.
+*/
+const API_BASE = "/api/cartola"; // Usa o proxy local do server.js para evitar CORS.
+const INITIAL_TEAMS = [
+  // Nome público será atualizado pela resposta da API; o ID vem do link enviado.
+  {name:"Time Cartola #49854573", id:49854573, slug:null, league:"Clássica #01"}
+];
+// Preencha quando tiver as fases reais por rodada (1 a 38).
+const KNOCKOUT_PHASES = {};
+let teams = INITIAL_TEAMS.map(t=>({...t, scores:{}, total:0, status:"Aguardando busca"}));
+let currentRound = null;
+const $ = id => document.getElementById(id);
+function setStatus(msg,type=""){const el=$("status");el.textContent=msg;el.className="status "+type}
+function endpoint(path){ return API_BASE + path; }
+async function api(path){
+  const r=await fetch(endpoint(path),{headers:{"Accept":"application/json"}});
+  if(!r.ok){const e=new Error("HTTP "+r.status+" em "+path);e.status=r.status;throw e}
+  return r.json();
+}
+function collectTeamCandidates(obj, out=[], seen=new Set()){
+  if(!obj || typeof obj!=="object" || seen.has(obj)) return out;
+  seen.add(obj);
+  if(Array.isArray(obj)){obj.forEach(v=>collectTeamCandidates(v,out,seen));return out;}
+  const id=obj.time_id||obj.id_time||obj.id||obj.time?.time_id||obj.time?.id;
+  const name=obj.nome||obj.nome_time||obj.time?.nome||obj.nome_cartola;
+  if(id && name) out.push(obj);
+  Object.values(obj).forEach(v=>collectTeamCandidates(v,out,seen));
+  return out;
+}
+function getTeamId(item){
+  return item.time_id||item.id_time||item.id||item.time?.time_id||item.time?.id||null;
+}
+function getTeamName(item){
+  return item.nome||item.nome_time||item.time?.nome||item.nome_cartola||item.cartoleiro?.nome||"";
+}
+async function searchTeam(name){
+  const routes=["/times?q=","/busca?q="];
+  let errors=[];
+  for(const route of routes){
+    try{
+      const data=await api(route+encodeURIComponent(name));
+      const list=collectTeamCandidates(data);
+      const normalized=name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+      const exact=list.find(x=>getTeamName(x).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim()===normalized);
+      const candidate=exact||list.find(x=>{
+        const n=getTeamName(x).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+        return n && (n.includes(normalized)||normalized.includes(n));
+      });
+      if(candidate&&getTeamId(candidate)) return {id:getTeamId(candidate),name:getTeamName(candidate),slug:candidate.slug||candidate.time?.slug||null};
+      errors.push(route+": nenhum resultado com ID e nome compatíveis");
+    }catch(e){errors.push(route+": "+e.message);}
+  }
+  throw new Error("Busca não retornou um time correspondente. "+errors.join(" | "));
+}
+function extractPoints(data){
+  const candidates=[
+    data?.pontos,data?.pontos_campeonato,data?.pontuacao,data?.time?.pontos,
+    data?.time?.pontos_campeonato,data?.pontos_total,data?.time?.pontuacao,
+    data?.pontos?.rodada,data?.pontuacao?.rodada
+  ];
+  for(const v of candidates) if(typeof v==="number" && Number.isFinite(v)) return v;
+  return null;
+}
+async function mapLimit(items, limit, worker){
+  const out=new Array(items.length);let next=0;
+  const runners=Array.from({length:Math.min(limit,items.length)},async()=>{
+    while(true){const i=next++;if(i>=items.length)return;try{out[i]={status:"fulfilled",value:await worker(items[i])};}catch(error){out[i]={status:"rejected",reason:error};}}
+  });
+  await Promise.all(runners);return out;
+}
+async function loadTeam(t){
+  t.error="";
+  if(!t.id){
+    const found=await searchTeam(t.name);
+    t.id=found.id;t.slug=found.slug;t.name=found.name;
+  }
+  t.status="Carregando histórico";
+  const maxRound=Math.max(1,Math.min(38,Number(currentRound)||38));
+  const rounds=Array.from({length:maxRound},(_,i)=>i+1);
+  // Limita a quatro chamadas simultâneas para evitar bloqueios/rate limit da API.
+  const results=await mapLimit(rounds,4,async r=>{
+    const data=await api(`/time/id/${t.id}/${r}`);
+    const publicName=data?.time?.nome||data?.nome_time||data?.nome;
+    if(publicName) t.name=publicName;
+    const points=extractPoints(data);
+    if(points===null) throw new Error("rodada "+r+": resposta sem campo de pontuação");
+    return [r,points];
+  });
+  t.scores={};
+  const errors=[];
+  results.forEach(result=>{
+    if(result.status==="fulfilled")t.scores[result.value[0]]=result.value[1];
+    else errors.push(result.reason?.message||"falha desconhecida");
+  });
+  t.total=Object.values(t.scores).reduce((a,b)=>a+b,0);
+  if(Object.keys(t.scores).length===0) throw new Error("ID "+t.id+" encontrado, mas nenhuma pontuação foi retornada. "+(errors[0]||""));
+  t.status=errors.length?`Parcial: ${Object.keys(t.scores).length}/${maxRound} rodadas`:"Conectado";
+  if(errors.length)t.error=errors.slice(0,2).join("; ");
+}
+function roundColumns(){
+  const [a,b]=$("roundRange").value.split("-").map(Number);
+  return Array.from({length:b-a+1},(_,i)=>a+i);
+}
+const num=v=>{if(v===null||v===undefined||v==="")return null;const n=Number(v);return Number.isFinite(n)?n:null};
+function positionClass(pos){return pos===1?"gold":pos===2?"silver":pos===3?"bronze":"position"}
+function ordinal(n){return n===null?"—":n+"º"}
+function mineId(){const m=teams.find(t=>t.mine);return m?m.id:null}
+
+/* ===== Ligas (exigem login) ===== */
+let leagues=[];
+let leagueState={status:"idle",message:""}; // idle | loading | ok | error
+function leagueKind(l){
+  if(l.mata_mata===true) return "knockout";
+  const txt=[l.tipo,l.modalidade,l.formato,l.nome].map(x=>String(x??"")).join(" ");
+  if(l.pontos_corridos===true||/pontos[\s_-]*corridos/i.test(txt)) return "points";
+  return "classic";
+}
+function cartolaLeagueUrl(slug){return "https://cartola.globo.com/#!/liga/"+encodeURIComponent(slug)}
+async function loadOneLeague(item){
+  const slug=item.slug;
+  if(!slug) throw new Error("liga sem slug");
+  const q=p=>`/auth/liga/${encodeURIComponent(slug)}?orderBy=campeonato&page=${p}`;
+  const first=await api(q(1));
+  const info={...item,...(first.liga||{})};
+  const rows=Array.isArray(first.times)?first.times:[];
+  const pageSize=rows.length||20;
+  const total=num(info.total_times_liga)??num(info.quantidade_times)??rows.length;
+  const myId=String(mineId());
+  const isMe=t=>t&&String(getTeamId(t))===myId;
+  let me=null,pos=null;
+  let idx=rows.findIndex(isMe);
+  if(idx>=0){me=rows[idx];pos=idx+1}
+  else if(isMe(first.time_usuario)){me=first.time_usuario}
+  // Liga grande e eu não apareço na 1ª página: procura nas seguintes (limite de 15 páginas).
+  const lastPage=Math.min(15,Math.ceil((total||0)/pageSize));
+  for(let p=2;!me&&p<=lastPage;p++){
+    const d=await api(q(p));
+    const r=Array.isArray(d.times)?d.times:[];
+    const i=r.findIndex(isMe);
+    if(i>=0){me=r[i];pos=(p-1)*pageSize+i+1}
+  }
+  const rk=num(me?.ranking?.campeonato);
+  return {slug,info,kind:leagueKind(info),total,me,
+    pos:rk??pos,leader:rows[0]||null,notFound:!me,
+    raw:{liga:info,amostra_times:rows.slice(0,2),time_usuario:first.time_usuario??null,pagina:first.pagina??null}};
+}
+async function loadLeagues(){
+  leagues=[];
+  if(!loggedIn||!mineId()){leagueState={status:"idle",message:""};renderLeagues();return}
+  leagueState={status:"loading",message:"Carregando suas ligas…"};renderLeagues();
+  try{
+    const data=await api("/auth/ligas");
+    const list=Array.isArray(data)?data:(data.ligas||data.liga||[]);
+    window.__ligasBrutas=data;
+    const outcomes=await mapLimit(list.slice(0,30),3,loadOneLeague);
+    const failures=[];
+    outcomes.forEach((o,i)=>{
+      if(o.status==="fulfilled") leagues.push(o.value);
+      else{
+        const item=list[i];
+        failures.push((item.nome||item.slug)+": "+(o.reason?.message||"erro"));
+        leagues.push({slug:item.slug,info:item,kind:leagueKind(item),total:num(item.total_times_liga),me:null,pos:null,leader:null,notFound:true,error:o.reason?.message||"erro",raw:{liga:item}});
+      }
+    });
+    leagueState={status:failures.length?"error":"ok",message:failures.length?"Algumas ligas falharam: "+failures.slice(0,3).join(" | "):"",count:list.length,truncated:list.length>30};
+  }catch(e){
+    if(e.status===401){loggedIn=false;renderAuth();leagueState={status:"error",message:"Sua sessão da Globo expirou (dura ~1 hora). Clique em “Entrar com Globo” e depois em “Conectar”."}}
+    else leagueState={status:"error",message:"Não foi possível carregar as ligas: "+e.message};
+  }
+  renderLeagues();
+}
+
+function phaseName(left){
+  return left<=2?"Final":left===4?"Semifinal":left===8?"Quartas de final":left===16?"Oitavas de final":left===32?"1ª fase (32 times)":left+" times";
+}
+// Fase da disputa em uma rodada, calculada com início/fim da liga e nº de times (metade eliminada a cada rodada).
+function knockoutPhaseAt(l,round){
+  const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada),n=num(l.info.quantidade_times)??l.total;
+  if(!ini||!n) return null;
+  if(round<ini||(fim&&round>fim)) return null;
+  const left=n/Math.pow(2,round-ini);
+  return Number.isInteger(left)&&left>=2?phaseName(left):null;
+}
+function knockoutStatus(l){
+  const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada);
+  if(!ini) return ["Aguardando sorteio","wait"];
+  if(currentRound&&currentRound<ini) return ["Começa na rodada "+ini,"wait"];
+  if(fim&&currentRound&&currentRound>fim) return ["Encerrada","end"];
+  return ["Em andamento","run"];
+}
+
+function leagueNote(kind){
+  if(!loggedIn) return "Entre com a Globo (botão no topo) para ver a classificação oficial das suas ligas.";
+  if(leagueState.status==="loading") return leagueState.message;
+  if(leagueState.status==="error"&&!leagues.length) return leagueState.message;
+  const mine=leagues.filter(l=>l.kind===kind);
+  let msg="";
+  if(!mine.length) msg=leagueState.status==="idle"?"":"Nenhuma liga deste tipo foi encontrada na sua conta.";
+  else if(kind==="knockout") msg="Fase calculada pelo início/fim da liga e pelo nº de times. A API não informa se o seu time foi eliminado: use o link da liga para ver os confrontos no Cartola.";
+  else if(kind==="points") msg="Posição e pontos vêm da API do Cartola. Se a liga usa vitórias/empates/derrotas, esses detalhes podem não estar disponíveis aqui (veja o link da liga).";
+  else msg="Classificação oficial de cada liga (posição e pontos no campeonato, turno, mês e rodada).";
+  if(leagueState.truncated) msg+=" Mostrando as 30 primeiras ligas.";
+  if(leagueState.status==="error"&&leagueState.message) msg+=" ⚠ "+leagueState.message;
+  return msg;
+}
+function emptyRow(cols,text){return `<tbody><tr><td colspan="${cols}" class="empty" style="padding:22px">${escapeHtml(text)}</td></tr></tbody>`}
+
+function buildLeagueTable(kind,target,noteId){
+  const list=leagues.filter(l=>l.kind===kind);
+  const cols=10;
+  let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Posição</th><th>Pontos</th><th>Turno</th><th>Mês</th><th>Rodada</th><th>Líder</th><th>Dif. p/ líder</th></tr></thead>";
+  if(!list.length){
+    html+=emptyRow(cols,!loggedIn?"Faça login com a Globo para carregar suas ligas.":leagueState.status==="loading"?"Carregando…":"Sem ligas para exibir.");
+  }else{
+    html+="<tbody>";
+    list.forEach((l,i)=>{
+      const pts=num(l.me?.pontos?.campeonato), lead=num(l.leader?.pontos?.campeonato);
+      const diff=(pts!==null&&lead!==null)?lead-pts:null;
+      const leaderName=l.leader?getTeamName(l.leader):"";
+      const posTxt=l.pos!==null?`<span class="${positionClass(l.pos)} rank">${ordinal(l.pos)}</span>${l.total?`<span class="sub">de ${l.total}</span>`:""}`:(l.error?`<span class="empty" title="${escapeHtml(l.error)}">erro</span>`:(l.notFound?`<span class="empty" title="Seu time não foi localizado nas primeiras páginas da liga">—</span>`:"—"));
+      html+=`<tr class="me-row"><td class="rank">${i+1}</td>
+        <td class="team-cell"><a href="${cartolaLeagueUrl(l.slug)}" target="_blank" rel="noopener">🏆 ${escapeHtml(l.info.nome||l.slug)}</a>${l.info.descricao?`<span class="sub">${escapeHtml(String(l.info.descricao).slice(0,60))}</span>`:""}</td>
+        <td>${l.total??"—"}</td>
+        <td>${posTxt}</td>
+        <td class="points-val">${pts!==null?formatPoints(pts):"—"}</td>
+        <td>${ordinal(num(l.me?.ranking?.turno))}</td>
+        <td>${ordinal(num(l.me?.ranking?.mes))}</td>
+        <td>${ordinal(num(l.me?.ranking?.rodada))}${num(l.me?.pontos?.rodada)!==null?`<span class="sub">${formatPoints(num(l.me.pontos.rodada))} pts</span>`:""}</td>
+        <td class="team-cell">${leaderName?escapeHtml(leaderName)+(lead!==null?`<span class="sub">${formatPoints(lead)} pts</span>`:""):"—"}</td>
+        <td>${diff===null?"—":(diff<=0?"líder":"−"+formatPoints(diff))}</td></tr>`;
+    });
+    html+="</tbody>";
+  }
+  $(target).innerHTML=html;
+  $(noteId).textContent=leagueNote(kind);
+}
+function buildKnockoutTable(){
+  const list=leagues.filter(l=>l.kind==="knockout");
+  const rounds=roundColumns();
+  let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Rodadas</th><th>Situação</th><th>Fase atual</th>"+rounds.map(r=>`<th>Rdd ${r} - Fase</th>`).join("")+"</tr></thead>";
+  if(!list.length){
+    html+=emptyRow(6+rounds.length,!loggedIn?"Faça login com a Globo para carregar suas ligas mata-mata.":leagueState.status==="loading"?"Carregando…":"Sem ligas mata-mata para exibir.");
+  }else{
+    html+="<tbody>";
+    list.forEach((l,i)=>{
+      const [st,cls]=knockoutStatus(l);
+      const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada);
+      const cur=currentRound?knockoutPhaseAt(l,currentRound):null;
+      html+=`<tr class="me-row"><td class="rank">${i+1}</td>
+        <td class="team-cell"><a href="${cartolaLeagueUrl(l.slug)}" target="_blank" rel="noopener">⚔️ ${escapeHtml(l.info.nome||l.slug)}</a></td>
+        <td>${num(l.info.quantidade_times)??l.total??"—"}</td>
+        <td>${ini?(fim&&fim!==ini?ini+"–"+fim:ini):"—"}</td>
+        <td><span class="pill ${cls}">${escapeHtml(st)}</span></td>
+        <td class="phase">${cur?escapeHtml(cur):"—"}</td>`;
+      rounds.forEach(r=>{const ph=knockoutPhaseAt(l,r);html+=`<td class="phase ${ph?"":"empty"}">${ph?escapeHtml(ph):"—"}</td>`});
+      html+="</tr>";
+    });
+    html+="</tbody>";
+  }
+  $("knockoutTable").innerHTML=html;
+  $("knockoutNote").textContent=leagueNote("knockout");
+}
+function buildScoresTable(){
+  const rounds=roundColumns();
+  let html="<thead><tr><th>#</th><th>Time</th>"+rounds.map(r=>`<th>Rdd ${r}</th>`).join("")+"<th>Pontuação</th></tr></thead><tbody>";
+  teams.forEach((t,i)=>{
+    html+=`<tr${t.mine?' class="me-row"':""}><td class="rank">${i+1}</td><td class="team-cell">⚽ ${escapeHtml(t.name)}</td>`;
+    rounds.forEach(r=>{const v=t.scores[r];html+=v===undefined?`<td class="empty">—</td>`:`<td>${formatPoints(v)}</td>`});
+    html+=`<td class="points-val">${formatPoints(t.total)}</td></tr>`;
+  });
+  $("scoresTable").innerHTML=html+"</tbody>";
+}
+function renderLeagues(){
+  buildLeagueTable("classic","classicTable","classicNote");
+  buildKnockoutTable();
+  buildLeagueTable("points","pointsTable","pointsNote");
+  $("diagBtn").classList.toggle("hidden",!loggedIn);
+}
+function formatPoints(value){return new Intl.NumberFormat("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(value);}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderTeams(){
+  $("metricTeams").textContent=teams.length;
+  $("teamList").innerHTML=teams.map((t,i)=>`<div class="team"><div class="num">${i+1}</div><div style="min-width:0;flex:1"><div class="name">${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</div><div class="state">${escapeHtml(t.status||"Aguardando")}${t.error?" — "+escapeHtml(t.error):""}</div></div><span>›</span></div>`).join("");
+}
+function render(){
+  renderTeams();buildScoresTable();renderLeagues();
+}
+async function refreshAll(){
+  $("refreshBtn").classList.add("loading");
+  setStatus("Consultando os times e carregando o histórico com limite de chamadas simultâneas…");
+  try{
+    const status=await api("/mercado/status");
+    const reportedRound=Number(status?.rodada_atual||status?.rodada);
+    if(!Number.isInteger(reportedRound)||reportedRound<1||reportedRound>38) throw new Error("A API não informou uma rodada válida; não vou assumir a rodada 38 nem calcular um acumulado incorreto.");
+    currentRound=reportedRound;
+    $("marketRound").textContent=currentRound;
+    const outcomes=await Promise.allSettled(teams.map(loadTeam));
+    const failures=[];
+    outcomes.forEach((result,i)=>{
+      if(result.status==="rejected"){
+        teams[i].status="Falha na consulta";
+        teams[i].error=result.reason?.message||"Erro não identificado";
+        failures.push(teams[i].name+": "+teams[i].error);
+      }
+    });
+    render();
+    await loadLeagues();
+    const ok=outcomes.filter(x=>x.status==="fulfilled").length;
+    if(ok===teams.length){
+      const partial=teams.filter(t=>t.error).length;
+      setStatus(`Conexão concluída: ${ok}/${teams.length} time(s). ${partial?partial+" com histórico parcial.":"Histórico completo até a rodada "+currentRound+"."} Pontuação acumulada formatada em padrão brasileiro.`, "ok");
+    }else{
+      setStatus(`Carregamento parcial (${ok}/${teams.length}). Detalhes: ${failures.join(" || ")}`, "error");
+    }
+  }catch(e){
+    setStatus("Falha ao consultar o Cartola: "+e.message,"error");
+    render();
+  }finally{$("refreshBtn").classList.remove("loading")}
+}
+async function addSearchTeam(){
+  const name=$("searchInput").value.trim();if(!name)return;
+  setStatus("Buscando "+name+" na API do Cartola…");
+  try{
+    const found=await searchTeam(name);
+    if(teams.some(t=>String(t.id)===String(found.id))){setStatus("Esse time já está cadastrado.");return}
+    teams.push({name:found.name,id:found.id,slug:found.slug,league:"Clássica #"+String(teams.length+1).padStart(2,"0"),scores:{},total:0,status:"Encontrado"});
+    $("searchInput").value="";render();setStatus("Time encontrado. Atualizando histórico…","ok");await refreshAll();
+  }catch(e){setStatus("Não foi possível localizar o time. Tente o nome exato ou informe o ID no código da página. "+e.message,"error")}
+}
+document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));
+  ["classic","knockout","points"].forEach(id=>$(id).classList.toggle("hidden",id!==btn.dataset.target));
+}));
+$("refreshBtn").addEventListener("click",refreshAll);
+$("diagBtn").addEventListener("click",()=>{
+  const out={ligas_do_usuario:window.__ligasBrutas??null,detalhe_por_liga:leagues.map(l=>({slug:l.slug,classificada_como:l.kind,erro:l.error||null,...l.raw}))};
+  $("diagText").value=JSON.stringify(out,null,2);$("diagDialog").showModal();
+});
+$("diagClose").addEventListener("click",()=>$("diagDialog").close());
+$("diagCopy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("diagText").value)}catch{$("diagText").select();document.execCommand("copy")}});
+$("searchBtn").addEventListener("click",addSearchTeam);
+$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")addSearchTeam()});
+$("roundRange").addEventListener("change",render);
+
+/* ===== Login Globo ===== */
+let loggedIn=false;
+function renderAuth(){
+  const mine=teams.find(t=>t.mine);
+  $("authBox").innerHTML=loggedIn
+    ? `<span>Conectado${mine?` como <b>${escapeHtml(mine.name)}</b>`:""}</span><button id="logoutBtn">Sair</button>`
+    : `<button class="primary" id="loginBtn">Entrar com Globo</button>`;
+}
+async function authPost(url,body){
+  const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(data.error||"Erro "+r.status);
+  return data;
+}
+// Busca o time da conta logada e o inclui (ou marca) na lista monitorada.
+async function syncMyTeam(){
+  const data=await api("/auth/time");
+  const info=data?.time||data;
+  const id=getTeamId(info);
+  if(!id) throw new Error("A Globo não retornou um time para esta conta. Verifique se você já escalou um time no Cartola FC.");
+  const name=getTeamName(info)||("Time Cartola #"+id);
+  teams.forEach(t=>{delete t.mine});
+  const existing=teams.find(t=>String(t.id)===String(id));
+  if(existing){existing.mine=true;existing.name=name;existing.slug=info.slug||existing.slug}
+  else teams.unshift({name,id,slug:info.slug||null,league:"Clássica #"+String(teams.length+1).padStart(2,"0"),scores:{},total:0,status:"Aguardando busca",mine:true,fromLogin:true});
+}
+function dropLoginState(){
+  loggedIn=false;leagues=[];
+  teams=teams.filter(t=>!t.fromLogin);
+  teams.forEach(t=>{delete t.mine});
+}
+async function finishLogin(){
+  loggedIn=true;
+  try{await syncMyTeam()}catch(e){
+    if(e.status===401){dropLoginState();renderAuth();throw new Error("Sessão não aceita pela Globo. Tente entrar novamente.")}
+    renderAuth();render();setStatus("Login feito, mas não foi possível obter seu time: "+e.message,"error");return;
+  }
+  renderAuth();render();
+  await refreshAll();
+}
+function extCall(type,timeout=2000){
+  return new Promise(resolve=>{
+    const want=type==="SF_PING"?"SF_PONG":"SF_TOKEN";
+    const h=e=>{if(e.source!==window||e.origin!==location.origin)return;const d=e.data||{};if(d.type===want){clearTimeout(t);window.removeEventListener("message",h);resolve(d)}};
+    const t=setTimeout(()=>{window.removeEventListener("message",h);resolve(null)},timeout);
+    window.addEventListener("message",h);
+    window.postMessage({type},location.origin);
+  });
+}
+async function checkExtension(){
+  const el=$("extStatus");el.textContent="Verificando extensão…";
+  const ok=!!(await extCall("SF_PING",800));
+  el.innerHTML=ok?"✅ Extensão detectada.":"⚠️ Extensão não detectada. Instale conforme abaixo.";
+  $("extHelp").open=!ok;
+  return ok;
+}
+async function connectViaExtension(){
+  const btn=$("extConnect"),err=$("loginError");
+  err.classList.remove("show");btn.disabled=true;btn.textContent="Conectando… (até 15 s)";
+  try{
+    if(!(await extCall("SF_PING",800))) throw new Error("Extensão não detectada. Instale pela pasta extensao_chrome e recarregue a página.");
+    const r=await extCall("SF_GET_TOKEN",20000);
+    if(!r) throw new Error("A extensão não respondeu. Recarregue a página e tente de novo.");
+    if(r.error&&!r.bearer&&!r.glbid) throw new Error(r.error);
+    await authPost("/auth/login",{bearer:r.bearer,glbid:r.glbid});
+    await finishLogin();dlg.close();
+  }catch(ex){err.textContent=ex.message;err.classList.add("show")}
+  finally{btn.disabled=false;btn.textContent="Conectar"}
+}
+async function doLogout(){
+  try{await authPost("/auth/logout")}catch{}
+  dropLoginState();renderAuth();render();
+  setStatus("Você saiu da conta Globo.");
+}
+const dlg=$("loginDialog");
+$("authBox").addEventListener("click",e=>{
+  if(e.target.id==="loginBtn"){$("loginError").classList.remove("show");dlg.showModal();checkExtension()}
+  if(e.target.id==="logoutBtn")doLogout();
+});
+$("loginCancel").addEventListener("click",()=>dlg.close());
+$("extConnect").addEventListener("click",connectViaExtension);
+
+render();renderAuth();
+(async()=>{
+  // Se já houver sessão ativa no servidor (ex.: recarregou a página), recupera o time logado.
+  try{
+    const me=await (await fetch("/auth/me")).json();
+    if(me.loggedIn){loggedIn=true;try{await syncMyTeam()}catch(e){if(e.status===401){dropLoginState();setStatus("Sua sessão da Globo expirou. Entre novamente.","error")}}renderAuth();render()}
+  }catch{}
+  refreshAll();
+})();
+</script>
+</body>
+</html>
