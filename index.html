@@ -11,7 +11,7 @@ header{background:linear-gradient(110deg,#06183b,#073d85 58%,#06183b);color:whit
 .brand{display:flex;align-items:center;gap:16px}.crest{width:62px;height:62px;border-radius:18px;background:linear-gradient(145deg,#0874ff,#06265e);border:3px solid #f5bd27;display:grid;place-items:center;font-size:34px;box-shadow:0 5px 18px #0005}
 h1{margin:0;font-size:clamp(23px,3vw,36px);font-weight:900;letter-spacing:.4px}.brand small{display:block;color:#dce8ff;margin-top:4px;font-weight:600}.metrics{display:flex;gap:10px;flex-wrap:wrap}.metric{min-width:125px;padding:12px 16px;border:1px solid #6c91c9;border-radius:13px;background:#061a3d99;text-align:center}.metric b{display:block;font-size:24px;color:#ffd45a}.metric span{font-size:12px;color:#e0e9fa}
 main{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18px;max-width:1800px;margin:auto}.panel{background:var(--white);border:1px solid #dce3ee;border-radius:15px;box-shadow:0 5px 18px #0b255011;overflow:hidden}.panel-title{padding:13px 16px;background:linear-gradient(100deg,#08285d,#0753b6);color:white;font-weight:800;font-size:17px}
-.team-list{padding:10px}.team{display:flex;align-items:center;gap:10px;padding:12px 9px;border-bottom:1px solid var(--line)}.team:last-child{border:0}.team .num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#edf2fa;font-weight:900}.team .name{font-weight:750;flex:1}.team .state{font-size:11px;color:var(--muted)}
+.team-list{padding:10px}.team{display:flex;align-items:center;gap:10px;padding:12px 9px;border-bottom:1px solid var(--line)}.team:last-child{border:0}.team .num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#edf2fa;font-weight:900}.team .name{font-weight:750;flex:1}.team .state{font-size:11px;color:var(--muted)}.team-empty{padding:18px 12px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.55}.team-empty b{color:#b35400}
 .side-note{margin-top:14px;padding:16px;border-radius:14px;background:linear-gradient(130deg,#09224e,#0755ad);color:#fff;text-align:center}.side-note b{font-size:18px;color:#ffd35b}
 .content{min-width:0}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar button,.toolbar select,.toolbar input{border:1px solid #cbd5e4;border-radius:10px;padding:10px 13px;background:white;color:var(--ink);font-weight:700}.toolbar button{cursor:pointer;background:var(--orange);color:white;border-color:var(--orange)}.toolbar button.secondary{background:#fff;color:var(--ink);border-color:#cbd5e4}.toolbar input{min-width:220px;flex:1}
 .status{padding:10px 13px;border-radius:10px;background:#e9f1ff;color:#173e7c;font-size:13px;margin-bottom:14px}.status.error{background:#fff0ed;color:#a32c1d}.status.ok{background:#e8f7ed;color:#176238}
@@ -26,15 +26,21 @@ main{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18p
 
 .authbox{display:flex;align-items:center;gap:10px;font-size:13px;color:#e0e9fa;margin-left:auto}.authbox b{color:#ffd45a}.authbox button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#fff;color:#06183b}.authbox button.primary{background:var(--orange);color:#fff}
 .badge{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:#ffefd9;color:#b35400;font-size:10px;font-weight:800;vertical-align:middle}
-dialog{border:0;border-radius:16px;padding:0;width:min(400px,92vw);box-shadow:0 20px 60px #0007;color:var(--ink)}dialog::backdrop{background:#06183bb3}
+dialog{border:0;border-radius:16px;padding:0;width:min(400px,92vw);max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px #0007;color:var(--ink)}dialog::backdrop{background:#06183bb3}
 .dlg-head{padding:16px 20px;background:linear-gradient(100deg,#08285d,#0753b6);color:#fff;font-weight:850;font-size:18px}
 .dlg-body{padding:18px 20px;display:grid;gap:12px}.dlg-body label{display:grid;gap:5px;font-size:13px;font-weight:700}.dlg-body a{color:var(--blue);font-weight:800}.dlg-body input{border:1px solid #cbd5e4;border-radius:10px;padding:11px 12px;font-size:15px}
-.dlg-note{font-size:12px;color:var(--muted);line-height:1.45}.dlg-error{display:none;padding:9px 11px;border-radius:9px;background:#fff0ed;color:#a32c1d;font-size:13px}.dlg-error.show{display:block}
+.dlg-note{font-size:12px;color:var(--muted);line-height:1.45}.dlg-error{display:none;padding:9px 11px;border-radius:9px;background:#fff0ed;color:#a32c1d;font-size:13px}.dlg-error.show{display:block}.dlg-sep{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}.dlg-sep:before,.dlg-sep:after{content:"";flex:1;height:1px;background:var(--line)}
 .dlg-actions{display:flex;gap:8px;justify-content:flex-end}.dlg-actions button{border:1px solid #cbd5e4;border-radius:10px;padding:10px 16px;font-weight:800;cursor:pointer;background:#fff;color:var(--ink)}.dlg-actions button.go{background:var(--orange);border-color:var(--orange);color:#fff}.dlg-actions button:disabled{opacity:.6;cursor:wait}
 .sub{display:block;font-size:11px;color:var(--muted);font-weight:600}.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:800;background:#e9edf4;color:#243653}.pill.run{background:#e1f5e8;color:#176238}.pill.end{background:#ececec;color:#555}.pill.wait{background:#fff3d6;color:#8a5a00}
 td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-decoration:underline}.me-row{background:#fff8e8!important}
+.ktag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;font-size:10px;font-weight:800;vertical-align:middle;white-space:nowrap}.ktag.ok{background:#e1f5e8;color:#176238}.ktag.out{background:#fdeae7;color:#a32c1d}.ktag.run{background:#fff3d6;color:#8a5a00}.ktag.champ{background:#fff3c4;color:#7a5c00;outline:1px solid #e2bf45}
 .diag{width:100%;height:260px;font:12px/1.4 ui-monospace,Consolas,monospace;border:1px solid #cbd5e4;border-radius:10px;padding:10px}
 .scores .section-head{background:linear-gradient(100deg,#7a3a00,#3d1d00)}
+/* v26: quando o Google/Facebook bloqueia o login social na janela controlada, o link do modo
+   manual PISCA em amarelo para ser impossível de não achar (sai quando o login conclui,
+   é cancelado ou o usuário já clicou nele). */
+#manualLink.destaque{animation:pulsaDestaque 1.1s ease-in-out infinite;background:#ffd45a;color:#3d2b00!important;padding:4px 10px;border-radius:99px}
+@keyframes pulsaDestaque{0%,100%{opacity:1}50%{opacity:.45}}
 </style>
 </head>
 <body>
@@ -42,7 +48,7 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
   <div class="brand"><div class="crest">⚽</div><div><h1>SUPERLIGA DO FABIÃO</h1><small>Juntos pelo futebol e pela diversão!</small></div></div>
   <div class="authbox" id="authBox"></div>
   <div class="metrics">
-    <div class="metric"><b id="metricTeams">3</b><span>Times monitorados</span></div>
+    <div class="metric"><b id="metricTeams">0</b><span>Times monitorados</span></div>
     <div class="metric"><b>38</b><span>Rodadas da temporada</span></div>
     <div class="metric"><b id="marketRound">—</b><span>Rodada atual</span></div>
   </div>
@@ -53,11 +59,11 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
     <div class="panel-title">🏆 Times cadastrados</div>
     <div class="team-list" id="teamList"></div>
   </div>
-  <div class="side-note"><div style="font-size:36px">🏆</div><b>1 TIME • 3 MODALIDADES</b><div style="margin-top:5px;font-size:12px">Uma só Superliga!</div></div>
+  <div class="side-note"><div style="font-size:36px">🏆</div><b>SEU TIME • 3 MODALIDADES</b><div style="margin-top:5px;font-size:12px">Uma só Superliga!</div></div>
 </aside>
 <div class="content">
   <div class="toolbar">
-    <input id="searchInput" placeholder="Buscar outro time no Cartola..." aria-label="Buscar time">
+    <input id="searchInput" placeholder="Buscar time no Cartola pelo nome..." aria-label="Buscar time">
     <button id="searchBtn">Buscar time</button>
     <select id="roundRange" aria-label="Rodadas exibidas">
       <option value="1-5">Rodadas 1–5</option><option value="6-10">Rodadas 6–10</option>
@@ -73,7 +79,7 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
   <div class="tabs">
     <button class="tab active" data-target="classic">🏆 Ligas Clássicas</button>
     <button class="tab" data-target="knockout">⚔️ Mata-Mata</button>
-    <button class="tab" data-target="points">📊 Pontos Corridos</button>
+    <button class="tab" data-target="points">🟣 Pontos Corridos</button>
   </div>
 
   <section class="panel section classic" id="classic">
@@ -89,7 +95,7 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
   </section>
 
   <section class="panel section points hidden" id="points">
-    <div class="section-head"><span>📊 Ligas Pontos Corridos <small>(suas ligas no Cartola)</small></span><small>Classificação oficial</small></div>
+    <div class="section-head"><span>🟣 Ligas de Pontos Corridos <small>(confronto direto, até 38 rodadas)</small></span><small>Classificação e histórico</small></div>
     <div class="table-wrap"><table id="pointsTable"></table></div>
     <div class="footnote" id="pointsNote"></div>
   </section>
@@ -102,20 +108,24 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
 </div>
 </main>
 <dialog id="loginDialog">
-  <div class="dlg-head">Entrar com sua conta Globo</div>
+  <div class="dlg-head">Modo manual — janela comum da Globo</div>
   <div class="dlg-body">
-    <div class="dlg-note"><b>1.</b> Entre no Cartola no seu navegador de sempre (Google, Facebook ou e-mail funcionam normalmente):<br><a href="https://cartola.globo.com" target="_blank" rel="noopener">Abrir cartola.globo.com ↗</a></div>
-    <div class="dlg-note"><b>2.</b> Volte aqui e clique em <b>Conectar</b>. A extensão pega a sessão do Cartola sozinha (pode recarregar a aba do Cartola por alguns segundos).</div>
-    <div class="dlg-note" id="extStatus">Verificando extensão…</div>
-    <details class="dlg-note" id="extHelp"><summary><b>Como instalar a extensão (uma vez só)</b></summary>
-      1. No Chrome/Edge, abra <b>chrome://extensions</b> (ou edge://extensions).<br>
-      2. Ligue o <b>Modo do desenvolvedor</b>.<br>
-      3. Clique em <b>Carregar sem compactação</b> e escolha a pasta <b>extensao_chrome</b> deste projeto. Se já havia uma versão instalada, clique em <b>Atualizar</b> nela.<br>
-      4. Recarregue esta página.
-    </details>
-    <div class="dlg-error" id="loginError" role="alert"></div>
-    <div class="dlg-actions"><button type="button" id="loginCancel">Cancelar</button><button type="button" class="go" id="extConnect">Conectar</button></div>
-    <div class="dlg-note">Sua senha e seu login social ficam só na página da Globo. O painel guarda apenas a sessão, na memória do servidor local. A sessão da Globo dura cerca de 1 hora.</div>
+    <div class="dlg-note" style="margin-top:-4px">Caminho alternativo, só para quando o automático não estiver disponível (ou se a sua conta só entra com Google/Facebook): aqui a janela é a comum do SEU navegador, sem porta de depuração — <b>Google e Facebook funcionam nela</b>. O caminho normal é o botão <b>Entrar com Globo</b>: abre o navegador controlado e conclui sozinho, sem você copiar nada.</div>
+    <div id="oidcSteps" hidden>
+      <div class="dlg-note" style="border-left:4px solid #f0a500;background:#fff8e8;padding:8px 10px;border-radius:6px"><b>⚠ Se a janela ficar EM BRANCO, é assim mesmo — deu certo!</b><br>Como você já entra na Globo neste navegador, ela nem mostra o login: vai direto para uma página em branco cujo endereço termina com <b>?code=…&state=…</b>. Esse endereço é a sua chave — e eu vou buscá-lo sozinho.</div>
+      <ol class="dlg-note" style="margin:6px 0;padding-left:18px;display:grid;gap:6px">
+        <li>Se a Globo pedir, entre com sua conta (e-mail/senha, Google ou Facebook) e resolva o captcha lá.</li>
+        <li>Na página EM BRANCO: <b>Ctrl+L</b> e <b>Ctrl+C</b>. São as ÚNICAS teclas necessárias — a Globo bloqueia todo caminho automático (o endereço final só pode sair de lá copiado).</li>
+        <li><b>Clique de volta no painel: eu pego o endereço da área de transferência, concluo o login, FECHO a janela da Globo e carrego as ligas sozinho.</b> Plano B: 📋 Colar e concluir (ou Ctrl+V no campo).</li>
+      </ol>
+      <div class="dlg-note" style="margin:0 0 4px"><b>Agora vem 1 aviso do navegador:</b> “o painel pode ver a área de transferência?” — <b>clique em Permitir</b> (é o que faz o resto ser automático). Se você já tinha negado: ícone à esquerda do endereço deste painel → <b>Permissões</b> → <b>Área de transferência</b> → Permitir, depois recarregue (F5).</div>
+      <label style="display:grid;gap:5px;font-size:13px;font-weight:700">Endereço detectado (preencho sozinho — você só mexe aqui se o automático falhar)
+        <input type="text" id="oidcPaste" placeholder="https://cartola.globo.com/login-callback.html?code=...&state=..." autocomplete="off" spellcheck="false">
+      </label>
+      <div class="dlg-actions"><button type="button" id="oidcAgain">Abrir a janela de novo</button><button type="button" class="go" id="oidcFinish">Concluir login</button><button type="button" id="oidcPasteBtn" title="Lê o endereço copiado (Ctrl+C) e conclui sozinho">📋 Colar e concluir</button></div>
+    </div>
+    <div class="dlg-error" id="oidcError" role="alert"></div>
+    <div class="dlg-actions" style="margin-top:2px"><button type="button" id="loginCancel">Fechar</button></div>
   </div>
 </dialog>
 <dialog id="diagDialog">
@@ -128,17 +138,77 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
 </dialog>
 <script>
 /*
+  v27 — SEM TIME PRÉ-CASTRADO: o painel começa VAZIO. O “Super Fabiao PRO FC” que vinha fixo no
+  código (INITIAL_TEAMS) saiu — nenhum time é monitorado sem você pedir. Os times entram por dois
+  caminhos: 1) LOGIN — ao entrar com a Globo, o time da sua conta entra sozinho na lista (e as ligas
+  clássicas/mata-mata/pontos corridos carregam a partir dele, como sempre); 2) BUSCA — campo
+  “Buscar time” adiciona qualquer outro time do Cartola pelo nome. Com a lista vazia, as tabelas
+  mostram orientação (em vez de ficarem em branco) e o “Atualizar dados” só consulta a rodada atual.
+  Para voltar a ter um time fixo, preencha INITIAL_TEAMS (a variável continua aqui, agora vazia).
+  v24 — CLIQUE ENTRA DIRETO NO NAVEGADOR: o diálogo “Entrar com sua conta Globo” saiu (inclusive o
+  formulário de e-mail/senha). Clicar em “Entrar com Globo” agora abre DIRETO o navegador controlado
+  na página da Globo: você entra lá com e-mail e senha (o botão do Google continua sendo bloqueado
+  pelo próprio Google nessa janela — quando isso acontece o painel avisa na barra de status na hora),
+  o servidor captura o retorno sozinho, fecha o navegador e carrega as ligas. Sem diálogo, sem copiar,
+  sem colar. O antigo diálogo virou um FALLBACK enxuto (“modo manual”, link ao lado do botão): janela
+  comum do navegador (Google/Facebook funcionam nela) + campo para colar o endereço — aparece só quando
+  o automático não está disponível (sem Chrome/Edge, servidor antigo) ou quando você pede o modo manual.
+  Todas as mensagens do login (progresso, avisos, erros) agora vão para a barra de status do painel.
+  v23 — AVISO DO GOOGLE RESOLVIDO: o erro “Não foi possível fazer o login — Esse navegador ou app
+  pode não ser seguro” é uma REGRA DO PRÓPRIO GOOGLE: ele recusa login dentro de janelas com a
+  porta de depuração ligada (é o que o servidor usa para capturar o retorno sozinho). Não é erro
+  do painel nem da Globo. O que a v23 faz: (1) o diálogo já AVISA antes de abrir — nesta janela
+  entre com E-MAIL e SENHA da Conta Globo (funciona normalmente; o perfil é próprio e persistente,
+  então nas próximas vezes ela costuma já abrir logada); (2) se você cair na página do Google
+  (ou do Facebook), o servidor DETECTA na hora e o painel mostra a orientação imediatamente;
+  (3) contas que só entram com Google/Facebook usam o modo manual — a janela comum do seu
+  navegador aceita Google/Facebook normalmente. Também: Chrome sem a flag de automação
+  (--disable-blink-features=AutomationControlled) para menos pistas de bot.
+  v22 — COPIA POR JS E FECHAMENTO AUTOMÁTICO: o Chrome controlado ganhou uma 3ª rede de captura do
+  retorno — um repórter JS injetado em toda página que a própria página usa para entregar o seu
+  endereço ao servidor (binding interno do DevTools; pega até troca de endereço que não gera
+  requisição, como history.replaceState e retorno por #fragmento). As três redes (interceptação da
+  requisição, vigia do endereço da janela e o repórter) são independentes: qualquer uma conclui o
+  login; o servidor fecha o navegador sozinho e o painel carrega as ligas. Sem copiar, sem colar,
+  sem tecla nenhuma. O modo manual (Ctrl+L/Ctrl+C ou 📋 Colar e concluir) segue como plano B.
+  v19 — LOGIN GLOBO AUTOMÁTICO (sem copiar/colar o endereço): o botão “Entrar pela janela da Globo”
+  agora pede ao server.js que abra um Chrome/Edge controlado (protocolo de depuração do Chrome, sem
+  extensão e sem dependências). O servidor vigia a navegação, intercepta o retorno
+  login-callback.html?code=…&state=… antes de a página da Globo carregar, troca o código pelo token
+  (PKCE) e fecha a janela; o painel só espera (/auth/oidc/auto/status) e carrega as ligas. Sem
+  Chrome/Edge, ou se preferir, o modo manual (copiar o endereço) continua disponível como plano B.
+  v18 — SEM EXTENSÃO: o login agora é feito pela JANELA OFICIAL da Globo (a mesma página do
+  site do Cartola). O server.js cria o fluxo OIDC (client cartola-web@apps.globoid, PKCE S256,
+  redirect_uri registrado login-callback.html), o usuário entra nessa janela (e-mail/senha/
+  Google/Facebook, com captcha se a Globo pedir) e cola no painel o endereço final
+  (?code=…&state=…) — o servidor troca o código pelo token OIDC (Bearer) e renova a sessão
+  sozinho com o refresh_token. Atalho por e-mail/senha (authx) mantido; se a Globo pedir
+  captcha nele, o painel abre a janela oficial automaticamente. A pasta extensao_chrome e o
+  token copiado à mão não são mais necessários (nem suportados).
+  v16 — aba “Pontos Corridos” ao lado de Ligas Clássicas e Mata-Mata. Usa os endpoints
+  oficiais /auth/competicoes/pontoscorridos (lista só com EM ANDAMENTO) e
+  /auth/competicoes/pontoscorridos/slug/{slug} (detalhe: ranking, confrontos, participantes).
+  Histórico de posição por rodada (até 38) reconstruído dos RESULTADOS dos confrontos e exibido
+  só depois de reproduzir EXATAMENTE a classificação oficial da API (fonte independente).
+  v15 — só ligas EM ANDAMENTO (mantido da v14). Fase da eliminação agora vem do CHAVEAMENTO REAL
+  da liga: a resposta do /auth/liga/{slug} traz "chaves_mata_mata" (todos os confrontos, com
+  rodada, tipo de fase e vencedor) e "time_usuario_mata_mata". Quem o time enfrentou, em que rodada
+  e quem venceu vem da API — não é mais palpite nem inferência por posição/registro.
+  Sem chaveamento confiável, cai para a observação ao vivo e, por fim, "fase não registrada".
   CONFIGURAÇÃO:
-  - Os nomes iniciais já estão cadastrados.
+  - O painel começa SEM nenhum time cadastrado (v27): o seu entra sozinho no login com a Globo e
+    outros entram pelo campo “Buscar time”. Para um time FIXO de fábrica, preencha:
+    INITIAL_TEAMS = [{name:"Nome do time", id:123456, slug:"slug-do-time"}];
   - A página usa o servidor local (server.js) como intermediário para evitar CORS.
     Execute "node server.js" e abra http://localhost:3000.
   - Para fases reais do mata-mata, preencha KNOCKOUT_PHASES com os dados da sua competição.
 */
 const API_BASE = "/api/cartola"; // Usa o proxy local do server.js para evitar CORS.
-const INITIAL_TEAMS = [
-  // Nome público será atualizado pela resposta da API; o ID vem do link enviado.
-  {name:"Time Cartola #49854573", id:49854573, slug:null, league:"Clássica #01"}
-];
+// Só entram na mesa as ligas EM ANDAMENTO da própria conta: /auth/ligas é a lista oficial delas.
+// Nenhum endpoint de ligas encerradas é consultado — nem busca pública (nada alheio entra na mesa).
+// v27: NENHUM time vem fixo de fábrica — a lista começa vazia e quem alimenta ela é o login
+// (o time da conta entra sozinho) e o campo “Buscar time”. Para um time fixo, preencha aqui:
+const INITIAL_TEAMS = [];
 // Preencha quando tiver as fases reais por rodada (1 a 38).
 const KNOCKOUT_PHASES = {};
 let teams = INITIAL_TEAMS.map(t=>({...t, scores:{}, total:0, status:"Aguardando busca"}));
@@ -148,7 +218,11 @@ function setStatus(msg,type=""){const el=$("status");el.textContent=msg;el.class
 function endpoint(path){ return API_BASE + path; }
 async function api(path){
   const r=await fetch(endpoint(path),{headers:{"Accept":"application/json"}});
-  if(!r.ok){const e=new Error("HTTP "+r.status+" em "+path);e.status=r.status;throw e}
+  if(!r.ok){
+    let msg="HTTP "+r.status+" em "+path;
+    try{const d=await r.json();if(d&&d.error)msg=d.error}catch{}
+    const e=new Error(msg);e.status=r.status;throw e;
+  }
   return r.json();
 }
 function collectTeamCandidates(obj, out=[], seen=new Set()){
@@ -243,13 +317,25 @@ function mineId(){const m=teams.find(t=>t.mine);return m?m.id:null}
 /* ===== Ligas (exigem login) ===== */
 let leagues=[];
 let leagueState={status:"idle",message:""}; // idle | loading | ok | error
+let pcLeagues=[]; // competições de pontos corridos da conta
+let pcState={status:"idle",message:""}; // pontos corridos: idle | loading | ok | error
+// O Cartola tem dois tipos oficiais de liga: Mata-Mata e Clássica (nome oficial do que
+// às vezes se chama "pontos corridos"). Tudo que não é mata-mata é Liga Clássica.
 function leagueKind(l){
   if(l.mata_mata===true) return "knockout";
-  const txt=[l.tipo,l.modalidade,l.formato,l.nome].map(x=>String(x??"")).join(" ");
-  if(l.pontos_corridos===true||/pontos[\s_-]*corridos/i.test(txt)) return "points";
   return "classic";
 }
 function cartolaLeagueUrl(slug){return "https://cartola.globo.com/#!/liga/"+encodeURIComponent(slug)}
+// Amostra pequena do chaveamento para o botão "Dados brutos" (3 confrontos, o meu se existir).
+function chavesAmostra(chaves){
+  if(!chaves||typeof chaves!=="object") return null;
+  const out=[];
+  for(const k of Object.keys(chaves)){
+    const a=chaves[k]; if(!Array.isArray(a)) continue;
+    for(const c of a.slice(0,3)){ out.push({rodada:k,tipo_fase:c?.tipo_fase,mandante:c?.time_mandante_id,visitante:c?.time_visitante_id,vencedor:c?.vencedor_id??null}); if(out.length>=3) return out; }
+  }
+  return out.length?out:null;
+}
 async function loadOneLeague(item){
   const slug=item.slug;
   if(!slug) throw new Error("liga sem slug");
@@ -274,10 +360,16 @@ async function loadOneLeague(item){
     if(i>=0){me=r[i];pos=(p-1)*pageSize+i+1}
   }
   const rk=num(me?.ranking?.campeonato);
+  const meMM=first.time_usuario_mata_mata??null; // dados do meu time no mata-mata (id oficial)
+  const chaves=first.chaves_mata_mata??null;     // chaveamento real: confrontos + vencedor por rodada
   return {slug,info,kind:leagueKind(info),total,me,
-    pos:rk??pos,leader:rows[0]||null,notFound:!me,
-    raw:{liga:info,amostra_times:rows.slice(0,2),time_usuario:first.time_usuario??null,pagina:first.pagina??null}};
+    pos:rk??pos,leader:rows[0]||null,notFound:!me,meMM,chaves,
+    myIdMM:num(meMM?.time_id)??num(meMM?.time?.time_id)??null,
+    raw:{liga:info,amostra_times:rows.slice(0,2),time_usuario:first.time_usuario??null,pagina:first.pagina??null,
+      time_usuario_mata_mata:meMM,chaves_mata_mata_amostra:chavesAmostra(chaves)}};
 }
+// A lista vem de /auth/ligas (só a própria conta, só o que está em andamento). Itens embrulhados
+// em {liga:{…}} são aplainados; sem slug, o item é descartado.
 async function loadLeagues(){
   leagues=[];
   if(!loggedIn||!mineId()){leagueState={status:"idle",message:""};renderLeagues();return}
@@ -286,19 +378,23 @@ async function loadLeagues(){
     const data=await api("/auth/ligas");
     const list=Array.isArray(data)?data:(data.ligas||data.liga||[]);
     window.__ligasBrutas=data;
-    const outcomes=await mapLimit(list.slice(0,30),3,loadOneLeague);
+    const items=list.map(x=>(x&&x.liga&&typeof x.liga==="object"&&x.liga.slug)?{...x.liga,...x}:x)
+      .filter(x=>x&&typeof x.slug==="string");
+    const outcomes=await mapLimit(items,4,loadOneLeague);
     const failures=[];
     outcomes.forEach((o,i)=>{
+      const item=items[i];
       if(o.status==="fulfilled") leagues.push(o.value);
       else{
-        const item=list[i];
+        leagues.push({slug:item.slug,info:item,kind:leagueKind(item),total:num(item.total_times_liga)??num(item.quantidade_times),
+          pos:num(item.ranking_time?.posicao)??null,me:null,leader:null,notFound:true,error:o.reason?.message||"erro",raw:{liga:item}});
         failures.push((item.nome||item.slug)+": "+(o.reason?.message||"erro"));
-        leagues.push({slug:item.slug,info:item,kind:leagueKind(item),total:num(item.total_times_liga),me:null,pos:null,leader:null,notFound:true,error:o.reason?.message||"erro",raw:{liga:item}});
       }
     });
-    leagueState={status:failures.length?"error":"ok",message:failures.length?"Algumas ligas falharam: "+failures.slice(0,3).join(" | "):"",count:list.length,truncated:list.length>30};
+    leagues.forEach(koRecord); // observa ao vivo (só liga em andamento grava "vivo")
+    leagueState={status:failures.length?"error":"ok",message:failures.length?"Algumas ligas falharam: "+failures.slice(0,3).join(" | "):"",count:list.length};
   }catch(e){
-    if(e.status===401){loggedIn=false;renderAuth();leagueState={status:"error",message:"Sua sessão da Globo expirou (dura ~1 hora). Clique em “Entrar com Globo” e depois em “Conectar”."}}
+    if(e.status===401){loggedIn=false;renderAuth();leagueState={status:"error",message:"Sua sessão da Globo expirou (dura ~1 hora). Clique em “Entrar com Globo” e entre de novo."}}
     else leagueState={status:"error",message:"Não foi possível carregar as ligas: "+e.message};
   }
   renderLeagues();
@@ -316,6 +412,7 @@ function knockoutPhaseAt(l,round){
   return Number.isInteger(left)&&left>=2?phaseName(left):null;
 }
 function knockoutStatus(l){
+  if(l.info.finalizada===true) return ["Encerrada","end"]; // flag oficial da API
   const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada);
   if(!ini) return ["Aguardando sorteio","wait"];
   if(currentRound&&currentRound<ini) return ["Começa na rodada "+ini,"wait"];
@@ -323,19 +420,381 @@ function knockoutStatus(l){
   return ["Em andamento","run"];
 }
 
+/* ===== Mata-mata: status do meu time em cada fase (Classificado/Eliminado/Em disputa/Campeão) =====
+   A API informa time_eliminado por liga, mas não diz EM QUAL fase a queda aconteceu. Fontes usadas,
+   da mais confiável para a menos:
+   · CHAVEAMENTO REAL DA LIGA — /auth/liga/{slug} devolve "chaves_mata_mata": todos os confrontos
+     de cada rodada (tipo de fase, mandante, visitante, VENCEDOR). A rodada da queda é o confronto
+     em que o meu time aparece pela última vez sem ter vencido (vencedor diferente do meu time);
+     se o confronto ainda não tem vencedor e o time está eliminado, é a última rodada em que ele
+     aparece no chaveamento (quem vence avança, quem não aparece mais parou ali — estrutura do
+     mata-mata, não palpite).
+   · OBSERVAÇÃO AO VIVO (pin no navegador) — "vivo" = última rodada em que o time foi visto na
+     disputa; a queda acontece na fase da rodada vista vivo (ou numa posterior, nunca antes).
+   · NADA — mostra "fase não registrada" em vez de inventar. Palpite nunca é gravado.
+     (O antigo palpite por POSIÇÃO foi REMOVIDO: "campeonato" da classificação é a ordem por
+     PONTOS da liga, não a posição no mata-mata — era isso que apontava fase errada.) ===== */
+const KO_PIN_KEY="sf_mata_mata_pins_v3"; // v3: guarda só a observação "vivo"; fase da queda nunca é fixada por palpite
+try{localStorage.removeItem("sf_mata_mata_pins_v2")}catch{} // descarta pins antigos, que podiam apontar fase errada
+function koFlag(l){
+  const v=l.info?.time_eliminado??l.meMM?.time_eliminado??l.me?.time_eliminado??l.me?.eliminado;
+  if(v===true||v==="true") return true;
+  if(v===false||v==="false") return false;
+  return null;
+}
+function koLoadPins(){try{return JSON.parse(localStorage.getItem(KO_PIN_KEY)||"{}")||{}}catch{return{}}}
+function koSavePins(p){try{localStorage.setItem(KO_PIN_KEY,JSON.stringify(p))}catch{}}
+function koPinKey(l){const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada);return (l.slug||"?")+"|"+ini+"-"+(fim||"?")}
+// Volta da rodada informada até achar a fase mata-mata mais recente (ligas podem terminar sem fase exata na última rodada).
+function koSnapPhaseRound(l,round){
+  if(!Number.isFinite(round)) return null;
+  const ini=num(l.info.inicio_rodada)||round;
+  for(let r=Math.floor(round);r>=ini;r--) if(knockoutPhaseAt(l,r)) return r;
+  return null;
+}
+// Liga mata-mata já terminou? (flag da API ou o fim informado já passou)
+function isKoEncerrada(l){
+  if(l.info.finalizada===true) return true;
+  const fim=num(l.info.fim_rodada);
+  return fim!==null&&currentRound!==null&&currentRound>fim;
+}
+// ===== CHAVEAMENTO REAL (chaves_mata_mata do /auth/liga/{slug}) =====
+// Normaliza para {rodada: [confronto, …]}, aceitando objeto por rodada ou lista plana.
+function koChaves(l){
+  const c=l.chaves; if(!c||typeof c!=="object") return null;
+  if(Array.isArray(c)){
+    const out={}; let n=0;
+    for(const x of c){ const r=num(x?.rodada_id); if(x&&r!==null){(out[r]??=[]).push(x);n++} }
+    return n?out:null;
+  }
+  let n=0; for(const k of Object.keys(c)){ const a=c[k]; if(Array.isArray(a)&&a.length){n+=a.length; for(const x of a) if(x&&num(x.rodada_id)===null&&num(k)===null) return null; } }
+  return n?c:null;
+}
+// Meu time dentro do mata-mata: id oficial do "time_usuario_mata_mata" (ou do que já sabemos).
+function koMyId(l){
+  return num(l.myIdMM)??num(l.me?.time_id)??num(l.meMM?.time?.time_id)??mineId();
+}
+// Rodada da queda pelo CHAVEAMENTO REAL (estrutura do mata-mata, não palpite):
+// · confronto decidido com vencedor diferente do meu time = a queda (a última, se houver mais de uma);
+// · confronto ainda sem vencedor com o time ELIMINADO = última aparição no chaveamento
+//   (quem vence avança; se não há rodada seguinte com o time, parou ali);
+// · time vivo/campeão (venceu ou aguarda jogo) = null, pois não há queda a apontar.
+function koElimFromChaves(l){
+  const ch=koChaves(l); if(!ch) return null;
+  const id=koMyId(l); if(id===null) return null;
+  const mine=[];
+  for(const k of Object.keys(ch)){
+    const r=num(k); const arr=ch[k];
+    if(r===null||!Array.isArray(arr)) continue;
+    for(const c of arr){
+      if(!c||(num(c.time_mandante_id)!==id&&num(c.time_visitante_id)!==id)) continue;
+      mine.push({r,c,win:num(c.vencedor_id)});
+    }
+  }
+  if(!mine.length) return null;
+  mine.sort((a,b)=>a.r-b.r);
+  const perdidas=mine.filter(m=>m.win!==null&&m.win!==id);
+  if(perdidas.length) return perdidas[perdidas.length-1].r; // queda decidida no confronto que perdeu
+  const last=mine[mine.length-1];
+  if(last.win===null&&koFlag(l)===true) return last.r; // eliminado sem vencedor gravado: última aparição
+  return null; // venceu tudo / ainda vivo / flag desconhecida: não há queda a apontar
+}
+// Rodada da eliminação, da fonte mais confiável para a menos: 1º CHAVEAMENTO REAL, 2º observação
+// ao vivo ("vivo" = última rodada vista na disputa). Nenhuma fonte vale se apontar fase ANTERIOR
+// à rodada vista vivo (contraria a observação). Sem fonte: null — nada inventado.
+function koElimRound(l){
+  const cr=koElimFromChaves(l);
+  if(cr!==null&&knockoutPhaseAt(l,cr)) return cr;
+  const pin=koLoadPins()[koPinKey(l)]||{};
+  const vivo=num(pin.vivo),fim=num(l.info.fim_rodada);
+  if(vivo!==null&&koFlag(l)===true) return koSnapPhaseRound(l,Math.min(vivo,fim||vivo));
+  return null; // sem fonte confiável: fase não registrada (nada inventado)
+}
+// Registra a observação de hoje (chamado ao carregar as ligas). Só o estado "vivo" é gravado:
+// a fase da queda NUNCA é fixada por palpite — cada visita recalcula com os dados da API.
+function koRecord(l){
+  if(l.kind!=="knockout"||!currentRound) return;
+  const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada);
+  if(!ini||currentRound<ini||isKoEncerrada(l)) return;
+  if(koFlag(l)!==false) return;
+  const vivo=Math.min(currentRound,fim||currentRound); // visto vivo nesta rodada (nunca além do fim)
+  const pins=koLoadPins(),key=koPinKey(l),p=pins[key]||{};
+  if((num(p.vivo)||0)!==vivo){ pins[key]={...p,vivo}; koSavePins(pins); }
+}
+function tagHtml(t){return t?` <span class="ktag ${t.cls}">${t.txt}</span>`:""}
+// Sufixo de status para a fase disputada na rodada "round" (null = sem selo).
+function koSuffixFor(l,round){
+  const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada),end=fim||currentRound;
+  if(!ini||!currentRound||round<ini||(end&&round>end)) return null;
+  const flag=koFlag(l);
+  if(flag===true){
+    const elim=koElimRound(l);
+    if(round<elim) return {cls:"ok",txt:"Classificado"};
+    if(round===elim) return {cls:"out",txt:"Eliminado"};
+    return null; // fases depois da queda: o time não participou
+  }
+  if(flag===false){
+    // Liga encerrada: campeão na fase final (fim informado ou calculado pelo nº de times),
+    // "Classificado" nas demais. Liga em andamento: rodadas passadas = Classificado, atual = Em disputa.
+    const n=num(l.info.quantidade_times);
+    const fimCalc=ini&&n?ini+Math.round(Math.log2(n))-1:null;
+    const fimEfetivo=fim??fimCalc;
+    if(isKoEncerrada(l)||(fimEfetivo&&currentRound>fimEfetivo))
+      return round===fimEfetivo?{cls:"champ",txt:"Campeão"}:{cls:"ok",txt:"Classificado"};
+    if(round<currentRound) return {cls:"ok",txt:"Classificado"};
+    if(round===currentRound) return {cls:"run",txt:"Em disputa"};
+    return null;
+  }
+  return null; // sem informação de eliminação para esta liga
+}
+// Célula "Fase atual": nome da fase + selo; se a queda foi numa fase anterior, mostra "Eliminado na <fase>".
+function koCurrentCell(l){
+  const flag=koFlag(l);
+  if(flag===false&&isKoEncerrada(l)) return `<span class="ktag champ">Campeão 🏆</span>`;
+  const cur=currentRound?knockoutPhaseAt(l,currentRound):null;
+  if(flag===true){
+    const elim=koElimRound(l);
+    const elimFase=elim===null?null:knockoutPhaseAt(l,elim);
+    if(cur&&elimFase===cur) return escapeHtml(cur)+tagHtml({cls:"out",txt:"Eliminado"});
+    if(elimFase) return `<span class="ktag out">Eliminado na ${escapeHtml(elimFase)}</span>`;
+    return `<span class="ktag out">Eliminado</span> <span class="empty">(fase não registrada)</span>`;
+  }
+  if(!cur) return "—";
+  return escapeHtml(cur)+tagHtml(koSuffixFor(l,currentRound));
+}
+
 function leagueNote(kind){
-  if(!loggedIn) return "Entre com a Globo (botão no topo) para ver a classificação oficial das suas ligas.";
+  if(!loggedIn) return kind==="points"?"Entre com a Globo (botão no topo) para ver suas competições de pontos corridos.":"Entre com a Globo (botão no topo) para ver a classificação oficial das suas ligas.";
+  if(kind==="points") return pcNote();
   if(leagueState.status==="loading") return leagueState.message;
   if(leagueState.status==="error"&&!leagues.length) return leagueState.message;
   const mine=leagues.filter(l=>l.kind===kind);
   let msg="";
   if(!mine.length) msg=leagueState.status==="idle"?"":"Nenhuma liga deste tipo foi encontrada na sua conta.";
-  else if(kind==="knockout") msg="Fase calculada pelo início/fim da liga e pelo nº de times. A API não informa se o seu time foi eliminado: use o link da liga para ver os confrontos no Cartola.";
-  else if(kind==="points") msg="Posição e pontos vêm da API do Cartola. Se a liga usa vitórias/empates/derrotas, esses detalhes podem não estar disponíveis aqui (veja o link da liga).";
-  else msg="Classificação oficial de cada liga (posição e pontos no campeonato, turno, mês e rodada).";
-  if(leagueState.truncated) msg+=" Mostrando as 30 primeiras ligas.";
+  else if(kind==="knockout") msg="Fase calculada pelo início/fim da liga e pelo nº de times. “Classificado” = fase concluída com o time ainda na disputa; “Em disputa” = fase da rodada corrente; “Eliminado” = a fase em que a queda aconteceu. A fase da queda vem, na ordem: do CHAVEAMENTO REAL da liga que a API entrega (chaves_mata_mata: cada confronto com mandante, visitante e vencedor — a queda é o confronto em que o seu time perdeu) e da observação ao vivo (última rodada vista na disputa, registrada no navegador). Sem fonte confiável, aparece “fase não registrada” em vez de um palpite. Só entram na mesa as ligas em andamento da sua conta.";
+  else msg="“Liga Clássica” é o nome oficial do Cartola para as ligas de pontos corridos. Posição e pontos vêm da API (campeonato, turno, mês e rodada).";
   if(leagueState.status==="error"&&leagueState.message) msg+=" ⚠ "+leagueState.message;
   return msg;
+}
+
+/* ===== Ligas de Pontos Corridos (competições oficiais de confronto direto) =====
+   Endpoints oficiais do app (domínio api.cartola.globo.com, login OIDC):
+   · GET /auth/competicoes/pontoscorridos → lista das competições EM ANDAMENTO da conta
+     (as encerradas ficam em /finalizadas e NÃO são consultadas — nada de encerradas na mesa);
+   · GET /auth/competicoes/pontoscorridos/slug/{slug} → detalhe com:
+       ranking[{posicao,variacao,time_id,slug,pontos,vitorias,empates,derrotas,pontos_cartola}]
+       confrontos{"<rodada>":[{mandante:{id,pontuacao_rodada,…},visitante:{…}}]}
+       participantes{"<id>":{id,time_id,nome,nome_cartola,url_escudo_svg,…}}
+   HISTÓRICO DE POSIÇÕES (até 38 rodadas): reconstruído dos RESULTADOS dos confrontos
+   (3 pts vitória, 1 empate, 0 derrota — vence quem somar mais pontuacao_rodada) e SÓ É
+   EXIBIDO se reproduzir EXATAMENTE a classificação oficial do campo "ranking" — fonte
+   independente da mesma API. Não conferiu? Fica "—" em vez de número inventado. ===== */
+function pcLeagueUrl(slug){return "https://cartola.globo.com/#!/competicoes/pontoscorridos/"+encodeURIComponent(slug)}
+function pcListFrom(data){
+  if(Array.isArray(data)) return data;
+  if(data&&Array.isArray(data.competicoes)) return data.competicoes;
+  if(data&&Array.isArray(data.ligas)) return data.ligas;
+  return [];
+}
+// Normaliza confrontos para {rodada:[…]}: aceita objeto por rodada (formato real) ou lista plana.
+function pcNormConfrontos(c){
+  if(!c||typeof c!=="object") return null;
+  const out={};let n=0;
+  if(Array.isArray(c)){
+    for(const x of c){const r=num(x?.rodada_id);if(r!==null&&x){(out[r]??=[]).push(x);n++}}
+  }else{
+    for(const k of Object.keys(c)){const r=num(k);const a=c[k];if(r===null||!Array.isArray(a))return null;for(const x of a){if(x){(out[r]??=[]).push(x);n++}}}
+  }
+  return n?out:null;
+}
+// participante.id → time_id (o confronto referencia o participante; a classificação, o time).
+function pcIdToTime(participantes,ranking){
+  const rankIds=new Set(ranking.map(r=>num(r?.time_id)).filter(x=>x!==null));
+  const map={};
+  if(participantes&&typeof participantes==="object"){
+    for(const [k,p] of Object.entries(participantes)){
+      if(!p||typeof p!=="object") continue;
+      const id=num(p.id)??num(k),tid=num(p.time_id);
+      if(id!==null&&tid!==null) map[id]=tid;
+    }
+  }
+  return raw=>{const id=num(raw);if(id===null)return null;if(map[id]!==undefined)return map[id];return rankIds.has(id)?id:null};
+}
+function pcNameOf(l,timeId){
+  const tid=num(timeId);
+  if(l.participantes&&typeof l.participantes==="object"){
+    const p=Object.values(l.participantes).find(p=>p&&num(p.time_id)===tid);
+    if(p&&(p.nome||p.nome_time)) return p.nome||p.nome_time;
+  }
+  const r=(l.ranking||[]).find(r=>num(r?.time_id)===tid);
+  return r?.nome||r?.slug||"";
+}
+// Ordena a tabela: pontos de duelo, vitórias, pontuação Cartola (critérios oficiais do formato).
+function pcOrder(rows){
+  const arr=[...rows.entries()].map(([id,s])=>({id,...s}));
+  arr.sort((x,y)=>y.pontos-x.pontos||y.v-x.v||y.cartola-x.cartola||x.id-y.id);
+  const m=new Map();arr.forEach((x,i)=>m.set(x.id,i+1));
+  return m;
+}
+// A tabela reconstruída confere com a classificação oficial da API? (pontos, V/E/D, Cartola e posição)
+function pcMatches(order,rows,ranking){
+  const chk=(a,b)=>a===undefined||b===undefined||Number(a)===Number(b);
+  for(const r of ranking){
+    const id=num(r?.time_id);const s=id!==null?rows.get(id):null;
+    if(!s) return false;
+    if(!chk(s.pontos,r.pontos)||!chk(s.v,r.vitorias)||!chk(s.e,r.empates)||!chk(s.d,r.derrotas)) return false;
+    const pc=num(r.pontos_cartola);
+    if(pc!==null&&Math.abs(s.cartola-pc)>0.05) return false;
+    if(num(r.posicao)!==null&&order.get(id)!==num(r.posicao)) return false;
+  }
+  return true;
+}
+// Reconstrói a classificação rodada a rodada a partir dos confrontos e valida contra o ranking oficial.
+// Devolve {pos:{rodada:Map(time_id→posição)}, lastShown, lastPlayed} ou null (sem dado confiável).
+function pcHistory(l){
+  const cf=pcNormConfrontos(l.confrontos);if(!cf) return null;
+  const ranking=Array.isArray(l.ranking)?l.ranking:[];
+  if(!ranking.length) return null;
+  const idToTime=pcIdToTime(l.participantes,ranking);
+  const ids=ranking.map(r=>num(r?.time_id)).filter(x=>x!==null);
+  if(!ids.length) return null;
+  const rounds=Object.keys(cf).map(Number).sort((a,b)=>a-b);
+  let lastPlayed=0;
+  for(const r of rounds) if((cf[r]||[]).some(c=>num(c?.mandante?.pontuacao_rodada)!==null&&num(c?.visitante?.pontuacao_rodada)!==null)) lastPlayed=Math.max(lastPlayed,r);
+  if(!lastPlayed) return null;
+  const rows=new Map(ids.map(id=>[id,{pontos:0,v:0,e:0,d:0,cartola:0}]));
+  const pos={};let validUntil=null;
+  for(let r=1;r<=lastPlayed;r++){
+    for(const c of cf[r]||[]){
+      const a=num(c?.mandante?.pontuacao_rodada),b=num(c?.visitante?.pontuacao_rodada);
+      if(a===null||b===null) continue; // rodada não disputada/sem resultado
+      const ma=idToTime(c?.mandante?.id),mb=idToTime(c?.visitante?.id);
+      if(ma===null||mb===null||!rows.has(ma)||!rows.has(mb)) continue;
+      const A=rows.get(ma),B=rows.get(mb);
+      A.cartola+=a;B.cartola+=b;
+      if(a>b){A.pontos+=3;A.v++;B.d++}
+      else if(a<b){B.pontos+=3;B.v++;A.d++}
+      else{A.pontos++;B.pontos++;A.e++;B.e++}
+    }
+    pos[r]=pcOrder(rows);
+    if(pcMatches(pos[r],rows,ranking)) validUntil=r;
+  }
+  if(validUntil===null) return null; // não reproduz a classificação oficial: nada é exibido
+  return {pos,lastShown:validUntil,lastPlayed};
+}
+function pcStatus(l){
+  if(l.info.finalizada===true) return ["Encerrada","end"];
+  const ini=num(l.info.rodada_inicial);
+  if(ini!==null&&currentRound&&currentRound<ini) return ["Começa na rodada "+ini,"wait"];
+  return ["Em andamento","run"];
+}
+function pcRodadasTxt(l){
+  const ini=num(l.info.rodada_inicial),fim=num(l.info.rodada_final);
+  if(ini!==null&&fim!==null) return fim!==ini?ini+"–"+fim:String(ini);
+  const n=num(l.info.quantidade_times);
+  if(n!==null&&ini!==null){const last=ini+(n-1)*(l.info.tem_returno===true?2:1)-1;return last!==ini?ini+"–"+last:String(ini)}
+  return "—";
+}
+function pcAmostraConfrontos(c){
+  const cf=pcNormConfrontos(c);if(!cf) return null;
+  const out=[];
+  for(const r of Object.keys(cf).map(Number).sort((a,b)=>a-b).slice(0,2)){
+    const x=cf[r][0];
+    out.push({rodada:r,mandante:{id:x?.mandante?.id,pontuacao_rodada:x?.mandante?.pontuacao_rodada},visitante:{id:x?.visitante?.id,pontuacao_rodada:x?.visitante?.pontuacao_rodada}});
+    if(out.length>=2) break;
+  }
+  return out.length?out:null;
+}
+async function loadOnePC(item){
+  const slug=item.slug;
+  if(!slug||typeof slug!=="string") throw new Error("competição sem slug");
+  const d=await api("/auth/competicoes/pontoscorridos/slug/"+encodeURIComponent(slug));
+  const info={...item,...(d&&typeof d==="object"?d:{})};
+  const l={slug,id:num(info.id)??num(item.id),info,
+    ranking:Array.isArray(info.ranking)?info.ranking:[],
+    confrontos:info.confrontos??null,
+    participantes:(info.participantes&&typeof info.participantes==="object")?info.participantes:{}};
+  l.hist=pcHistory(l);
+  return l;
+}
+// Carrega as competições de pontos corridos EM ANDAMENTO da conta. Sem login, não consulta.
+async function loadPontosCorridos(){
+  pcLeagues=[];
+  if(!loggedIn||!mineId()){pcState={status:"idle",message:""};renderLeagues();return}
+  pcState={status:"loading",message:"Carregando ligas de pontos corridos…"};renderLeagues();
+  try{
+    const data=await api("/auth/competicoes/pontoscorridos");
+    window.__pcBrutas=data;
+    const items=pcListFrom(data)
+      .filter(x=>x&&typeof x==="object"&&typeof x.slug==="string")
+      .filter(x=>x.finalizada!==true); // defesa extra: a lista oficial já vem só com em andamento
+    const outcomes=await mapLimit(items,4,loadOnePC);
+    const failures=[];
+    outcomes.forEach((o,i)=>{
+      if(o.status==="fulfilled") pcLeagues.push(o.value);
+      else failures.push((items[i].nome||items[i].slug)+": "+(o.reason?.message||"erro"));
+    });
+    pcState={status:failures.length?"error":"ok",message:failures.length?"Algumas competições falharam: "+failures.slice(0,3).join(" | "):"",count:items.length};
+  }catch(e){
+    window.__pcBrutas=null;
+    pcState={status:"error",message:e.status===401?"Sua sessão da Globo expirou (dura ~1 hora). Entre novamente para ver as competições de pontos corridos.":"Não foi possível carregar as competições de pontos corridos: "+e.message};
+  }
+  renderLeagues();
+}
+function pcNote(){
+  if(pcState.status==="loading") return pcState.message;
+  if(!pcLeagues.length){
+    if(pcState.status==="error") return pcState.message;
+    if(pcState.status==="idle") return "";
+    return "Nenhuma competição de pontos corridos foi encontrada na sua conta.";
+  }
+  let msg="“Liga de Pontos Corridos” é a competição oficial de confronto direto do Cartola (ex.: 20 times em até 38 rodadas): vitória no duelo = 3 pts, empate = 1. Posição, Pontos, V/E/D e Cartola vêm da classificação oficial da API; o histórico de posição por rodada é reconstruído dos RESULTADOS dos confrontos e só é exibido depois de reproduzir exatamente essa classificação oficial (fonte independente) — sem conferência, fica “—” em vez de número inventado. Só entram as competições em andamento da sua conta.";
+  if(pcState.status==="error"&&pcState.message) msg+=" ⚠ "+pcState.message;
+  return msg;
+}
+function buildPointsTable(){
+  const ord={run:0,wait:1,end:2};
+  const list=pcLeagues.slice().sort((a,b)=>(ord[pcStatus(a)[1]]??3)-(ord[pcStatus(b)[1]]??3));
+  const rounds=roundColumns();
+  let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Rodadas</th><th>Situação</th><th>Posição</th><th>Pontos</th><th>V</th><th>E</th><th>D</th><th>Cartola</th><th>Líder</th>"+rounds.map(r=>`<th>Rdd ${r} - Pos.</th>`).join("")+"</tr></thead>";
+  if(!list.length){
+    const msg=!loggedIn?"Faça login com a Globo para carregar suas competições de pontos corridos.":pcState.status==="loading"?"Carregando…":pcState.status==="error"?(pcState.message||"Sem competições de pontos corridos para exibir."):"Nenhuma competição de pontos corridos foi encontrada na sua conta.";
+    html+=emptyRow(12+rounds.length,msg);
+  }else{
+    html+="<tbody>";
+    list.forEach((l,i)=>{
+      const [st,cls]=pcStatus(l);
+      const me=(l.ranking||[]).find(r=>num(r?.time_id)===mineId())||null;
+      const lead=(l.ranking||[]).slice().sort((a,b)=>num(a?.posicao)-num(b?.posicao)||num(a?.time_id)-num(b?.time_id))[0]||null;
+      const total=l.ranking.length||num(l.info.quantidade_times)||null;
+      const pos=me&&num(me.posicao)!==null?`<span class="${positionClass(num(me.posicao))} rank">${ordinal(num(me.posicao))}</span>${total?`<span class="sub">de ${total}</span>`:""}`:`<span class="empty">—</span>`;
+      const hist=l.hist;
+      const histCell=r=>{
+        const ini=num(l.info.rodada_inicial)??1;
+        if(!hist||r<ini||r>hist.lastShown) return `<td class="phase empty">—</td>`;
+        const p=hist.pos[r]?hist.pos[r].get(mineId()):undefined;
+        if(p===undefined||p===null) return `<td class="phase empty">—</td>`;
+        return `<td class="phase"><span class="${positionClass(p)} rank">${ordinal(p)}</span></td>`;
+      };
+      html+=`<tr class="me-row"><td class="rank">${i+1}</td>
+        <td class="team-cell"><a href="${pcLeagueUrl(l.slug)}" target="_blank" rel="noopener">🟣 ${escapeHtml(l.info.nome||l.slug)}</a>${l.info.descricao?`<span class="sub">${escapeHtml(String(l.info.descricao).slice(0,60))}</span>`:""}</td>
+        <td>${num(l.info.quantidade_times)??l.ranking.length??"—"}</td>
+        <td>${pcRodadasTxt(l)}</td>
+        <td><span class="pill ${cls}">${escapeHtml(st)}</span></td>
+        <td>${pos}</td>
+        <td class="points-val">${me&&num(me.pontos)!==null?num(me.pontos):"—"}</td>
+        <td>${me&&num(me.vitorias)!==null?num(me.vitorias):"—"}</td>
+        <td>${me&&num(me.empates)!==null?num(me.empates):"—"}</td>
+        <td>${me&&num(me.derrotas)!==null?num(me.derrotas):"—"}</td>
+        <td class="points-val">${me&&num(me.pontos_cartola)!==null?formatPoints(num(me.pontos_cartola)):"—"}</td>
+        <td class="team-cell">${lead?escapeHtml(pcNameOf(l,num(lead.time_id))||"1º colocado")+(num(lead.pontos)!==null?`<span class="sub">${num(lead.pontos)} pts</span>`:""):"—"}</td>
+        ${rounds.map(histCell).join("")}
+      </tr>`;
+    });
+    html+="</tbody>";
+  }
+  $("pointsTable").innerHTML=html;
+  $("pointsNote").textContent=leagueNote("points");
 }
 function emptyRow(cols,text){return `<tbody><tr><td colspan="${cols}" class="empty" style="padding:22px">${escapeHtml(text)}</td></tr></tbody>`}
 
@@ -369,7 +828,10 @@ function buildLeagueTable(kind,target,noteId){
   $(noteId).textContent=leagueNote(kind);
 }
 function buildKnockoutTable(){
-  const list=leagues.filter(l=>l.kind==="knockout");
+  // Em andamento primeiro; depois as que terminaram (se a conta ainda as listar) e as futuras.
+  const statusOrder={run:0,end:1,wait:2};
+  const list=leagues.filter(l=>l.kind==="knockout").sort((a,b)=>
+    (statusOrder[knockoutStatus(a)[1]]??3)-(statusOrder[knockoutStatus(b)[1]]??3));
   const rounds=roundColumns();
   let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Rodadas</th><th>Situação</th><th>Fase atual</th>"+rounds.map(r=>`<th>Rdd ${r} - Fase</th>`).join("")+"</tr></thead>";
   if(!list.length){
@@ -379,14 +841,13 @@ function buildKnockoutTable(){
     list.forEach((l,i)=>{
       const [st,cls]=knockoutStatus(l);
       const ini=num(l.info.inicio_rodada),fim=num(l.info.fim_rodada);
-      const cur=currentRound?knockoutPhaseAt(l,currentRound):null;
       html+=`<tr class="me-row"><td class="rank">${i+1}</td>
         <td class="team-cell"><a href="${cartolaLeagueUrl(l.slug)}" target="_blank" rel="noopener">⚔️ ${escapeHtml(l.info.nome||l.slug)}</a></td>
         <td>${num(l.info.quantidade_times)??l.total??"—"}</td>
         <td>${ini?(fim&&fim!==ini?ini+"–"+fim:ini):"—"}</td>
         <td><span class="pill ${cls}">${escapeHtml(st)}</span></td>
-        <td class="phase">${cur?escapeHtml(cur):"—"}</td>`;
-      rounds.forEach(r=>{const ph=knockoutPhaseAt(l,r);html+=`<td class="phase ${ph?"":"empty"}">${ph?escapeHtml(ph):"—"}</td>`});
+        <td class="phase">${koCurrentCell(l)}</td>`;
+      rounds.forEach(r=>{const ph=knockoutPhaseAt(l,r);html+=`<td class="phase ${ph?"":"empty"}">${ph?escapeHtml(ph)+tagHtml(koSuffixFor(l,r)):"—"}</td>`});
       html+="</tr>";
     });
     html+="</tbody>";
@@ -396,24 +857,34 @@ function buildKnockoutTable(){
 }
 function buildScoresTable(){
   const rounds=roundColumns();
-  let html="<thead><tr><th>#</th><th>Time</th>"+rounds.map(r=>`<th>Rdd ${r}</th>`).join("")+"<th>Pontuação</th></tr></thead><tbody>";
-  teams.forEach((t,i)=>{
-    html+=`<tr${t.mine?' class="me-row"':""}><td class="rank">${i+1}</td><td class="team-cell">⚽ ${escapeHtml(t.name)}</td>`;
-    rounds.forEach(r=>{const v=t.scores[r];html+=v===undefined?`<td class="empty">—</td>`:`<td>${formatPoints(v)}</td>`});
-    html+=`<td class="points-val">${formatPoints(t.total)}</td></tr>`;
-  });
-  $("scoresTable").innerHTML=html+"</tbody>";
+  let html="<thead><tr><th>#</th><th>Time</th>"+rounds.map(r=>`<th>Rdd ${r}</th>`).join("")+"<th>Pontuação</th></tr></thead>";
+  if(!teams.length){ // v27: orientação em vez de tabela em branco
+    html+=emptyRow(3+rounds.length,"Nenhum time monitorado. Entre com a Globo (botão no topo) — o time da sua conta entra sozinho — ou busque um time pelo nome acima.");
+  }else{
+    html+="<tbody>";
+    teams.forEach((t,i)=>{
+      html+=`<tr${t.mine?' class="me-row"':""}><td class="rank">${i+1}</td><td class="team-cell">⚽ ${escapeHtml(t.name)}</td>`;
+      rounds.forEach(r=>{const v=t.scores[r];html+=v===undefined?`<td class="empty">—</td>`:`<td>${formatPoints(v)}</td>`});
+      html+=`<td class="points-val">${formatPoints(t.total)}</td></tr>`;
+    });
+    html+="</tbody>";
+  }
+  $("scoresTable").innerHTML=html;
 }
 function renderLeagues(){
   buildLeagueTable("classic","classicTable","classicNote");
   buildKnockoutTable();
-  buildLeagueTable("points","pointsTable","pointsNote");
+  buildPointsTable();
   $("diagBtn").classList.toggle("hidden",!loggedIn);
 }
 function formatPoints(value){return new Intl.NumberFormat("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(value);}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function renderTeams(){
   $("metricTeams").textContent=teams.length;
+  if(!teams.length){ // v27: lista vazia orienta em vez de ficar em branco
+    $("teamList").innerHTML=`<div class="team-empty">Nenhum time monitorado ainda.<br><b>Entre com a Globo</b> (o time da sua conta entra sozinho)<br>ou use “Buscar time” acima.</div>`;
+    return;
+  }
   $("teamList").innerHTML=teams.map((t,i)=>`<div class="team"><div class="num">${i+1}</div><div style="min-width:0;flex:1"><div class="name">${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</div><div class="state">${escapeHtml(t.status||"Aguardando")}${t.error?" — "+escapeHtml(t.error):""}</div></div><span>›</span></div>`).join("");
 }
 function render(){
@@ -439,8 +910,11 @@ async function refreshAll(){
     });
     render();
     await loadLeagues();
+    await loadPontosCorridos();
     const ok=outcomes.filter(x=>x.status==="fulfilled").length;
-    if(ok===teams.length){
+    if(!teams.length){ // v27: sem times, a rodada ainda é mostrada + orientação
+      setStatus(`Rodada ${currentRound} carregada. Nenhum time monitorado ainda — entre com a Globo (o time da sua conta entra sozinho) ou busque um time pelo nome acima.`,"ok");
+    }else if(ok===teams.length){
       const partial=teams.filter(t=>t.error).length;
       setStatus(`Conexão concluída: ${ok}/${teams.length} time(s). ${partial?partial+" com histórico parcial.":"Histórico completo até a rodada "+currentRound+"."} Pontuação acumulada formatada em padrão brasileiro.`, "ok");
     }else{
@@ -467,7 +941,11 @@ document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>
 }));
 $("refreshBtn").addEventListener("click",refreshAll);
 $("diagBtn").addEventListener("click",()=>{
-  const out={ligas_do_usuario:window.__ligasBrutas??null,detalhe_por_liga:leagues.map(l=>({slug:l.slug,classificada_como:l.kind,erro:l.error||null,...l.raw}))};
+  const out={ligas_do_usuario:window.__ligasBrutas??null,competicoes_pontos_corridos:window.__pcBrutas??null,
+    detalhe_por_liga:leagues.map(l=>({slug:l.slug,classificada_como:l.kind,erro:l.error||null,...l.raw})),
+    detalhe_pontos_corridos:pcLeagues.map(l=>({slug:l.slug,nome:l.info?.nome||null,
+      ranking_amostra:l.ranking.slice(0,3),confrontos_amostra:pcAmostraConfrontos(l.confrontos),
+      historico_validado_ate:l.hist?l.hist.lastShown:null}))};
   $("diagText").value=JSON.stringify(out,null,2);$("diagDialog").showModal();
 });
 $("diagClose").addEventListener("click",()=>$("diagDialog").close());
@@ -478,16 +956,18 @@ $("roundRange").addEventListener("change",render);
 
 /* ===== Login Globo ===== */
 let loggedIn=false;
+// v26: liga/desliga o destaque piscante do link “modo manual” (aviso de bloqueio do Google/Facebook).
+function destacarModoManual(ligar){const el=document.getElementById("manualLink");if(el)el.classList.toggle("destaque",!!ligar)}
 function renderAuth(){
   const mine=teams.find(t=>t.mine);
   $("authBox").innerHTML=loggedIn
     ? `<span>Conectado${mine?` como <b>${escapeHtml(mine.name)}</b>`:""}</span><button id="logoutBtn">Sair</button>`
-    : `<button class="primary" id="loginBtn">Entrar com Globo</button>`;
+    : `<button class="primary" id="loginBtn">Entrar com Globo</button><a href="#" id="manualLink" style="color:#ffd45a;font-size:12px;font-weight:700;text-decoration:underline" title="Modo manual: janela comum da Globo (Google/Facebook funcionam nela) + copiar o endereço">modo manual</a>`;
 }
 async function authPost(url,body){
   const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
   const data=await r.json().catch(()=>({}));
-  if(!r.ok) throw new Error(data.error||"Erro "+r.status);
+  if(!r.ok){const e=new Error(data.error||"Erro "+r.status);e.data=data;throw e}
   return data;
 }
 // Busca o time da conta logada e o inclui (ou marca) na lista monitorada.
@@ -503,11 +983,12 @@ async function syncMyTeam(){
   else teams.unshift({name,id,slug:info.slug||null,league:"Clássica #"+String(teams.length+1).padStart(2,"0"),scores:{},total:0,status:"Aguardando busca",mine:true,fromLogin:true});
 }
 function dropLoginState(){
-  loggedIn=false;leagues=[];
+  loggedIn=false;leagues=[];pcLeagues=[];pcState={status:"idle",message:""};window.__pcBrutas=null;
   teams=teams.filter(t=>!t.fromLogin);
   teams.forEach(t=>{delete t.mine});
 }
 async function finishLogin(){
+  destacarModoManual(false); // login concluído: para de piscar
   loggedIn=true;
   try{await syncMyTeam()}catch(e){
     if(e.status===401){dropLoginState();renderAuth();throw new Error("Sessão não aceita pela Globo. Tente entrar novamente.")}
@@ -516,48 +997,241 @@ async function finishLogin(){
   renderAuth();render();
   await refreshAll();
 }
-function extCall(type,timeout=2000){
-  return new Promise(resolve=>{
-    const want=type==="SF_PING"?"SF_PONG":"SF_TOKEN";
-    const h=e=>{if(e.source!==window||e.origin!==location.origin)return;const d=e.data||{};if(d.type===want){clearTimeout(t);window.removeEventListener("message",h);resolve(d)}};
-    const t=setTimeout(()=>{window.removeEventListener("message",h);resolve(null)},timeout);
-    window.addEventListener("message",h);
-    window.postMessage({type},location.origin);
-  });
+// — Janela oficial da Globo (OIDC, sem extensão) —
+// O servidor cria o fluxo (PKCE) e a janela abre a MESMA página de login que o site do
+// Cartola usa; a senha fica só na Globo. No fim, o endereço final traz ?code=…&state=…
+// e o servidor troca o código pelo token com o verifier que só ele tem.
+// POR QUE NÃO EXISTE REDIRECIONAMENTO AUTOMÁTICO: a Globo só aceita redirecionar para o endereço dela (localhost é recusado),
+// a página de retorno não pode ser embutida em iframe (X-Frame-Options: SAMEORIGIN) e a
+// mensagem interna de retorno dela vai para window.parent + targetOrigin cartola.globo.com,
+// ou seja: só para o próprio site da Globo — nunca para o painel.
+// Sobra UMA ponta legítima: a ÁREA DE TRANSFERÊNCIA — com a permissão de leitura concedida
+// 1 vez, o painel detecta o endereço copiado sozinho quando você volta, conclui o login,
+// FECHA a janela da Globo e carrega as ligas. (Ou use e-mail/senha: sem janela nenhuma.)
+let oidcWin=null;           // janela da Globo aberta pelo painel
+let oidcFlowId=null;        // fluxo atual no servidor (state do OIDC)
+let oidcPoll=null;          // vigia a janela + tentativa de captura automática
+let oidcFocusFn=null;       // listener de foco (captura imediata ao voltar pro painel)
+let oidcVisFn=null;         // listener de visibilidade (captura ao reexibir o painel)
+let oidcTrocando=false;     // troca do código em andamento (evita disparo duplo)
+let oidcUltimaLeitura=null; // último conteúdo da área de transferência já avaliado
+let oidcClipMorto=false;    // leitura negada: para de tentar até o próximo foco
+let oidcClipAvisou=false;   // o aviso de permissão negada já foi mostrado 1 vez
+function oidcErro(msg){const el=$("oidcError");el.textContent=msg||"";el.classList.toggle("show",!!msg);setStatus(msg||"",msg?"error":"")} // diálogo manual + barra de status
+function oidcPararPoll(){
+  if(oidcPoll){clearInterval(oidcPoll);oidcPoll=null}
+  if(oidcFocusFn){window.removeEventListener("focus",oidcFocusFn);oidcFocusFn=null}
+  if(oidcVisFn){document.removeEventListener("visibilitychange",oidcVisFn);oidcVisFn=null}
 }
-async function checkExtension(){
-  const el=$("extStatus");el.textContent="Verificando extensão…";
-  const ok=!!(await extCall("SF_PING",800));
-  el.innerHTML=ok?"✅ Extensão detectada.":"⚠️ Extensão não detectada. Instale conforme abaixo.";
-  $("extHelp").open=!ok;
-  return ok;
+// Captura automática: com o painel em foco (o usuário voltou da janela da Globo), lê a área
+// de transferência; se contém um endereço com ?code=…&state=… deste fluxo, preenche o campo
+// e conclui sozinho. Conteúdo repetido não é reprocessado. Sem permissão, para de martelar o
+// navegador (a cada foco tenta de novo) e avisa 1 vez como religar — o plano B (📋 Colar e
+// concluir / Ctrl+V) continua valendo.
+async function oidcCapturarClip(){
+  if(oidcTrocando||!oidcFlowId||oidcClipMorto||!document.hasFocus()||document.hidden) return;
+  let txt="";
+  try{ txt=(await navigator.clipboard.readText()||"").trim() }
+  catch(e){
+    oidcClipMorto=true;
+    if(!oidcClipAvisou){oidcClipAvisou=true;oidcErro("Leitura automática da área de transferência bloqueada. Para religar: ícone à esquerda do endereço deste painel → Permissões → Área de transferência → Permitir (e recarregue com F5). Ou use “📋 Colar e concluir”/cole no campo abaixo.")}
+    return;
+  }
+  if(!oidcFlowId||oidcTrocando) return;
+  if(!txt||txt===oidcUltimaLeitura||!/[?&#]code=/.test(txt)) return;
+  oidcUltimaLeitura=txt;
+  const st=(txt.match(/[?&#]state=([\w\-.~+%]+)/)||[])[1];
+  if(st&&oidcFlowId&&decodeURIComponent(st)!==oidcFlowId){oidcErro("O endereço na área de transferência é de outra tentativa. Clique em “Abrir a janela de novo” e copie o NOVO.");return}
+  $("oidcPaste").value=txt;
+  setStatus("Endereço detectado sozinho — concluindo o login, fechando a janela e carregando as ligas…");
+  concluirOidc();
 }
-async function connectViaExtension(){
-  const btn=$("extConnect"),err=$("loginError");
-  err.classList.remove("show");btn.disabled=true;btn.textContent="Conectando… (até 15 s)";
+// Vigia a janela da Globo: orienta na barra de status, percebe fechamento sem copiar e,
+// a cada 500ms (e no foco/na reexibição do painel), tenta a captura automática.
+function oidcIniciarPoll(){
+  oidcPararPoll();
+  let naGlobo=false;
+  oidcFocusFn=()=>{oidcClipMorto=false;oidcCapturarClip()};
+  window.addEventListener("focus",oidcFocusFn);
+  oidcVisFn=()=>{if(!document.hidden)oidcCapturarClip()};
+  document.addEventListener("visibilitychange",oidcVisFn);
+  oidcPoll=setInterval(()=>{
+    if(!oidcWin||oidcWin.closed){
+      oidcPararPoll();
+      if(!$("oidcPaste").value.trim()) oidcErro("A janela foi fechada sem copiar o endereço. Clique em “Abrir a janela de novo”: na página em branco use Ctrl+L e Ctrl+C e volte ao painel — eu concluo, fecho a janela e carrego as ligas sozinho.");
+      return;
+    }
+    let legivel=true; try{void oidcWin.location.href}catch(e){legivel=false}
+    if(!legivel&&!naGlobo){naGlobo=true;setStatus("Janela na Globo aberta. Ao final ela fica EM BRANCO (é normal): Ctrl+L, Ctrl+C e clique de volta no painel — concluo, fecho a janela e carrego as ligas.");}
+    oidcCapturarClip();
+  },500);
+}
+// — Modo AUTOMÁTICO (padrão): o servidor abre um Chrome/Edge controlado, intercepta o retorno
+// (login-callback.html?code=…&state=…) e troca o código pelo token sozinho. Nada de copiar/colar.
+// Sem Chrome/Edge (ou se o servidor for antigo), cai no modo manual abaixo (abrirJanelaGlobo).
+let autoId=null; // fluxo automático em andamento
+function cancelarAuto(){
+  if(!autoId)return;
+  const id=autoId;autoId=null;
+  authPost("/auth/oidc/auto/cancel",{id}).catch(()=>{});
+}
+async function entrarPelaGlobo(){
+  oidcErro("");destacarModoManual(false);
+  if(autoId)cancelarAuto(); // clicar de novo reinicia: fecha o navegador anterior e abre outro
+  const btn=$("loginBtn");if(btn){btn.disabled=true;btn.textContent="Abrindo o navegador…"}
+  setStatus("Abrindo o navegador na página da Globo — entre nela com E-MAIL e SENHA da Conta Globo. Prefiro que evite o botão “Continuar com Google”: se ele for recusado com o aviso “Este navegador ou app pode não ser seguro”, não é erro do painel — entre com e-mail e senha nessa mesma janela, ou use o link “modo manual”. Quando a Globo concluir, eu fecho o navegador e carrego as ligas sozinho.");
+  let data;
+  try{data=await authPost("/auth/oidc/auto",{})}
+  catch{if(btn){btn.disabled=false;btn.textContent="Entrar com Globo"}return abrirJanelaGlobo()} // servidor antigo/sem rota: manual
+  if(btn){btn.disabled=false;btn.textContent="Entrar com Globo"}
+  if(data.unavailable){ // sem Chrome/Edge controlável: caminho manual
+    setStatus("Não consegui abrir o navegador automático ("+(data.reason||"motivo desconhecido")+"). Abrindo o modo manual — janela comum da Globo.");
+    return abrirJanelaGlobo();
+  }
+  const meuId=data.flowId;autoId=meuId;
+  $("oidcSteps").hidden=true;
+  let falhas=0;
   try{
-    if(!(await extCall("SF_PING",800))) throw new Error("Extensão não detectada. Instale pela pasta extensao_chrome e recarregue a página.");
-    const r=await extCall("SF_GET_TOKEN",20000);
-    if(!r) throw new Error("A extensão não respondeu. Recarregue a página e tente de novo.");
-    if(r.error&&!r.bearer&&!r.glbid) throw new Error(r.error);
-    await authPost("/auth/login",{bearer:r.bearer,glbid:r.glbid});
-    await finishLogin();dlg.close();
-  }catch(ex){err.textContent=ex.message;err.classList.add("show")}
-  finally{btn.disabled=false;btn.textContent="Conectar"}
+    while(autoId===meuId){
+      let d;
+      try{
+        const r=await fetch("/auth/oidc/auto/status?id="+encodeURIComponent(meuId),{cache:"no-store"});
+        d=await r.json().catch(()=>({}));falhas=0;
+      }catch{
+        if(++falhas>5)throw new Error("Perdi a conexão com o servidor local. Ele continua rodando (node server.js)?");
+        await new Promise(r=>setTimeout(r,1500));continue;
+      }
+      if(autoId!==meuId)return; // cancelado pelo usuário
+      if(d.loggedIn){
+        setStatus("Login concluído! Carregando as ligas…","ok");
+        try{window.focus()}catch{}
+        await finishLogin();
+        autoId=null;
+        return;
+      }
+      if(d.state==="error")throw new Error(d.error||"O login automático falhou.");
+      if(d.nota){oidcErro(d.nota);if(/modo manual/.test(d.nota))destacarModoManual(true)}
+    }
+  }catch(ex){
+    if(autoId===meuId){autoId=null;oidcErro(ex.message+" Para tentar de novo, clique em “Entrar com Globo”; para a janela comum (Google/Facebook funcionam nela), use o link “modo manual”, ao lado do botão.")}
+  }
 }
+async function abrirJanelaGlobo(){
+  oidcErro("");destacarModoManual(false); // usuário já achou o caminho: para de piscar
+  // Modo manual: a janela comum do navegador + o diálogo com o campo de colar (o automático não usa diálogo).
+  try{if(!dlg.open)dlg.showModal()}catch{}
+  oidcTrocando=false;oidcUltimaLeitura=null;oidcClipMorto=false;oidcClipAvisou=false;
+  try{
+    // Abre a janela já no clique (evita bloqueador de pop-up) e navega depois.
+    if(!oidcWin||oidcWin.closed) oidcWin=window.open("about:blank","globoLogin","width=520,height=740");
+    if(!oidcWin) throw new Error("O navegador bloqueou a janela. Permita pop-ups para este site e tente de novo.");
+    try{oidcWin.document.body.innerHTML="<div style='font-family:sans-serif;padding:28px;color:#102044'><b>Abrindo a página oficial da Globo…</b><p style='color:#6d7890'>Se esta mensagem continuar aqui por mais de alguns segundos, feche esta janela e clique de novo em “Entrar pela janela da Globo”.</p></div>"}catch{}
+    const data=await authPost("/auth/oidc/start",{});
+    oidcFlowId=data.flowId;
+    $("oidcSteps").hidden=false;
+    $("oidcPaste").value="";
+    // Pede a permissão de leitura AGORA — com o painel visível e a janela ainda no aviso
+    // “Abrindo a página oficial…” (o balão do navegador não fica escondido). Com a permissão,
+    // a conclusão vira automática; o conteúdo atual é marcado como “já visto” para nunca
+    // disparar troca com código velho.
+    try{const t=await navigator.clipboard.readText().catch(()=>null);if(typeof t==="string")oidcUltimaLeitura=t.trim()}catch{}
+    oidcWin.location.href=data.authUrl;
+    oidcIniciarPoll();
+    setStatus("Entre na janela da Globo; ao final ela fica EM BRANCO (é normal) — Ctrl+L, Ctrl+C e clique de volta no painel: concluo, fecho a janela e carrego as ligas sozinho.");
+  }catch(ex){
+    oidcPararPoll();
+    const m=String(ex.message||"");
+    if(m.includes("Rota não encontrada")) oidcErro("O server.js em execução está DESATUALIZADO (não tem a rota de login). Baixe a versão nova do painel, substitua os arquivos e reinicie o servidor (Ctrl+C, depois node server.js).");
+    else if(/Failed to fetch|NetworkError|Load failed/i.test(m)) oidcErro("Não consegui falar com o servidor local. Ele está rodando? (node server.js — em http://127.0.0.1:3000)");
+    else oidcErro(m);
+    if(oidcWin&&!oidcWin.closed){try{oidcWin.close()}catch{}}
+  }
+}
+async function concluirOidc(){
+  const btn=$("oidcFinish");
+  oidcErro("");
+  const endereco=$("oidcPaste").value.trim();
+  if(!endereco){oidcErro("Cole o endereço que apareceu na janela da Globo (contém ?code=…&state=…).");return}
+  const m=(endereco.match(/[?&#]state=([\w\-.~+%]+)/)||[])[1];
+  if(m&&oidcFlowId&&decodeURIComponent(m)!==oidcFlowId){oidcErro("Esse endereço é de uma tentativa anterior. Clique em “Abrir a janela de novo” e copie o endereço NOVO que aparecer.");return}
+  const ehUrl=/[?&#]code=/.test(endereco);
+  if(!ehUrl&&!/^[A-Za-z0-9\-._~%]{20,}$/.test(endereco)){oidcErro("Esse texto não parece o endereço da janela (com ?code=…) nem o código sozinho. Copie de novo com Ctrl+L e Ctrl+C.");return}
+  const corpo=ehUrl?{endereco,state:oidcFlowId}:{code:endereco,state:oidcFlowId};
+  btn.disabled=true;btn.textContent="Conectando…";oidcTrocando=true;
+  try{
+    await authPost("/auth/oidc/exchange",corpo);
+    oidcFlowId=null;oidcPararPoll();
+    setStatus("Login concluído! Fechando a janela da Globo e carregando as ligas…","ok");
+    if(oidcWin&&!oidcWin.closed){
+      try{oidcWin.location.href="/auth/oidc/done"}catch{}
+      setTimeout(()=>{try{if(oidcWin&&!oidcWin.closed)oidcWin.close()}catch{}oidcWin=null},700);
+    }
+    try{window.focus()}catch{}
+    await finishLogin();dlg.close();
+  }catch(ex){oidcErro(ex.message)}
+  finally{oidcTrocando=false;btn.disabled=false;btn.textContent="Concluir login"}
+}
+// Lê o endereço direto da área de transferência (Chrome/Edge pedem permissão 1 vez) e conclui.
+async function colarEConcluir(){
+  oidcErro("");
+  try{
+    const txt=await navigator.clipboard.readText();
+    if(!txt||!/[?&#]code=/.test(txt)){oidcErro("A área de transferência não tem o endereço. Na janela da Globo (página em branco), use Ctrl+L e depois Ctrl+C.");return}
+    $("oidcPaste").value=txt.trim();
+    await concluirOidc();
+  }catch(e){oidcErro("Não consegui ler a área de transferência ("+(e.message||"permissão negada")+"). Copie o endereço na janela (Ctrl+L, Ctrl+C) e cole no campo abaixo.")}
+}
+// — SAIR MATA TUDO (clique em “Sair”):
+//  1. cancela login automático/manual em andamento e fecha as janelas dele;
+//  2. o servidor mata a sessão local, expira o cookie do painel, REVOGA o refresh_token na
+//     Globo e APAGA o perfil do navegador controlado (onde moram os cookies de SSO da Globo);
+//  3. o painel abre a página OFICIAL de logout da Globo numa janelinha — ela apaga os cookies
+//     de SSO da Globo no SEU navegador também — e a fecha sozinha em seguida.
+// Resultado: o próximo “Entrar com Globo” pede e-mail e senha de novo.
+let globoLogoutWin=null,globoLogoutTimer=null,saindo=false;
 async function doLogout(){
-  try{await authPost("/auth/logout")}catch{}
-  dropLoginState();renderAuth();render();
-  setStatus("Você saiu da conta Globo.");
+  if(saindo)return; saindo=true;
+  try{
+    setStatus("Encerrando a sessão e apagando os cookies…");
+    oidcPararPoll();oidcFlowId=null;oidcTrocando=false;
+    if(autoId)cancelarAuto();
+    try{dlg.close()}catch{}
+    if(oidcWin&&!oidcWin.closed){try{oidcWin.close()}catch{}}
+    oidcWin=null;
+    let data={};
+    try{data=await authPost("/auth/logout")||{}}catch{}
+    destacarModoManual(false);
+    dropLoginState();renderAuth();render();
+    const msg="Você saiu. Sessão encerrada, token revogado na Globo e cookies apagados — o próximo login vai pedir e-mail e senha.";
+    if(data.globoLogoutUrl){
+      try{if(globoLogoutWin&&!globoLogoutWin.closed)globoLogoutWin.close()}catch{}
+      try{globoLogoutWin=window.open(data.globoLogoutUrl,"globoLogout","width=430,height=560")}catch{globoLogoutWin=null}
+      if(globoLogoutWin){
+        setStatus(msg+" A janelinha de logout da Globo fecha sozinha.");
+        if(globoLogoutTimer)clearTimeout(globoLogoutTimer);
+        globoLogoutTimer=setTimeout(()=>{try{if(globoLogoutWin&&!globoLogoutWin.closed)globoLogoutWin.close()}catch{}globoLogoutWin=null},3200);
+      }else{
+        setStatus(msg+" Só não abri a janelinha que limpa os cookies da Globo deste navegador (pop-up bloqueado) — a sessão foi encerrada do mesmo jeito.");
+      }
+    }else{
+      setStatus("Você saiu da conta Globo.");
+    }
+  }finally{saindo=false}
 }
 const dlg=$("loginDialog");
 $("authBox").addEventListener("click",e=>{
-  if(e.target.id==="loginBtn"){$("loginError").classList.remove("show");dlg.showModal();checkExtension()}
+  if(e.target.id==="loginBtn"){oidcErro("");entrarPelaGlobo()} // entra DIRETO no navegador controlado, sem diálogo
+  if(e.target.id==="manualLink")abrirJanelaGlobo(); // modo manual: janela comum + campo para colar
   if(e.target.id==="logoutBtn")doLogout();
 });
 $("loginCancel").addEventListener("click",()=>dlg.close());
-$("extConnect").addEventListener("click",connectViaExtension);
-
+dlg.addEventListener("close",cancelarAuto);
+$("oidcAgain").addEventListener("click",abrirJanelaGlobo);
+$("oidcFinish").addEventListener("click",concluirOidc);
+$("oidcPasteBtn").addEventListener("click",colarEConcluir);
+$("oidcPaste").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();concluirOidc()}});
+// Ctrl+V no campo já conclui sozinho (basta o endereço — ou o código — estar colado).
+$("oidcPaste").addEventListener("paste",()=>setTimeout(()=>{const v=$("oidcPaste").value.trim();if(/[?&#]code=/.test(v)||/^[A-Za-z0-9\-._~%]{20,}$/.test(v))concluirOidc()},60));
 render();renderAuth();
 (async()=>{
   // Se já houver sessão ativa no servidor (ex.: recarregou a página), recupera o time logado.
