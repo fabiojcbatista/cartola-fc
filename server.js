@@ -9,9 +9,14 @@ const crypto = require("crypto");
 const os = require("os");
 const { spawn } = require("child_process");
 
-const PORT = process.env.PORT || 3000;
+// LOCAL
+//const PORT = process.env.PORT || 3000;
 // Por segurança (o login passa por aqui), o servidor só aceita conexões da própria máquina.
-const HOST = process.env.HOST || "127.0.0.1";
+//const HOST = process.env.HOST || "127.0.0.1";
+
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "0.0.0.0";   // ← importante na nuvem
+
 const API_HOSTS = process.env.CARTOLA_API
   ? [process.env.CARTOLA_API]
   : ["https://api.cartola.globo.com", "https://api.cartolafc.globo.com"];
