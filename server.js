@@ -9,14 +9,13 @@ const crypto = require("crypto");
 const os = require("os");
 const { spawn } = require("child_process");
 
-// LOCAL
-//const PORT = process.env.PORT || 3000;
-// Por segurança (o login passa por aqui), o servidor só aceita conexões da própria máquina.
-//const HOST = process.env.HOST || "127.0.0.1";
-
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "0.0.0.0";   // ← importante na nuvem
-
+// LOCAL: ouve só na própria máquina (127.0.0.1) — o painel roda no mesmo computador.
+// NUVEM (Render e afins): esses serviços definem PORT (e RENDER) e só acessam o servidor pelo
+// endereço público — 127.0.0.1 deixaria o deploy "no ar, mas inalcançável". Nesse ambiente ouve
+// em 0.0.0.0 automaticamente (a variável HOST continua valendo para forçar qualquer um dos dois).
+const EM_NUVEM = !!(process.env.PORT || process.env.RENDER);
+const HOST = process.env.HOST || (EM_NUVEM ? "0.0.0.0" : "127.0.0.1");
 const API_HOSTS = process.env.CARTOLA_API
   ? [process.env.CARTOLA_API]
   : ["https://api.cartola.globo.com", "https://api.cartolafc.globo.com"];
@@ -73,8 +72,10 @@ function getSession(req) {
   if (s.expires < Date.now()) { sessions.delete(sid); return null; }
   return s;
 }
-function cookieHeader(value, maxAgeSec) {
-  return `${COOKIE}=${value}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${maxAgeSec}`;
+function cookieHeader(req, value, maxAgeSec) {
+  // Atrás de proxy HTTPS (a nuvem manda X-Forwarded-Proto) o cookie pode (e deve) ir com Secure.
+  const seguro = req && String(req.headers["x-forwarded-proto"] || "").toLowerCase().includes("https") ? "; Secure" : "";
+  return `${COOKIE}=${value}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${maxAgeSec}${seguro}`;
 }
 
 function readJson(req, limit = 10000) {
@@ -120,19 +121,63 @@ async function credentialIsValid(session) {
 const cleanToken = v => String(v || "").trim().replace(/^Bearer\s+/i, "");
 const tokenOk = v => v && /^[\w\-.~+\/=%:]+$/.test(v);
 const num = v => { if (v === null || v === undefined || v === "") return null; const n = Number(v); return Number.isFinite(n) ? n : null; };
-// Valida a credencial e, se aceita, cria a sessão local (mesma de sempre: só na memória).
-async function startSession(req, res, candidate) {
-  const check = await credentialIsValid(candidate);
-  if (!check.ok) return check;
+// ===== v29 NUVEM: cópia de reserva da credencial (a sessão sobrevive à hibernação) =====
+// No plano gratuito do Render o serviço HIBERNA após ~15 min sem acesso e acorda com a memória
+// limpa — e as sessões vivem só na memória, de propósito (o token nunca ia para o navegador).
+// Era isso que "matava a sessão" de quem usa o painel publicado. Agora o painel guarda uma cópia
+// de reserva da credencial no armazenamento local DELE (o painel não carrega script de terceiros;
+// nada dessa cópia vai para disco do servidor) e a devolve quando o servidor acorda sem memória.
+// O servidor NUNCA confia às cegas: revalida na API do Cartola (e renova com o refresh_token
+// quando o access_token já venceu) antes de recriar a sessão.
+const blobDaSessao = s => b64url(Buffer.from(JSON.stringify({ t: s.token, r: s.refreshToken || null, i: s.idToken || null })));
+
+function criarSessao(req, res, candidate) {
   const old = sessionIdFrom(req);
   if (old) sessions.delete(old);
   const sid = crypto.randomBytes(24).toString("hex");
   const ttl = candidate.expiresIn ? Math.max(60, (candidate.expiresIn - 30) * 1000) : SESSION_TTL;
   // id_token fica guardado para o LOGOUT: é o "id_token_hint" que faz a Globo encerrar a
   // sessão de SSO do navegador sem página de confirmação. Só memória do servidor, como os outros.
-  sessions.set(sid, { token: candidate.token, kind: "oidc", refreshToken: candidate.refreshToken || null, idToken: candidate.idToken || null, expires: Date.now() + ttl });
-  sendJson(res, 200, { loggedIn: true, kind: "oidc", comRenovacao: !!candidate.refreshToken }, { "Set-Cookie": cookieHeader(sid, SESSION_COOKIE_TTL) });
+  const nova = { token: candidate.token, kind: "oidc", refreshToken: candidate.refreshToken || null, idToken: candidate.idToken || null, expires: Date.now() + ttl };
+  sessions.set(sid, nova);
+  // "sessao" vai na resposta para o painel guardar a cópia de reserva (v29).
+  sendJson(res, 200, { loggedIn: true, kind: "oidc", comRenovacao: !!candidate.refreshToken, sessao: blobDaSessao(nova) }, { "Set-Cookie": cookieHeader(req, sid, SESSION_COOKIE_TTL) });
   return { ok: true, created: true };
+}
+
+// Valida a credencial e, se aceita, cria a sessão local (mesma de sempre: só na memória).
+async function startSession(req, res, candidate) {
+  const check = await credentialIsValid(candidate);
+  if (!check.ok) return check;
+  return criarSessao(req, res, candidate);
+}
+
+// POST /auth/restaurar { sessao } — o painel pede isso quando o servidor acordou sem memória
+// (hibernação da nuvem, reinicio) mas ele mesmo ainda tem a cópia de reserva. Revalida a
+// credencial na API do Cartola (renovando com o refresh_token quando o access_token venceu) e
+// só então recria a sessão. Resposta SEMPRE 200: loggedIn true/false — falha limpa a reserva.
+async function handleRestaurar(req, res) {
+  let body = {};
+  try { body = await readJson(req, 20000); } catch {}
+  let dados = null;
+  try { dados = JSON.parse(Buffer.from(String(body.sessao || "").replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8")); } catch {}
+  const cand = {
+    token: cleanToken(dados && dados.t),
+    refreshToken: tokenOk(cleanToken(dados && dados.r)) ? cleanToken(dados.r) : null,
+    idToken: tokenOk(cleanToken(dados && dados.i)) ? cleanToken(dados.i) : null
+  };
+  if (!tokenOk(cand.token)) return sendJson(res, 200, { loggedIn: false, motivo: "A cópia de reserva não tem credencial utilizável." });
+  let check = await credentialIsValid(cand);
+  if (!check.ok && cand.refreshToken) {
+    // access_token vencido (~1h): renova com o refresh_token guardado e tenta de novo.
+    const tmp = { token: cand.token, refreshToken: cand.refreshToken, expires: 0 };
+    if (await refreshSession(tmp)) {
+      cand.token = tmp.token; cand.refreshToken = tmp.refreshToken;
+      check = await credentialIsValid(cand);
+    }
+  }
+  if (!check.ok) return sendJson(res, 200, { loggedIn: false, motivo: "A credencial guardada foi recusada pela Globo (HTTP " + check.status + "). Entre de novo." });
+  return criarSessao(req, res, cand);
 }
 
 /* ===== Login direto por e-mail/senha (atalho; a Globo pode pedir captcha) ===== */
@@ -651,7 +696,15 @@ async function handleOidcAuto(req, res) {
   autoAtual = flowId;
   let cap;
   try { cap = await capturarRetornoViaNavegador(authUrl, OIDC_FLOW_TTL, msg => { auto.nota = msg; }); }
-  catch (e) { oidcFlows.delete(flowId); if (autoAtual === flowId) autoAtual = null; return sendJson(res, 200, { unavailable: true, reason: e.message }); }
+  catch (e) {
+    oidcFlows.delete(flowId); if (autoAtual === flowId) autoAtual = null;
+    // Na nuvem não há Chrome nem tela no servidor (v29): o motivo vira orientação clara e o
+    // painel cai direto no modo manual (janela comum do navegador do usuário).
+    const motivo = EM_NUVEM && /Chrome|Edge|navegador/i.test(e.message)
+      ? "Este painel está na NUVEM: o servidor não tem Chrome nem tela para o modo automático. Vou usar a janela do SEU navegador (modo manual)."
+      : e.message;
+    return sendJson(res, 200, { unavailable: true, reason: motivo });
+  }
   auto.close = cap.close;
   cap.done.then(async urlRetorno => {
     auto.state = "exchanging";
@@ -770,7 +823,7 @@ async function handleLogout(req, res) {
   // id_token_hint o logout é direto, sem página de confirmação.
   const fim = new URLSearchParams({ client_id: OIDC_CLIENT });
   if (s && s.idToken) fim.set("id_token_hint", s.idToken);
-  return sendJson(res, 200, { loggedIn: false, globoLogoutUrl: OIDC_BASE + "/logout?" + fim, perfilApagado }, { "Set-Cookie": cookieHeader("", 0) });
+  return sendJson(res, 200, { loggedIn: false, globoLogoutUrl: OIDC_BASE + "/logout?" + fim, perfilApagado }, { "Set-Cookie": cookieHeader(req, "", 0) });
 }
 
 async function proxyCartola(apiPath, res, session) {
@@ -784,6 +837,8 @@ async function proxyCartola(apiPath, res, session) {
       if (!ok && session.expires < Date.now()) {
         return sendJson(res, 401, { error: "Sua sessão da Globo venceu e não pôde ser renovada. Entre de novo com a conta Globo.", needsRelogin: true });
       }
+      // v29: o token mudou na renovação — o painel precisa da cópia de reserva nova.
+      if (ok) { try { res.setHeader("x-sf-sessao", blobDaSessao(session)); } catch {} }
     }
   }
   // A credencial só é enviada para endpoints autenticados (/auth/...).
@@ -827,6 +882,7 @@ const server = http.createServer((req, res) => {
   if (parsed.pathname.startsWith("/auth/")) {
     if (req.method === "POST" && !sameOrigin(req)) return sendJson(res, 403, { error: "Origem não permitida." });
     if (parsed.pathname === "/auth/login-direto" && req.method === "POST") return handleLoginDireto(req, res);
+    if (parsed.pathname === "/auth/restaurar" && req.method === "POST") return handleRestaurar(req, res); // v29 nuvem
     if (parsed.pathname === "/auth/oidc/start" && req.method === "POST") return handleOidcStart(req, res);
     if (parsed.pathname === "/auth/oidc/auto" && req.method === "POST") return handleOidcAuto(req, res);
     if (parsed.pathname === "/auth/oidc/auto/status" && req.method === "GET") return handleOidcAutoStatus(req, res);
@@ -860,4 +916,6 @@ const server = http.createServer((req, res) => {
     send(res, 200, content, types[ext] || "application/octet-stream");
   });
 });
-server.listen(PORT, HOST, () => console.log(`Superliga do Fabião disponível em http://localhost:${PORT}`));
+server.listen(PORT, HOST, () => console.log(EM_NUVEM
+  ? `Superliga do Fabião na NUVEM: ouvindo em ${HOST}:${PORT} (a plataforma publica a URL do serviço)`
+  : `Superliga do Fabião disponível em http://localhost:${PORT}`));
