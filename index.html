@@ -84,6 +84,8 @@ details.fold[open]>summary{border-bottom:1px solid #ffffff22}
   <div class="toolbar">
     <input id="searchInput" placeholder="Buscar time no Cartola pelo nome..." aria-label="Buscar time">
     <button id="searchBtn">Buscar time</button>
+    <!-- v31: o controle de quais rodadas EXIBIR voltou (os dados seguem sempre completos). -->
+    <select id="roundRange" aria-label="Rodadas exibidas" title="Escolhe a janela de rodadas mostrada nas tabelas — os dados continuam completos"></select>
     <button class="secondary" id="refreshBtn">↻ Atualizar dados</button>
     <button class="secondary hidden" id="diagBtn" title="Mostra o JSON que a API devolveu, para conferência">{ } Dados brutos</button>
   </div>
@@ -126,11 +128,11 @@ details.fold[open]>summary{border-bottom:1px solid #ffffff22}
   </details>
 
   <details class="fold" id="foldScores">
-    <summary><span class="fold-ico">📈</span>Pontuação por rodada — todas as rodadas<span class="fold-hint">toque para abrir/fechar</span></summary>
+    <summary><span class="fold-ico">📈</span><span id="foldScoresTxt">Pontuação por rodada — todas as rodadas</span><span class="fold-hint">toque para abrir/fechar</span></summary>
     <section class="panel section scores" id="scores" style="margin-top:12px">
       <div class="section-head"><span>📈 Pontuação por rodada <small>(times monitorados)</small></span><small id="scoresLimite">Todas as rodadas</small></div>
       <div class="table-wrap"><table id="scoresTable"></table></div>
-      <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas: vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada corrente entra na soma) — com o mercado aberto, até a última rodada COMPLETA (a rodada futura ainda não pontuou).</div>
+      <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas: vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada corrente entra na soma) — com o mercado aberto, até a última rodada COMPLETA (a rodada futura ainda não pontuou). O seletor “Rodadas exibidas” na barra acima escolhe a JANELA mostrada (ex.: 6–10, últimas 5) — os dados seguem completos e o total continua somando TODAS as rodadas já disputadas.</div>
     </section>
   </details>
 </main>
@@ -165,6 +167,15 @@ details.fold[open]>summary{border-bottom:1px solid #ffffff22}
 </dialog>
 <script>
 /*
+  v31 — O CONTROLE DAS RODADAS EXIBIDAS VOLTOU: o seletor “Rodadas exibidas” (aposentado na
+  v30) está de volta na barra superior, agora melhor: o padrão é “Todas as rodadas (1–N)” —
+  exatamente o comportamento da v30 — e ele também oferece “Últimas 5”, “Últimas 10” e janelas
+  de 5 em 5 MONTADAS A PARTIR DA RODADA CORRENTE (1–5, 6–10 … até a última com pontuação),
+  nada de janela fixa cair no vazio no começo da temporada. A escolha só muda a EXIBIÇÃO nas
+  tabelas (pontuação por rodada e histórico de fase/posição das ligas): os dados continuam
+  sempre completos, de 1 até a última rodada com pontuação (regra da v30 mantida — em
+  andamento inclui o parcial; mercado aberto, até a anterior), a coluna “Pontuação” segue
+  sendo a soma de TODAS as rodadas já disputadas e a escolha fica guardada no navegador.
   v30 — MOBILE/WEB + TODAS AS RODADAS: (1) BANNER-RESUMO — a informação essencial subiu para o
   cabeçalho: “Meu time” (nome, total de pontos e situação do mercado) e um cartão por time
   cadastrado (nome + total) aparecem DIRETO no banner, em qualquer tela — celular ou desktop.
@@ -276,6 +287,10 @@ const KNOCKOUT_PHASES = {};
 let teams = INITIAL_TEAMS.map(t=>({...t, scores:{}, total:0, status:"Aguardando busca"}));
 let currentRound = null;
 let limiteRodada = null;    // v30: última rodada com pontuação buscada/exibida — sempre de 1 até aqui
+// v31: controle de EXIBIÇÃO — “todas” (padrão, comportamento da v30), “ult5”, “ult10” ou janela “a-b”.
+// Muda só as colunas mostradas; a busca segue sempre completa (1 → limiteRodada).
+let roundView = "todas";
+const SF_ROUNDVIEW = "sf_roundview_v1"; // v31: a escolha fica guardada no navegador
 let mercadoObs = "";        // v30: status_mercado_obs da API ("Mercado Aberto", "Em andamento"…)
 let mercadoParcial = false; // v30: true = rodada atual em andamento (o parcial entra na pontuação)
 const $ = id => document.getElementById(id);
@@ -381,11 +396,62 @@ async function loadTeam(t){
   t.status=errors.length?`Parcial: ${Object.keys(t.scores).length}/${maxRound} rodadas`:"Conectado";
   if(errors.length)t.error=errors.slice(0,2).join("; ");
 }
+// v31 — as janelas oferecidas no seletor são montadas a partir da rodada corrente (limiteRodada):
+// “todas”, “Últimas 5”, “Últimas 10” e blocos de 5 em 5 (1–5, 6–10 …) até a última com pontuação.
+function roundViewOptions(){
+  const N=Math.max(0,Math.min(38,Number(limiteRodada)||0));
+  const opts=[["todas",N?"Todas as rodadas (1–"+N+")":"Todas as rodadas"]];
+  if(N>0){
+    opts.push(["ult5","Últimas 5 rodadas ("+Math.max(1,N-4)+"–"+N+")"]);
+    if(N>10)opts.push(["ult10","Últimas 10 rodadas ("+(N-9)+"–"+N+")"]);
+    for(let a=1;a<=N;a+=5){const b=Math.min(N,a+4);opts.push([a+"-"+b,"Rodadas "+a+"–"+b]);}
+  }
+  return opts;
+}
+function buildRoundOptions(){
+  const sel=$("roundRange");if(!sel)return;
+  try{const v=localStorage.getItem(SF_ROUNDVIEW);if(v)roundView=v}catch{}
+  const opts=roundViewOptions();
+  if(!opts.some(o=>o[0]===roundView))roundView="todas"; // escolha antiga fora das opções → volta ao padrão
+  sel.innerHTML=opts.map(o=>`<option value="${o[0]}"${o[0]===roundView?" selected":""}>${o[1]}</option>`).join("");
+  sel.value=roundView;
+}
+function roundViewLabel(){
+  const N=Math.max(0,Math.min(38,Number(limiteRodada)||0));
+  if(roundView==="ult5"||roundView==="ult10"){const k=roundView==="ult5"?5:10;if(!N)return "últimas "+k;const a=Math.max(1,N-k+1);return "rodadas "+a+"–"+N;}
+  const p=String(roundView).split("-").map(Number);
+  if(!Number.isFinite(p[0])||!Number.isFinite(p[1])||p[1]<p[0])return N?"rodadas 1–"+N:"";
+  return "rodadas "+Math.max(1,p[0])+"–"+Math.min(38,p[1]);
+}
+// v31: subtítulo da tabela + título da seção refletem a janela escolhida (e lembram que os
+// dados seguem completos).
+function updateRoundViewUI(){
+  const N=Math.max(0,Math.min(38,Number(limiteRodada)||0));
+  const sl=$("scoresLimite");
+  if(sl){
+    sl.textContent=roundView==="todas"
+      ?(N?"Rodadas 1–"+N+(mercadoParcial?" • parcial":""):"Aguardando a 1ª rodada")
+      :(N?roundViewLabel()+" • dados completos: 1–"+N:"aguardando a 1ª rodada");
+  }
+  const ft=$("foldScoresTxt");
+  if(ft)ft.textContent=roundView==="todas"?"Pontuação por rodada — todas as rodadas":"Pontuação por rodada — "+roundViewLabel();
+}
 function roundColumns(){
-  // v30: SEMPRE todas as rodadas — de 1 até limiteRodada (a rodada em andamento, ou a
-  // anterior quando o mercado está aberto). O antigo seletor de janelas (ex.: 34–38) saiu.
-  const b=Math.max(0,Math.min(38,Number(limiteRodada)||0));
-  return Array.from({length:b},(_,i)=>i+1);
+  // v31: o SELETOR voltou — escolhe a JANELA EXIBIDA. Os dados seguem sempre completos
+  // (1 → limiteRodada, regra da v30: em andamento inclui o parcial; mercado aberto, a anterior);
+  // “todas” mantém exatamente o comportamento da v30. Janela além do limite mostra “—”.
+  const N=Math.max(0,Math.min(38,Number(limiteRodada)||0));
+  const all=Array.from({length:N},(_,i)=>i+1);
+  if(roundView==="todas")return all;
+  if(roundView==="ult5"||roundView==="ult10"){
+    if(!N)return[];
+    const k=roundView==="ult5"?5:10,a=Math.max(1,N-k+1);
+    return Array.from({length:N-a+1},(_,i)=>a+i);
+  }
+  const p=String(roundView).split("-").map(Number);
+  if(!Number.isFinite(p[0])||!Number.isFinite(p[1])||p[1]<p[0])return all;
+  const lo=Math.max(1,p[0]),hi=Math.min(38,p[1]);
+  return Array.from({length:hi-lo+1},(_,i)=>lo+i);
 }
 const num=v=>{if(v===null||v===undefined||v==="")return null;const n=Number(v);return Number.isFinite(n)?n:null};
 function positionClass(pos){return pos===1?"gold":pos===2?"silver":pos===3?"bronze":"position"}
@@ -1004,7 +1070,9 @@ async function refreshAll(){
     limiteRodada=mercadoParcial?currentRound:currentRound-1;
     if(limiteRodada<0)limiteRodada=0;
     $("marketRound").textContent=currentRound;
-    const sl=$("scoresLimite");if(sl)sl.textContent=limiteRodada===0?"Aguardando a 1ª rodada":"Rodadas 1–"+limiteRodada+(mercadoParcial?" • parcial":"");
+    // v31: as opções do seletor se ADAPTAM à rodada corrente e o subtítulo/título da seção
+    // mostram a janela escolhida (os dados seguem completos — 1 → limiteRodada).
+    buildRoundOptions();updateRoundViewUI();
     const outcomes=await Promise.allSettled(teams.map(loadTeam));
     const failures=[];
     outcomes.forEach((result,i)=>{
@@ -1049,6 +1117,8 @@ document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>
   ["classic","knockout","points"].forEach(id=>$(id).classList.toggle("hidden",id!==btn.dataset.target));
 }));
 $("refreshBtn").addEventListener("click",refreshAll);
+// v31: mudou o seletor → muda só a EXIBIÇÃO (sem refazer consultas) e grava a escolha.
+$("roundRange").addEventListener("change",()=>{roundView=$("roundRange").value||"todas";try{localStorage.setItem(SF_ROUNDVIEW,roundView)}catch{};updateRoundViewUI();render();});
 $("diagBtn").addEventListener("click",()=>{
   const out={ligas_do_usuario:window.__ligasBrutas??null,competicoes_pontos_corridos:window.__pcBrutas??null,
     detalhe_por_liga:leagues.map(l=>({slug:l.slug,classificada_como:l.kind,erro:l.error||null,...l.raw})),
@@ -1376,6 +1446,7 @@ function initFolds(){
   });
 }
 initFolds();
+buildRoundOptions(); // v31: o seletor de rodadas exibidas já nasce pronto (e lê a escolha salva)
 render();renderAuth();
 (async()=>{
   // Se já houver sessão ativa no servidor (ex.: recarregou a página), recupera o time logado.
