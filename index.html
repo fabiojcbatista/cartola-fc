@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Superliga do Fabião | Painel Cartola FC</title>
 <style>
-:root{--navy:#071d49;--blue:#0757c8;--orange:#ff7900;--gold:#ffc21a;--green:#12622d;--purple:#51208d;--bg:#eef2f8;--ink:#102044;--muted:#6d7890;--line:#d9e0ec;--white:#fff}
+:root{--navy:#071d49;--blue:#0757c8;--orange:#ff7900;--gold:#ffc21a;--green:#12622d;--purple:#51208d;--bg:#eef2f8;--ink:#102044;--muted:#55607a;--line:#d9e0ec;--white:#fff}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#e9eef7,#f7f9fc);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
 header{background:linear-gradient(110deg,#06183b,#073d85 58%,#06183b);color:white;padding:22px 28px;border-bottom:5px solid var(--orange);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:16px}.crest{width:62px;height:62px;border-radius:18px;background:linear-gradient(145deg,#0874ff,#06265e);border:3px solid #f5bd27;display:grid;place-items:center;font-size:34px;box-shadow:0 5px 18px #0005}
@@ -17,7 +17,7 @@ main{display:grid;gap:14px;padding:16px 18px;max-width:1800px;margin:auto}.panel
 .status{padding:10px 13px;border-radius:10px;background:#e9f1ff;color:#173e7c;font-size:13px;margin-bottom:14px}.status.error{background:#fff0ed;color:#a32c1d}.status.ok{background:#e8f7ed;color:#176238}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.tab{border:1px solid #cbd5e4;background:#fff;padding:13px;border-radius:12px;font-weight:850;color:#283753;cursor:pointer}.tab.active{background:linear-gradient(100deg,#ff8b00,#ff6500);color:#fff;border-color:#ff7900}
 .section{margin-bottom:16px}.section-head{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;color:white;font-weight:850}.classic .section-head{background:linear-gradient(100deg,#0647a5,#08275a)}.knockout .section-head{background:linear-gradient(100deg,#17652f,#073d20)}.points .section-head{background:linear-gradient(100deg,#54218e,#24104e)}.section-head small{font-weight:600;opacity:.85}
-.table-wrap{overflow:auto;max-width:100%}table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}th{background:#e9edf4;color:#243653;padding:10px 9px;text-align:center;white-space:nowrap;border:1px solid #d4dce8}td{padding:9px;border:1px solid #e0e5ed;text-align:center;white-space:nowrap}td.team-cell{text-align:left;font-weight:750;min-width:175px}tbody tr:nth-child(even){background:#f8faff}tbody tr:hover{background:#fff4e6}.rank{font-weight:900}.gold{color:#c58b00}.silver{color:#788397}.bronze{color:#b65a21}.points-val{font-weight:900;color:#092b68}.position{font-weight:900;color:#1458a8}.phase{font-weight:750}.empty{color:#a0a8b5}
+.table-wrap{overflow:auto;max-width:100%}table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}th{background:#e9edf4;color:#243653;padding:10px 9px;text-align:center;white-space:nowrap;border:1px solid #d4dce8}td{padding:9px;border:1px solid #e0e5ed;text-align:center;white-space:nowrap}td.team-cell{text-align:left;font-weight:750;min-width:175px}tbody tr:nth-child(even){background:#f8faff}tbody tr:hover{background:#fff4e6}.rank{font-weight:900}.gold{color:#c58b00}.silver{color:#788397}.bronze{color:#b65a21}.points-val{font-weight:900;color:#092b68}.position{font-weight:900;color:#1458a8}.phase{font-weight:750}.empty{color:#6b7488}
 .section-tools{display:flex;align-items:center;gap:8px}.section-tools select{border:1px solid #ffffff77;border-radius:8px;padding:6px;background:#ffffffee;color:#102044;font-weight:700}
 .footnote{font-size:12px;color:var(--muted);padding:10px 13px;background:#fafbfd;border-top:1px solid var(--line)}
 .hidden{display:none!important}.loading{opacity:.6;pointer-events:none}
@@ -67,6 +67,56 @@ details.fold>summary .fold-hint{margin-left:auto;font-size:11px;font-weight:600;
 details.fold>summary:after{content:"\25BE";font-size:14px;opacity:.9}
 details.fold[open]>summary:after{content:"\25B4"}
 details.fold[open]>summary{border-bottom:1px solid #ffffff22}
+/* ===== v32 — A PAINEL FÁCIL (mockup aprovado): estado inicial acolhedor, hierarquia de
+   botões (menu “Avançado”), login em 3 passos com progresso visual, skeleton loaders,
+   spinners, contraste reforçado e foco acessível. Mecânica intacta. ===== */
+.hero{background:var(--white);border:1px solid #dce3ee;border-radius:16px;box-shadow:0 5px 18px #0b255011;padding:34px 26px 30px;text-align:center;display:grid;gap:10px;justify-items:center}
+.hero .trofeu{width:84px;height:84px;border-radius:24px;background:linear-gradient(145deg,#0874ff,#06265e);border:3px solid #f5bd27;display:grid;place-items:center;font-size:44px;box-shadow:0 8px 22px #0b255033}
+.hero h3{margin:4px 0 0;font-size:clamp(20px,3vw,24px);font-weight:900;color:var(--navy)}
+.hero p{margin:0;font-size:14.5px;color:var(--muted);max-width:560px;line-height:1.55}
+.hero .acoes{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;justify-content:center;align-items:center}
+.btn{border:0;border-radius:12px;padding:15px 30px;font-weight:900;font-size:16px;cursor:pointer;background:var(--orange);color:#fff;box-shadow:0 6px 16px #ff790055}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid #cbd5e4;box-shadow:none;font-weight:800;font-size:13.5px;padding:12px 20px}
+.segura{margin-top:8px;font-size:12.5px;color:var(--muted);background:#e8f7ed;border:1px solid #bfe3cc;border-radius:10px;padding:8px 14px;max-width:620px;line-height:1.5}
+.segura b,.seg-nota b{color:var(--green)}
+@keyframes rodar{to{transform:rotate(360deg)}}
+#refreshBtn.loading::before,#searchBtn.loading::before{content:"";display:inline-block;width:12px;height:12px;border:2.5px solid #cbd5e4;border-top-color:#57627a;border-radius:50%;vertical-align:-2px;margin-right:7px;animation:rodar 1s linear infinite}
+.avancado{position:relative}
+.menu{position:absolute;top:46px;right:0;background:#fff;border:1px solid #d4dce8;border-radius:12px;box-shadow:0 14px 34px #0b255026;min-width:272px;padding:6px;z-index:9;display:grid;gap:2px;text-align:left}
+.menu button{display:grid;gap:2px;background:#fff;border:0;border-radius:8px;padding:10px 12px;font-weight:800;font-size:13px;color:var(--ink);text-align:left;cursor:pointer;font-family:inherit}
+.menu button:hover{background:#f2f6fd}
+.menu button small{font-weight:600;color:var(--muted);font-size:11.5px;line-height:1.45}
+#advBtn.destaque{animation:pulsaDestaque 1.1s ease-in-out infinite;outline:3px solid #ffd45a;outline-offset:1px}
+.stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}
+.passo{display:grid;gap:6px;justify-items:center;font-size:11.5px;font-weight:800;color:var(--muted)}
+.bola{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:15px;background:#dfe6f0;color:#55607a}
+.passo.feito .bola{background:var(--green);color:#fff}
+.passo.atual .bola{background:var(--orange);color:#fff;box-shadow:0 0 0 5px #ff790026}
+.passo.atual{color:var(--ink)}
+.trilho{height:7px;border-radius:99px;background:#e6ebf3;overflow:hidden}
+.trilho i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff8b00,#ff6500);border-radius:99px;transition:width .4s ease}
+.trilho.p1 i{width:33%}.trilho.p2 i{width:66%}.trilho.p3 i{width:100%}
+.passo-card{border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:13.5px;line-height:1.55;color:var(--ink);background:#f8faff}
+.passo-card b{color:var(--navy)}
+.seg-nota{font-size:12.5px;color:var(--muted);background:#e8f7ed;border:1px solid #bfe3cc;border-radius:10px;padding:9px 13px;line-height:1.5}
+.login-progress{padding:12px 14px;display:grid;gap:10px}
+.lp-head{font-weight:900;font-size:15px;color:var(--navy)}
+.lp-note{font-size:12.5px;color:var(--muted);line-height:1.55}
+.lp-acoes{display:flex;justify-content:flex-end}
+.lp-acoes button{border:1px solid #cbd5e4;border-radius:10px;padding:8px 14px;background:#fff;font-weight:800;cursor:pointer;color:var(--ink);font-family:inherit}
+.sk{display:block;height:15px;border-radius:8px;background:linear-gradient(90deg,#e6ebf3 25%,#f2f6fb 45%,#e6ebf3 65%);background-size:200% 100%;animation:brilho 1.4s linear infinite;margin:7px 0}
+@keyframes brilho{from{background-position:200% 0}to{background-position:-200% 0}}
+.dlg-head small{display:block;font-size:11.5px;font-weight:600;opacity:.85;margin-top:3px}
+.dlg-detalhe{border:1px solid var(--line);border-radius:10px;font-size:12.5px;background:#fff}
+.dlg-detalhe summary{cursor:pointer;font-weight:800;padding:9px 12px;color:var(--ink);list-style:none;user-select:none}
+.dlg-detalhe summary::-webkit-details-marker{display:none}
+.dlg-detalhe summary::before{content:"\25B8 "}
+.dlg-detalhe[open] summary::before{content:"\25BE "}
+.dlg-detalhe ol{margin:0;padding:2px 20px 12px 30px;display:grid;gap:7px}
+.info{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#ffffff33;border:1px solid #ffffff66;font-size:10.5px;font-weight:900;cursor:help;vertical-align:1px}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #ff9d33;outline-offset:2px}
+@media(max-width:560px){.menu{min-width:230px}.hero{padding:26px 16px 24px}.hero .acoes{width:100%}.hero .acoes .btn{width:100%}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -81,15 +131,46 @@ details.fold[open]>summary{border-bottom:1px solid #ffffff22}
   <div class="banner-resumo" id="bannerResumo"></div>
 </header>
 <main>
+  <!-- v32: estado inicial amigável — um convite (com CTA único e nota de segurança), não uma página “quebrada”. Sai da cena quando existe time na lista. -->
+  <section class="hero" id="hero">
+    <div class="trofeu">🏆</div>
+    <h3>Bem-vindo ao Superliga do Fabião!</h3>
+    <p>Entre com sua conta Globo para ver o seu time e as suas ligas — ou acompanhe qualquer time buscando-o pelo nome.</p>
+    <div class="acoes">
+      <button class="btn" id="heroLogin">Entrar com Globo</button>
+      <button class="btn ghost" id="heroSearch">Buscar um time</button>
+    </div>
+    <div class="segura"><b>🔒 Seu login é seguro:</b> acontece na página oficial da Globo — o painel recebe só uma chave de acesso e <b>nunca vê a sua senha</b>.</div>
+  </section>
   <div class="toolbar">
     <input id="searchInput" placeholder="Buscar time no Cartola pelo nome..." aria-label="Buscar time">
     <button id="searchBtn">Buscar time</button>
     <!-- v31: o controle de quais rodadas EXIBIR voltou (os dados seguem sempre completos). -->
     <select id="roundRange" aria-label="Rodadas exibidas" title="Escolhe a janela de rodadas mostrada nas tabelas — os dados continuam completos"></select>
     <button class="secondary" id="refreshBtn">↻ Atualizar dados</button>
-    <button class="secondary hidden" id="diagBtn" title="Mostra o JSON que a API devolveu, para conferência">{ } Dados brutos</button>
+    <!-- v32: hierarquia de botões — o modo manual e os dados brutos moram no menu “Avançado” (1 botão principal por vez). -->
+    <div class="avancado">
+      <button class="secondary" id="advBtn" aria-haspopup="true" aria-expanded="false" title="Modo manual de login e dados brutos da API (conferência técnica)">Avançado ▾</button>
+      <div class="menu hidden" id="advMenu" role="menu">
+        <button type="button" id="manualLink" role="menuitem"><span>Modo manual (janela comum da Globo)</span><small>Para contas que só entram com Google/Facebook — ou quando o automático não estiver disponível</small></button>
+        <button type="button" class="hidden" id="diagBtn" role="menuitem" title="Mostra o JSON que a API devolveu, para conferência"><span>{ } Dados brutos da API</span><small>Para conferência técnica — sem senha nem token</small></button>
+      </div>
+    </div>
   </div>
   <div class="status" id="status">Preparando conexão com a API pública do Cartola FC…</div>
+
+  <!-- v32: progresso VISUAL do login automático (3 passos, como no mockup) — aparece enquanto o Chrome controlado trabalha; o passo 3 fica visível até as ligas carregarem. -->
+  <div class="panel login-progress hidden" id="loginProgress">
+    <div class="lp-head">🔌 Entrando com a Globo…</div>
+    <div class="stepper" id="passosAuto">
+      <div class="passo" id="pa1"><div class="bola">1</div>A janela da Globo abriu</div>
+      <div class="passo" id="pa2"><div class="bola">2</div>Você entra na Globo</div>
+      <div class="passo" id="pa3"><div class="bola">3</div>O painel conclui sozinho</div>
+    </div>
+    <div class="trilho p0" id="paTrilho"><i></i></div>
+    <div class="lp-note">A janela da Globo abriu — entre nela com E-MAIL e SENHA da Conta Globo (evite “Continuar com Google”: se aparecer o aviso “Este navegador ou app pode não ser seguro”, é regra do próprio Google, não é erro do painel — use e-mail e senha nessa mesma janela, ou o modo manual no menu Avançado). Quando a Globo concluir, eu fecho o navegador e carrego as ligas sozinho.</div>
+    <div class="lp-acoes"><button type="button" id="autoCancelBtn">Cancelar o login</button></div>
+  </div>
 
   <details class="fold" id="foldTimes">
     <summary><span class="fold-ico">⚽</span>Times cadastrados<span class="fold-count" id="foldTimesCount">(0)</span><span class="fold-hint">toque para abrir/fechar</span></summary>
@@ -109,19 +190,19 @@ details.fold[open]>summary{border-bottom:1px solid #ffffff22}
     </div>
 
     <section class="panel section classic" id="classic">
-      <div class="section-head"><span>🏆 Ligas Clássicas <small>(suas ligas no Cartola)</small></span><small>Classificação oficial</small></div>
+      <div class="section-head"><span>🏆 Ligas Clássicas <small>(suas ligas no Cartola)</small> <span class="info" title="“Liga Clássica” é o nome oficial do Cartola para as ligas de pontos corridos. Posição e pontos vêm da API — classificação oficial.">i</span></span><small>Classificação oficial</small></div>
       <div class="table-wrap"><table id="classicTable"></table></div>
       <div class="footnote" id="classicNote"></div>
     </section>
 
     <section class="panel section knockout hidden" id="knockout">
-      <div class="section-head"><span>⚔️ Ligas Mata-Mata <small>(fase por rodada)</small></span><small>Fase da disputa</small></div>
+      <div class="section-head"><span>⚔️ Ligas Mata-Mata <small>(fase por rodada)</small> <span class="info" title="A fase da disputa vem do CHAVEAMENTO REAL da liga (e da observação ao vivo). Sem fonte confiável: “fase não registrada” — nada é inventado.">i</span></span><small>Fase da disputa</small></div>
       <div class="table-wrap"><table id="knockoutTable"></table></div>
       <div class="footnote" id="knockoutNote"></div>
     </section>
 
     <section class="panel section points hidden" id="points">
-      <div class="section-head"><span>🟣 Ligas de Pontos Corridos <small>(confronto direto, até 38 rodadas)</small></span><small>Classificação e histórico</small></div>
+      <div class="section-head"><span>🟣 Ligas de Pontos Corridos <small>(confronto direto, até 38 rodadas)</small> <span class="info" title="Confronto direto: vitória 3 pts, empate 1. O histórico de posição só aparece quando confere com a classificação oficial da API.">i</span></span><small>Classificação e histórico</small></div>
       <div class="table-wrap"><table id="pointsTable"></table></div>
       <div class="footnote" id="pointsNote"></div>
     </section>
@@ -130,28 +211,40 @@ details.fold[open]>summary{border-bottom:1px solid #ffffff22}
   <details class="fold" id="foldScores">
     <summary><span class="fold-ico">📈</span><span id="foldScoresTxt">Pontuação por rodada — todas as rodadas</span><span class="fold-hint">toque para abrir/fechar</span></summary>
     <section class="panel section scores" id="scores" style="margin-top:12px">
-      <div class="section-head"><span>📈 Pontuação por rodada <small>(times monitorados)</small></span><small id="scoresLimite">Todas as rodadas</small></div>
+      <div class="section-head"><span>📈 Pontuação por rodada <small>(times monitorados)</small> <span class="info" title="Mostra os pontos do time em cada rodada. Regra: vai até a rodada em andamento (o parcial entra na soma); com o mercado aberto, até a anterior.">i</span></span><small id="scoresLimite">Todas as rodadas</small></div>
       <div class="table-wrap"><table id="scoresTable"></table></div>
       <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas: vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada corrente entra na soma) — com o mercado aberto, até a última rodada COMPLETA (a rodada futura ainda não pontuou). O seletor “Rodadas exibidas” na barra acima escolhe a JANELA mostrada (ex.: 6–10, últimas 5) — os dados seguem completos e o total continua somando TODAS as rodadas já disputadas.</div>
     </section>
   </details>
 </main>
 <dialog id="loginDialog">
-  <div class="dlg-head">Modo manual — janela comum da Globo</div>
+  <!-- v32: o mural de instruções virou assistente em 3 passos (stepper + barra de progresso),
+       com textos curtos e a nota “O que é compartilhado?” — o detalhe técnico fica no fim. -->
+  <div class="dlg-head">Entrar com a Globo — 3 passos simples<small>Modo manual — janela comum da Globo</small></div>
   <div class="dlg-body">
-    <div class="dlg-note" style="margin-top:-4px">Caminho alternativo, só para quando o automático não estiver disponível (ou se a sua conta só entra com Google/Facebook): aqui a janela é a comum do SEU navegador, sem porta de depuração — <b>Google e Facebook funcionam nela</b>. O caminho normal é o botão <b>Entrar com Globo</b>: abre o navegador controlado e conclui sozinho, sem você copiar nada.</div>
+    <div class="stepper" id="passosManual">
+      <div class="passo" id="pm1"><div class="bola">1</div>A janela da Globo abriu</div>
+      <div class="passo" id="pm2"><div class="bola">2</div>Você entra na Globo</div>
+      <div class="passo" id="pm3"><div class="bola">3</div>O painel conclui sozinho</div>
+    </div>
+    <div class="trilho p0" id="pmTrilho"><i></i></div>
+    <div class="seg-nota"><b>🔒 O que é compartilhado?</b> O login acontece inteiro no site oficial da Globo. O painel recebe apenas uma chave de acesso (código OAuth) para ler as suas ligas — <b>nenhuma senha passa por aqui</b>, e você revoga o acesso no Sair.</div>
     <div id="oidcSteps" hidden>
-      <div class="dlg-note" style="border-left:4px solid #f0a500;background:#fff8e8;padding:8px 10px;border-radius:6px"><b>⚠ Se a janela ficar EM BRANCO, é assim mesmo — deu certo!</b><br>Como você já entra na Globo neste navegador, ela nem mostra o login: vai direto para uma página em branco cujo endereço termina com <b>?code=…&state=…</b>. Esse endereço é a sua chave — e eu vou buscá-lo sozinho.</div>
-      <ol class="dlg-note" style="margin:6px 0;padding-left:18px;display:grid;gap:6px">
-        <li>Se a Globo pedir, entre com sua conta (e-mail/senha, Google ou Facebook) e resolva o captcha lá.</li>
-        <li>Na página EM BRANCO: <b>Ctrl+L</b> e <b>Ctrl+C</b>. São as ÚNICAS teclas necessárias — a Globo bloqueia todo caminho automático (o endereço final só pode sair de lá copiado).</li>
-        <li><b>Clique de volta no painel: eu pego o endereço da área de transferência, concluo o login, FECHO a janela da Globo e carrego as ligas sozinho.</b> Plano B: 📋 Colar e concluir (ou Ctrl+V no campo).</li>
-      </ol>
-      <div class="dlg-note" style="margin:0 0 4px"><b>Agora vem 1 aviso do navegador:</b> “o painel pode ver a área de transferência?” — <b>clique em Permitir</b> (é o que faz o resto ser automático). Se você já tinha negado: ícone à esquerda do endereço deste painel → <b>Permissões</b> → <b>Área de transferência</b> → Permitir, depois recarregue (F5).</div>
-      <label style="display:grid;gap:5px;font-size:13px;font-weight:700">Endereço detectado (preencho sozinho — você só mexe aqui se o automático falhar)
+      <div class="passo-card"><b>Passo 2 — entre normalmente na janela que abriu:</b> e-mail e senha, Google ou Facebook, do jeito que você sempre entra. <b>Se a página ficar EM BRANCO, é assim mesmo — deu certo!</b> Volte ao painel: eu pego o endereço sozinho.</div>
+      <label style="display:grid;gap:5px;font-size:13px;font-weight:700">Endereço da janela (eu preencho sozinho — você só mexe aqui se a leitura automática falhar)
         <input type="text" id="oidcPaste" placeholder="https://cartola.globo.com/login-callback.html?code=...&state=..." autocomplete="off" spellcheck="false">
       </label>
-      <div class="dlg-actions"><button type="button" id="oidcAgain">Abrir a janela de novo</button><button type="button" class="go" id="oidcFinish">Concluir login</button><button type="button" id="oidcPasteBtn" title="Lê o endereço copiado (Ctrl+C) e conclui sozinho">📋 Colar e concluir</button></div>
+      <div class="dlg-actions"><button type="button" id="oidcAgain">Reabrir a janela</button><button type="button" id="oidcPasteBtn" title="Lê o endereço copiado (Ctrl+C) e conclui sozinho">📋 Colar e concluir</button><button type="button" class="go" id="oidcFinish">Já entrei — concluir</button></div>
+      <details class="dlg-detalhe">
+        <summary>Instruções detalhadas e problemas comuns</summary>
+        <ol class="dlg-note">
+          <li>Na página EM BRANCO: <b>Ctrl+L</b> e <b>Ctrl+C</b>. São as ÚNICAS teclas necessárias — a Globo bloqueia todo caminho automático (o endereço final, que termina com ?code=…&state=…, só pode sair de lá copiado).</li>
+          <li>De volta ao painel vem 1 aviso do navegador: “o painel pode ver a área de transferência?” — <b>clique em Permitir</b> (é o que faz o resto ser automático). Se você já tinha negado: ícone à esquerda do endereço deste painel → <b>Permissões</b> → <b>Área de transferência</b> → Permitir, depois recarregue (F5).</li>
+          <li>Nesta janela comum do SEU navegador, <b>Google e Facebook funcionam</b> normalmente (é o caminho para contas que só entram por eles).</li>
+          <li>Janela fechada sem copiar o endereço? Clique em “Reabrir a janela” e repita o Ctrl+L / Ctrl+C.</li>
+          <li>Erro de rota ou rede: o server.js pode estar desatualizado (baixe a versão nova) ou o servidor da nuvem pode estar acordando da hibernação — espere um pouco e tente de novo.</li>
+        </ol>
+      </details>
     </div>
     <div class="dlg-error" id="oidcError" role="alert"></div>
     <div class="dlg-actions" style="margin-top:2px"><button type="button" id="loginCancel">Fechar</button></div>
@@ -167,6 +260,26 @@ details.fold[open]>summary{border-bottom:1px solid #ffffff22}
 </dialog>
 <script>
 /*
+  v32 — A PAINEL FÁCIL: por dentro o painel é o mesmo; por fora, a experiência segue o mockup
+  aprovado (síntese de Claude + ChatGPT + Gemini + Grok). (1) ESTADO INICIAL AMIGÁVEL — em vez de
+  página que “parece quebrada”, um convite: troféu, “Bem-vindo ao Superliga do Fabião!”, UM botão
+  grande “Entrar com Globo” + “Buscar um time” e a nota “Seu login é seguro: acontece na página
+  oficial da Globo — o painel recebe só uma chave de acesso e nunca vê a sua senha”. O convite sai
+  da cena quando existe time na lista. (2) HIERARQUIA DE BOTÕES — o modo manual e os dados brutos
+  saíram da vista principal e moram no menu “Avançado” (aria-haspopup/aria-expanded); quando o
+  Google/Facebook é bloqueado na janela controlada, o próprio menu pisca em amarelo e abre sozinho.
+  (3) LOGIN EM 3 PASSOS — o diálogo manual virou assistente: bolinhas 1-2-3 com barra de progresso
+  (janela abriu → você entra → o painel conclui sozinho), textos curtos e a nota “O que é
+  compartilhado?”; as instruções longas ficam em “Instruções detalhadas e problemas comuns”. O
+  login AUTOMÁTICO ganhou o mesmo stepper num cartão de progresso com botão “Cancelar o login”.
+  (4) SKELETON LOADERS — enquanto o 1º carregamento não responde (ex.: servidor da nuvem
+  hibernando), as seções mostram linhas brilhando em vez de tabelas vazias; o aviso “Acordando o
+  servidor na nuvem…” (v29) segue igual. (5) SPINNERS — “Atualizar dados” e “Buscar time” giram
+  enquanto trabalham. (6) CONTRASTE E ACESSIBILIDADE — cinzas secundários mais escuros, foco
+  visível por teclado, respeito a prefers-reduced-motion e tooltips simples (ícone “i”) com a
+  regra de cada seção — o jargão completo continua nas notas de rodapé. NADA muda na mecânica:
+  regra das rodadas (v30), seletor “Rodadas exibidas” (v31), banner-resumo, folds e o Sair que
+  limpa tudo — intactos.
   v31 — O CONTROLE DAS RODADAS EXIBIDAS VOLTOU: o seletor “Rodadas exibidas” (aposentado na
   v30) está de volta na barra superior, agora melhor: o padrão é “Todas as rodadas (1–N)” —
   exatamente o comportamento da v30 — e ele também oferece “Últimas 5”, “Últimas 10” e janelas
@@ -293,6 +406,7 @@ let roundView = "todas";
 const SF_ROUNDVIEW = "sf_roundview_v1"; // v31: a escolha fica guardada no navegador
 let mercadoObs = "";        // v30: status_mercado_obs da API ("Mercado Aberto", "Em andamento"…)
 let mercadoParcial = false; // v30: true = rodada atual em andamento (o parcial entra na pontuação)
+let primeiroLoad = true;    // v32: enquanto o 1º carregamento não responde, as seções mostram skeleton
 const $ = id => document.getElementById(id);
 function setStatus(msg,type=""){const el=$("status");el.textContent=msg;el.className="status "+type}
 function endpoint(path){ return API_BASE + path; }
@@ -903,7 +1017,7 @@ function buildPointsTable(){
   let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Rodadas</th><th>Situação</th><th>Posição</th><th>Pontos</th><th>V</th><th>E</th><th>D</th><th>Cartola</th><th>Líder</th>"+rounds.map(r=>`<th>Rdd ${r} - Pos.</th>`).join("")+"</tr></thead>";
   if(!list.length){
     const msg=!loggedIn?"Faça login com a Globo para carregar suas competições de pontos corridos.":pcState.status==="loading"?"Carregando…":pcState.status==="error"?(pcState.message||"Sem competições de pontos corridos para exibir."):"Nenhuma competição de pontos corridos foi encontrada na sua conta.";
-    html+=emptyRow(12+rounds.length,msg);
+    html+=primeiroLoad?skeletonRow(12+rounds.length):emptyRow(12+rounds.length,msg);
   }else{
     html+="<tbody>";
     list.forEach((l,i)=>{
@@ -941,13 +1055,15 @@ function buildPointsTable(){
   $("pointsNote").textContent=leagueNote("points");
 }
 function emptyRow(cols,text){return `<tbody><tr><td colspan="${cols}" class="empty" style="padding:22px">${escapeHtml(text)}</td></tr></tbody>`}
+// v32: skeleton — linhas “brilhando” no lugar da tabela vazia durante o 1º carregamento.
+function skeletonRow(cols){return `<tbody><tr><td colspan="${cols}" style="padding:14px 16px"><span class="sk" style="width:92%"></span><span class="sk" style="width:78%"></span><span class="sk" style="width:86%"></span></td></tr></tbody>`}
 
 function buildLeagueTable(kind,target,noteId){
   const list=leagues.filter(l=>l.kind===kind);
   const cols=10;
   let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Posição</th><th>Pontos</th><th>Turno</th><th>Mês</th><th>Rodada</th><th>Líder</th><th>Dif. p/ líder</th></tr></thead>";
   if(!list.length){
-    html+=emptyRow(cols,!loggedIn?"Faça login com a Globo para carregar suas ligas.":leagueState.status==="loading"?"Carregando…":"Sem ligas para exibir.");
+    html+=primeiroLoad?skeletonRow(cols):emptyRow(cols,!loggedIn?"Faça login com a Globo para carregar suas ligas.":leagueState.status==="loading"?"Carregando…":"Sem ligas para exibir.");
   }else{
     html+="<tbody>";
     list.forEach((l,i)=>{
@@ -979,7 +1095,7 @@ function buildKnockoutTable(){
   const rounds=roundColumns();
   let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Rodadas</th><th>Situação</th><th>Fase atual</th>"+rounds.map(r=>`<th>Rdd ${r} - Fase</th>`).join("")+"</tr></thead>";
   if(!list.length){
-    html+=emptyRow(6+rounds.length,!loggedIn?"Faça login com a Globo para carregar suas ligas mata-mata.":leagueState.status==="loading"?"Carregando…":"Sem ligas mata-mata para exibir.");
+    html+=primeiroLoad?skeletonRow(6+rounds.length):emptyRow(6+rounds.length,!loggedIn?"Faça login com a Globo para carregar suas ligas mata-mata.":leagueState.status==="loading"?"Carregando…":"Sem ligas mata-mata para exibir.");
   }else{
     html+="<tbody>";
     list.forEach((l,i)=>{
@@ -1002,8 +1118,8 @@ function buildKnockoutTable(){
 function buildScoresTable(){
   const rounds=roundColumns();
   let html="<thead><tr><th>#</th><th>Time</th>"+rounds.map(r=>`<th>Rdd ${r}</th>`).join("")+"<th>Pontuação</th></tr></thead>";
-  if(!teams.length){ // v27: orientação em vez de tabela em branco
-    html+=emptyRow(3+rounds.length,"Nenhum time monitorado. Entre com a Globo (botão no topo) — o time da sua conta entra sozinho — ou busque um time pelo nome acima.");
+  if(!teams.length){ // v27: orientação em vez de tabela em branco (v32: skeleton no 1º carregamento)
+    html+=primeiroLoad?skeletonRow(3+rounds.length):emptyRow(3+rounds.length,"Nenhum time monitorado. Entre com a Globo (botão no topo) — o time da sua conta entra sozinho — ou busque um time pelo nome acima.");
   }else{
     html+="<tbody>";
     teams.forEach((t,i)=>{
@@ -1050,8 +1166,13 @@ function renderResumo(){
     :`<div class="me-card fantasma"><span class="lbl">MEU TIME</span><span class="nome">Entre com a Globo</span><span class="sub">o time da sua conta entra sozinho na lista</span></div>`)
     +outros.map(chip).join("");
 }
+// v32: estado inicial amigável — o convite (hero) só existe enquanto não há time na lista.
+function renderHero(){
+  const h=$("hero");if(!h)return;
+  h.className=(!loggedIn&&!teams.length)?"hero":"hero hidden";
+}
 function render(){
-  renderTeams();buildScoresTable();renderLeagues();renderResumo();
+  renderTeams();buildScoresTable();renderLeagues();renderResumo();renderHero();
 }
 async function refreshAll(){
   $("refreshBtn").classList.add("loading");
@@ -1100,10 +1221,14 @@ async function refreshAll(){
   }catch(e){
     setStatus("Falha ao consultar o Cartola: "+e.message,"error");
     render();
-  }finally{$("refreshBtn").classList.remove("loading")}
+  }finally{
+    $("refreshBtn").classList.remove("loading");
+    if(primeiroLoad){primeiroLoad=false;render()} // v32: troca os skeletons pelas tabelas/guias reais
+  }
 }
 async function addSearchTeam(){
   const name=$("searchInput").value.trim();if(!name)return;
+  const sb=$("searchBtn");if(sb)sb.classList.add("loading"); // v32: spinner no Buscar time
   setStatus("Buscando "+name+" na API do Cartola…");
   try{
     const found=await searchTeam(name);
@@ -1111,6 +1236,7 @@ async function addSearchTeam(){
     teams.push({name:found.name,id:found.id,slug:found.slug,league:"Clássica #"+String(teams.length+1).padStart(2,"0"),scores:{},total:0,status:"Encontrado"});
     $("searchInput").value="";render();setStatus("Time encontrado. Atualizando histórico…","ok");await refreshAll();
   }catch(e){setStatus("Não foi possível localizar o time. Tente o nome exato ou informe o ID no código da página. "+e.message,"error")}
+  finally{if(sb)sb.classList.remove("loading")}
 }
 document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));
@@ -1135,12 +1261,29 @@ $("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")addSearchTeam
 /* ===== Login Globo ===== */
 let loggedIn=false;
 // v26: liga/desliga o destaque piscante do link “modo manual” (aviso de bloqueio do Google/Facebook).
-function destacarModoManual(ligar){const el=document.getElementById("manualLink");if(el)el.classList.toggle("destaque",!!ligar)}
+// v32: o link mora no menu “Avançado” — o menu inteiro pisca e abre sozinho, impossível não achar.
+function destacarModoManual(ligar){
+  const el=document.getElementById("manualLink");if(el)el.classList.toggle("destaque",!!ligar);
+  const av=$("advBtn");if(av)av.classList.toggle("destaque",!!ligar);
+  if(ligar)abrirAdv();
+}
+// v32 — menu “Avançado” (aria-expanded) e cartão de progresso do login automático.
+function abrirAdv(){const m=$("advMenu");if(m)m.classList.remove("hidden");const b=$("advBtn");if(b&&b.setAttribute)try{b.setAttribute("aria-expanded","true")}catch{}}
+function fecharAdv(){const m=$("advMenu");if(m)m.classList.add("hidden");const b=$("advBtn");if(b&&b.setAttribute)try{b.setAttribute("aria-expanded","false")}catch{}}
+function mostrarLoginProgress(){const p=$("loginProgress");if(p)p.classList.remove("hidden");setPassos("pa",1,2)}
+function fecharLoginProgress(){const p=$("loginProgress");if(p)p.classList.add("hidden")}
+// v32: stepper 1-2-3 (manual “pm”, automático “pa”) — feito = verde, atual = laranja, trilho acompanha.
+function setPassos(p,feito,atual){
+  for(let i=1;i<=3;i++){const d=$(p+i);if(!d)continue;const c=["passo"];if(i<=feito)c.push("feito");if(i===atual)c.push("atual");d.className=c.join(" ")}
+  const t=$(p+"Trilho");if(!t)return;const tc=["trilho"];if(feito>=3)tc.push("p3");else if(feito===2)tc.push("p2");else if(feito===1)tc.push("p1");else tc.push("p0");t.className=tc.join(" ");
+}
 function renderAuth(){
   const mine=teams.find(t=>t.mine);
+  // v32: hierarquia — sem login, UM botão principal; o modo manual mora no menu “Avançado”.
   $("authBox").innerHTML=loggedIn
     ? `<span>Conectado${mine?` como <b>${escapeHtml(mine.name)}</b>`:""}</span><button id="logoutBtn">Sair</button>`
-    : `<button class="primary" id="loginBtn">Entrar com Globo</button><a href="#" id="manualLink" style="color:#ffd45a;font-size:12px;font-weight:700;text-decoration:underline" title="Modo manual: janela comum da Globo (Google/Facebook funcionam nela) + copiar o endereço">modo manual</a>`;
+    : `<button class="primary" id="loginBtn">Entrar com Globo</button>`;
+  renderHero();
 }
 async function authPost(url,body){
   const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
@@ -1238,7 +1381,7 @@ async function oidcCapturarClip(){
   if(!txt||txt===oidcUltimaLeitura||!/[?&#]code=/.test(txt)) return;
   oidcUltimaLeitura=txt;
   const st=(txt.match(/[?&#]state=([\w\-.~+%]+)/)||[])[1];
-  if(st&&oidcFlowId&&decodeURIComponent(st)!==oidcFlowId){oidcErro("O endereço na área de transferência é de outra tentativa. Clique em “Abrir a janela de novo” e copie o NOVO.");return}
+  if(st&&oidcFlowId&&decodeURIComponent(st)!==oidcFlowId){oidcErro("O endereço na área de transferência é de outra tentativa. Clique em “Reabrir a janela” e copie o NOVO.");return}
   $("oidcPaste").value=txt;
   setStatus("Endereço detectado sozinho — concluindo o login, fechando a janela e carregando as ligas…");
   concluirOidc();
@@ -1255,7 +1398,7 @@ function oidcIniciarPoll(){
   oidcPoll=setInterval(()=>{
     if(!oidcWin||oidcWin.closed){
       oidcPararPoll();
-      if(!$("oidcPaste").value.trim()) oidcErro("A janela foi fechada sem copiar o endereço. Clique em “Abrir a janela de novo”: na página em branco use Ctrl+L e Ctrl+C e volte ao painel — eu concluo, fecho a janela e carrego as ligas sozinho.");
+      if(!$("oidcPaste").value.trim()) oidcErro("A janela foi fechada sem copiar o endereço. Clique em “Reabrir a janela”: na página em branco use Ctrl+L e Ctrl+C e volte ao painel — eu concluo, fecho a janela e carrego as ligas sozinho.");
       return;
     }
     let legivel=true; try{void oidcWin.location.href}catch(e){legivel=false}
@@ -1274,9 +1417,11 @@ function cancelarAuto(){
 }
 async function entrarPelaGlobo(){
   oidcErro("");destacarModoManual(false);
+  fecharLoginProgress(); // v32
   if(autoId)cancelarAuto(); // clicar de novo reinicia: fecha o navegador anterior e abre outro
   const btn=$("loginBtn");if(btn){btn.disabled=true;btn.textContent="Abrindo o navegador…"}
-  setStatus("Abrindo o navegador na página da Globo — entre nela com E-MAIL e SENHA da Conta Globo. Prefiro que evite o botão “Continuar com Google”: se ele for recusado com o aviso “Este navegador ou app pode não ser seguro”, não é erro do painel — entre com e-mail e senha nessa mesma janela, ou use o link “modo manual”. Quando a Globo concluir, eu fecho o navegador e carrego as ligas sozinho.");
+  // v32: texto curto — o aviso completo do Google/Facebook mora no cartão de progresso (lp-note).
+  setStatus("Abrindo o navegador na página da Globo — entre nela com e-mail e senha; quando a Globo concluir, eu fecho o navegador e carrego as ligas sozinho.");
   let data;
   try{data=await authPost("/auth/oidc/auto",{})}
   catch{if(btn){btn.disabled=false;btn.textContent="Entrar com Globo"}return abrirJanelaGlobo()} // servidor antigo/sem rota: manual
@@ -1287,6 +1432,7 @@ async function entrarPelaGlobo(){
   }
   const meuId=data.flowId;autoId=meuId;
   $("oidcSteps").hidden=true;
+  mostrarLoginProgress(); // v32: progresso visual em 3 passos
   let falhas=0;
   try{
     while(autoId===meuId){
@@ -1302,20 +1448,27 @@ async function entrarPelaGlobo(){
       if(autoId!==meuId)return; // cancelado pelo usuário
       if(d.loggedIn){
         setStatus("Login concluído! Carregando as ligas…","ok");
+        setPassos("pa",2,3); // v32: passo 3 — o painel conclui sozinho
         try{window.focus()}catch{}
         await finishLogin();
+        fecharLoginProgress();
         autoId=null;
         return;
       }
       if(d.state==="error")throw new Error(d.error||"O login automático falhou.");
       if(d.nota){oidcErro(d.nota);if(/modo manual/.test(d.nota))destacarModoManual(true)}
+      // v32: o poll “respira” — 1,2s entre consultas (antes martelava o servidor sem pausa).
+      await new Promise(r=>setTimeout(r,1200));
     }
   }catch(ex){
-    if(autoId===meuId){autoId=null;oidcErro(ex.message+" Para tentar de novo, clique em “Entrar com Globo”; para a janela comum (Google/Facebook funcionam nela), use o link “modo manual”, ao lado do botão.")}
+    if(autoId===meuId){autoId=null;fecharLoginProgress();oidcErro(ex.message+" Para tentar de novo, clique em “Entrar com Globo”; para a janela comum (Google/Facebook funcionam nela), use o link “modo manual”, no menu Avançado.")}
   }
+  fecharLoginProgress(); // v32: encerrado (concluído, cancelado ou falhou) — some da cena
 }
 async function abrirJanelaGlobo(){
   oidcErro("");destacarModoManual(false); // usuário já achou o caminho: para de piscar
+  fecharLoginProgress(); // v32: o modo manual assume a cena
+  setPassos("pm",0,1);   // v32: passo 1 em andamento — a janela está abrindo
   // Modo manual: a janela comum do navegador + o diálogo com o campo de colar (o automático não usa diálogo).
   try{if(!dlg.open)dlg.showModal()}catch{}
   oidcTrocando=false;oidcUltimaLeitura=null;oidcClipMorto=false;oidcClipAvisou=false;
@@ -1327,6 +1480,7 @@ async function abrirJanelaGlobo(){
     const data=await authPost("/auth/oidc/start",{});
     oidcFlowId=data.flowId;
     $("oidcSteps").hidden=false;
+    setPassos("pm",1,2); // v32: passo 1 feito (janela abriu), passo 2 é do usuário
     $("oidcPaste").value="";
     // Pede a permissão de leitura AGORA — com o painel visível e a janela ainda no aviso
     // “Abrindo a página oficial…” (o balão do navegador não fica escondido). Com a permissão,
@@ -1351,10 +1505,11 @@ async function concluirOidc(){
   const endereco=$("oidcPaste").value.trim();
   if(!endereco){oidcErro("Cole o endereço que apareceu na janela da Globo (contém ?code=…&state=…).");return}
   const m=(endereco.match(/[?&#]state=([\w\-.~+%]+)/)||[])[1];
-  if(m&&oidcFlowId&&decodeURIComponent(m)!==oidcFlowId){oidcErro("Esse endereço é de uma tentativa anterior. Clique em “Abrir a janela de novo” e copie o endereço NOVO que aparecer.");return}
+  if(m&&oidcFlowId&&decodeURIComponent(m)!==oidcFlowId){oidcErro("Esse endereço é de uma tentativa anterior. Clique em “Reabrir a janela” e copie o endereço NOVO que aparecer.");return}
   const ehUrl=/[?&#]code=/.test(endereco);
   if(!ehUrl&&!/^[A-Za-z0-9\-._~%]{20,}$/.test(endereco)){oidcErro("Esse texto não parece o endereço da janela (com ?code=…) nem o código sozinho. Copie de novo com Ctrl+L e Ctrl+C.");return}
   const corpo=ehUrl?{endereco,state:oidcFlowId}:{code:endereco,state:oidcFlowId};
+  setPassos("pm",2,3); // v32: passo 3 — o painel conclui sozinho
   btn.disabled=true;btn.textContent="Conectando…";oidcTrocando=true;
   try{
     await authPost("/auth/oidc/exchange",corpo);
@@ -1366,8 +1521,8 @@ async function concluirOidc(){
     }
     try{window.focus()}catch{}
     await finishLogin();dlg.close();
-  }catch(ex){oidcErro(ex.message)}
-  finally{oidcTrocando=false;btn.disabled=false;btn.textContent="Concluir login"}
+  }catch(ex){oidcErro(ex.message);setPassos("pm",1,2)}
+  finally{oidcTrocando=false;btn.disabled=false;btn.textContent="Já entrei — concluir"}
 }
 // Lê o endereço direto da área de transferência (Chrome/Edge pedem permissão 1 vez) e conclui.
 async function colarEConcluir(){
@@ -1395,6 +1550,7 @@ async function doLogout(){
     setStatus("Encerrando a sessão e apagando os cookies…");
     oidcPararPoll();oidcFlowId=null;oidcTrocando=false;
     if(autoId)cancelarAuto();
+    fecharLoginProgress();fecharAdv(); // v32: some com o cartão de progresso e o menu Avançado
     try{dlg.close()}catch{}
     if(oidcWin&&!oidcWin.closed){try{oidcWin.close()}catch{}}
     oidcWin=null;
@@ -1421,9 +1577,17 @@ async function doLogout(){
 const dlg=$("loginDialog");
 $("authBox").addEventListener("click",e=>{
   if(e.target.id==="loginBtn"){oidcErro("");entrarPelaGlobo()} // entra DIRETO no navegador controlado, sem diálogo
-  if(e.target.id==="manualLink")abrirJanelaGlobo(); // modo manual: janela comum + campo para colar
   if(e.target.id==="logoutBtn")doLogout();
 });
+// v32 — hierarquia e acessibilidade: menu “Avançado” (fecha fora/Escape), CTA do hero,
+// modo manual morando no menu e botão para cancelar o login automático.
+$("advBtn").addEventListener("click",e=>{e.stopPropagation();const m=$("advMenu");if(!m)return;m.classList.contains("hidden")?abrirAdv():fecharAdv()});
+try{document.addEventListener("click",e=>{const m=$("advMenu");if(m&&!m.classList.contains("hidden")){const b=$("advBtn");const alvo=e.target;if(alvo!==b&&!(b&&b.contains&&b.contains(alvo))&&!(m.contains&&m.contains(alvo)))fecharAdv()}})}catch{}
+try{document.addEventListener("keydown",e=>{if(e.key==="Escape")fecharAdv()})}catch{}
+$("manualLink").addEventListener("click",()=>abrirJanelaGlobo());
+$("heroLogin").addEventListener("click",()=>entrarPelaGlobo());
+$("heroSearch").addEventListener("click",()=>{const si=$("searchInput");if(si&&si.focus)si.focus();try{if(si&&si.scrollIntoView)si.scrollIntoView({behavior:"smooth",block:"center"})}catch{}});
+$("autoCancelBtn").addEventListener("click",()=>{cancelarAuto();fecharLoginProgress();setStatus("Login cancelado. Você pode tentar de novo quando quiser.")});
 $("loginCancel").addEventListener("click",()=>dlg.close());
 dlg.addEventListener("close",cancelarAuto);
 $("oidcAgain").addEventListener("click",abrirJanelaGlobo);
