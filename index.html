@@ -10,7 +10,7 @@
 header{background:linear-gradient(110deg,#06183b,#073d85 58%,#06183b);color:white;padding:22px 28px;border-bottom:5px solid var(--orange);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:16px}.crest{width:62px;height:62px;border-radius:18px;background:linear-gradient(145deg,#0874ff,#06265e);border:3px solid #f5bd27;display:grid;place-items:center;font-size:34px;box-shadow:0 5px 18px #0005}
 h1{margin:0;font-size:clamp(23px,3vw,36px);font-weight:900;letter-spacing:.4px}.brand small{display:block;color:#dce8ff;margin-top:4px;font-weight:600}.metrics{display:flex;gap:10px;flex-wrap:wrap}.metric{min-width:125px;padding:12px 16px;border:1px solid #6c91c9;border-radius:13px;background:#061a3d99;text-align:center}.metric b{display:block;font-size:24px;color:#ffd45a}.metric span{font-size:12px;color:#e0e9fa}
-main{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18px;max-width:1800px;margin:auto}.panel{background:var(--white);border:1px solid #dce3ee;border-radius:15px;box-shadow:0 5px 18px #0b255011;overflow:hidden}.panel-title{padding:13px 16px;background:linear-gradient(100deg,#08285d,#0753b6);color:white;font-weight:800;font-size:17px}
+main{display:grid;gap:14px;padding:16px 18px;max-width:1800px;margin:auto}.panel{background:var(--white);border:1px solid #dce3ee;border-radius:15px;box-shadow:0 5px 18px #0b255011;overflow:hidden}.panel-title{padding:13px 16px;background:linear-gradient(100deg,#08285d,#0753b6);color:white;font-weight:800;font-size:17px}
 .team-list{padding:10px}.team{display:flex;align-items:center;gap:10px;padding:12px 9px;border-bottom:1px solid var(--line)}.team:last-child{border:0}.team .num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#edf2fa;font-weight:900}.team .name{font-weight:750;flex:1}.team .state{font-size:11px;color:var(--muted)}.team-empty{padding:18px 12px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.55}.team-empty b{color:#b35400}
 .side-note{margin-top:14px;padding:16px;border-radius:14px;background:linear-gradient(130deg,#09224e,#0755ad);color:#fff;text-align:center}.side-note b{font-size:18px;color:#ffd35b}
 .content{min-width:0}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar button,.toolbar select,.toolbar input{border:1px solid #cbd5e4;border-radius:10px;padding:10px 13px;background:white;color:var(--ink);font-weight:700}.toolbar button{cursor:pointer;background:var(--orange);color:white;border-color:var(--orange)}.toolbar button.secondary{background:#fff;color:var(--ink);border-color:#cbd5e4}.toolbar input{min-width:220px;flex:1}
@@ -21,7 +21,7 @@ main{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;padding:18p
 .section-tools{display:flex;align-items:center;gap:8px}.section-tools select{border:1px solid #ffffff77;border-radius:8px;padding:6px;background:#ffffffee;color:#102044;font-weight:700}
 .footnote{font-size:12px;color:var(--muted);padding:10px 13px;background:#fafbfd;border-top:1px solid var(--line)}
 .hidden{display:none!important}.loading{opacity:.6;pointer-events:none}
-@media(max-width:900px){main{grid-template-columns:1fr;padding:10px}.team-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.team{padding:8px}.metrics{width:100%}.metric{flex:1}}
+@media(max-width:900px){main{padding:10px}.team-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.team{padding:8px}.metrics{width:100%}.metric{flex:1}}
 @media(max-width:560px){header{padding:16px}.brand{align-items:flex-start}.crest{width:48px;height:48px;font-size:26px}.team-list{grid-template-columns:1fr}.tabs{grid-template-columns:1fr}.toolbar input{min-width:100%}.metric{min-width:0}}
 
 .authbox{display:flex;align-items:center;gap:10px;font-size:13px;color:#e0e9fa;margin-left:auto}.authbox b{color:#ffd45a}.authbox button{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#fff;color:#06183b}.authbox button.primary{background:var(--orange);color:#fff}
@@ -41,6 +41,32 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
    é cancelado ou o usuário já clicou nele). */
 #manualLink.destaque{animation:pulsaDestaque 1.1s ease-in-out infinite;background:#ffd45a;color:#3d2b00!important;padding:4px 10px;border-radius:99px}
 @keyframes pulsaDestaque{0%,100%{opacity:1}50%{opacity:.45}}
+/* v30 — banner-resumo (Meu time + times cadastrados direto no cabeçalho, mobile/web)
+   e seções ocultas (details.fold): no celular abrem fechadas, na tela larga abertas. */
+.banner-resumo{width:100%;display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;margin-top:2px}
+.resumo-vazio{width:100%;padding:12px 16px;border:1px dashed #6c91c9;border-radius:12px;background:#061a3d66;color:#dce8ff;font-size:13px;line-height:1.55}
+.resumo-vazio b{color:#ffd45a}
+.me-card{flex:1 1 240px;min-width:220px;max-width:430px;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:11px 16px;border-radius:14px;background:linear-gradient(120deg,#ffc21a,#ff9d00);color:#3d2600;box-shadow:0 4px 14px #0004}
+.me-card .lbl{font-size:10.5px;font-weight:900;letter-spacing:1.3px;opacity:.72}
+.me-card .nome{font-weight:900;font-size:17px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me-card .tot{font-size:25px;font-weight:900;line-height:1.1}
+.me-card .tot small{font-size:12px;font-weight:800}
+.me-card .sub{font-size:11.5px;font-weight:700;opacity:.78;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me-card.fantasma{background:#061a3d99;border:1px dashed #6c91c9;color:#dce8ff;box-shadow:none}
+.me-card.fantasma .nome{color:#ffd45a}
+.chip{flex:1 1 150px;max-width:260px;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:8px 13px;border-radius:12px;border:1px solid #6c91c9;background:#061a3d99;min-width:0}
+.chip .nome{font-weight:800;font-size:12.5px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip .tot{color:#ffd45a;font-weight:900;font-size:16px}
+.chip .tot small{color:#c9d8f2;font-size:10px;font-weight:700}
+details.fold{background:var(--white);border:1px solid #dce3ee;border-radius:15px;box-shadow:0 5px 18px #0b255011;overflow:hidden}
+details.fold>summary{display:flex;align-items:center;gap:9px;padding:14px 16px;background:linear-gradient(100deg,#08285d,#0753b6);color:#fff;font-weight:850;font-size:16px;cursor:pointer;list-style:none;user-select:none}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary .fold-ico{font-size:19px}
+details.fold>summary .fold-count{font-size:12px;font-weight:800;background:#ffffff2b;padding:2px 9px;border-radius:99px}
+details.fold>summary .fold-hint{margin-left:auto;font-size:11px;font-weight:600;opacity:.75;white-space:nowrap}
+details.fold>summary:after{content:"\25BE";font-size:14px;opacity:.9}
+details.fold[open]>summary:after{content:"\25B4"}
+details.fold[open]>summary{border-bottom:1px solid #ffffff22}
 </style>
 </head>
 <body>
@@ -52,60 +78,61 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
     <div class="metric"><b>38</b><span>Rodadas da temporada</span></div>
     <div class="metric"><b id="marketRound">—</b><span>Rodada atual</span></div>
   </div>
+  <div class="banner-resumo" id="bannerResumo"></div>
 </header>
 <main>
-<aside>
-  <div class="panel">
-    <div class="panel-title">🏆 Times cadastrados</div>
-    <div class="team-list" id="teamList"></div>
-  </div>
-  <div class="side-note"><div style="font-size:36px">🏆</div><b>SEU TIME • 3 MODALIDADES</b><div style="margin-top:5px;font-size:12px">Uma só Superliga!</div></div>
-</aside>
-<div class="content">
   <div class="toolbar">
     <input id="searchInput" placeholder="Buscar time no Cartola pelo nome..." aria-label="Buscar time">
     <button id="searchBtn">Buscar time</button>
-    <select id="roundRange" aria-label="Rodadas exibidas">
-      <option value="1-5">Rodadas 1–5</option><option value="6-10">Rodadas 6–10</option>
-      <option value="11-15">Rodadas 11–15</option><option value="16-20">Rodadas 16–20</option>
-      <option value="21-25">Rodadas 21–25</option><option value="26-30">Rodadas 26–30</option>
-      <option value="31-35">Rodadas 31–35</option><option value="34-38" selected>Rodadas 34–38</option>
-      <option value="1-38">Todas (rolagem horizontal)</option>
-    </select>
     <button class="secondary" id="refreshBtn">↻ Atualizar dados</button>
     <button class="secondary hidden" id="diagBtn" title="Mostra o JSON que a API devolveu, para conferência">{ } Dados brutos</button>
   </div>
   <div class="status" id="status">Preparando conexão com a API pública do Cartola FC…</div>
-  <div class="tabs">
-    <button class="tab active" data-target="classic">🏆 Ligas Clássicas</button>
-    <button class="tab" data-target="knockout">⚔️ Mata-Mata</button>
-    <button class="tab" data-target="points">🟣 Pontos Corridos</button>
-  </div>
 
-  <section class="panel section classic" id="classic">
-    <div class="section-head"><span>🏆 Ligas Clássicas <small>(suas ligas no Cartola)</small></span><small>Classificação oficial</small></div>
-    <div class="table-wrap"><table id="classicTable"></table></div>
-    <div class="footnote" id="classicNote"></div>
-  </section>
+  <details class="fold" id="foldTimes">
+    <summary><span class="fold-ico">⚽</span>Times cadastrados<span class="fold-count" id="foldTimesCount">(0)</span><span class="fold-hint">toque para abrir/fechar</span></summary>
+    <div class="panel" style="margin-top:12px">
+      <div class="panel-title">🏆 Lista de times monitorados</div>
+      <div class="team-list" id="teamList"></div>
+    </div>
+    <div class="side-note" style="margin-top:12px"><div style="font-size:30px">🏆</div><b>SEU TIME • 3 MODALIDADES</b><div style="margin-top:5px;font-size:12px">Uma só Superliga!</div></div>
+  </details>
 
-  <section class="panel section knockout hidden" id="knockout">
-    <div class="section-head"><span>⚔️ Ligas Mata-Mata <small>(fase por rodada)</small></span><small>Fase da disputa</small></div>
-    <div class="table-wrap"><table id="knockoutTable"></table></div>
-    <div class="footnote" id="knockoutNote"></div>
-  </section>
+  <details class="fold" id="foldLigas">
+    <summary><span class="fold-ico">🏆</span>Ligas — Clássicas, Mata-Mata e Pontos Corridos<span class="fold-hint">toque para abrir/fechar</span></summary>
+    <div class="tabs" style="margin-top:12px">
+      <button class="tab active" data-target="classic">🏆 Ligas Clássicas</button>
+      <button class="tab" data-target="knockout">⚔️ Mata-Mata</button>
+      <button class="tab" data-target="points">🟣 Pontos Corridos</button>
+    </div>
 
-  <section class="panel section points hidden" id="points">
-    <div class="section-head"><span>🟣 Ligas de Pontos Corridos <small>(confronto direto, até 38 rodadas)</small></span><small>Classificação e histórico</small></div>
-    <div class="table-wrap"><table id="pointsTable"></table></div>
-    <div class="footnote" id="pointsNote"></div>
-  </section>
+    <section class="panel section classic" id="classic">
+      <div class="section-head"><span>🏆 Ligas Clássicas <small>(suas ligas no Cartola)</small></span><small>Classificação oficial</small></div>
+      <div class="table-wrap"><table id="classicTable"></table></div>
+      <div class="footnote" id="classicNote"></div>
+    </section>
 
-  <section class="panel section scores" id="scores">
-    <div class="section-head"><span>📈 Pontuação por rodada <small>(times monitorados)</small></span><small>Pontos de cada rodada</small></div>
-    <div class="table-wrap"><table id="scoresTable"></table></div>
-    <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas.</div>
-  </section>
-</div>
+    <section class="panel section knockout hidden" id="knockout">
+      <div class="section-head"><span>⚔️ Ligas Mata-Mata <small>(fase por rodada)</small></span><small>Fase da disputa</small></div>
+      <div class="table-wrap"><table id="knockoutTable"></table></div>
+      <div class="footnote" id="knockoutNote"></div>
+    </section>
+
+    <section class="panel section points hidden" id="points">
+      <div class="section-head"><span>🟣 Ligas de Pontos Corridos <small>(confronto direto, até 38 rodadas)</small></span><small>Classificação e histórico</small></div>
+      <div class="table-wrap"><table id="pointsTable"></table></div>
+      <div class="footnote" id="pointsNote"></div>
+    </section>
+  </details>
+
+  <details class="fold" id="foldScores">
+    <summary><span class="fold-ico">📈</span>Pontuação por rodada — todas as rodadas<span class="fold-hint">toque para abrir/fechar</span></summary>
+    <section class="panel section scores" id="scores" style="margin-top:12px">
+      <div class="section-head"><span>📈 Pontuação por rodada <small>(times monitorados)</small></span><small id="scoresLimite">Todas as rodadas</small></div>
+      <div class="table-wrap"><table id="scoresTable"></table></div>
+      <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas: vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada corrente entra na soma) — com o mercado aberto, até a última rodada COMPLETA (a rodada futura ainda não pontuou).</div>
+    </section>
+  </details>
 </main>
 <dialog id="loginDialog">
   <div class="dlg-head">Modo manual — janela comum da Globo</div>
@@ -138,6 +165,41 @@ td.team-cell a{color:inherit;text-decoration:none}td.team-cell a:hover{text-deco
 </dialog>
 <script>
 /*
+  v30 — MOBILE/WEB + TODAS AS RODADAS: (1) BANNER-RESUMO — a informação essencial subiu para o
+  cabeçalho: “Meu time” (nome, total de pontos e situação do mercado) e um cartão por time
+  cadastrado (nome + total) aparecem DIRETO no banner, em qualquer tela — celular ou desktop.
+  O restante (lista detalhada de times, ligas e pontuação por rodada) virou SEÇÕES OCULTAS
+  (details): no celular começam fechadas — um toque no título abre —, na tela larga começam
+  abertas, e a escolha de cada seção fica guardada no navegador. A coluna lateral saiu; o
+  layout agora é uma coluna só, que se adapta do celular ao desktop. (2) TODAS AS RODADAS —
+  o seletor de janelas (1–5 … 34–38) saiu do ar: a pontuação por rodada (e o histórico de
+  fase/posição das ligas) SEMPRE mostra todas as rodadas, de 1 até a última com pontuação.
+  (3) REGRA DA RODADA — a pontuação vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada
+  corrente entra na soma e na tabela); com o mercado ABERTO (ou fechado, antes da bola rolar)
+  a rodada atual ainda não pontuou — nesse caso o histórico vai até a ANTERIOR. A regra
+  aparece na barra de status, no subtítulo da tabela e no cartão do Meu time.
+  v29 — PRONTO PARA A NUVEM (Render e afins): três consertos para o painel publicado na internet
+  (https://superliga-fabiao.onrender.com). (1) SESSÃO QUE NÃO MORRE MAIS: o plano gratuito do
+  Render HIBERNA o servidor após ~15 min sem acesso e ele acorda com a memória limpa — e a sessão
+  vivia só na memória do servidor (de propósito: o token nunca ia para o navegador). Era isso que
+  “matava a sessão” de quem usava o painel publicado. Agora o painel guarda uma CÓPIA DE RESERVA
+  da credencial no armazenamento local DELE (o painel não carrega script de terceiros) e, quando o
+  servidor acorda sem memória, a reenvia (POST /auth/restaurar): o servidor revalida na API do
+  Cartola (renovando com o refresh_token quando o access_token já venceu) e recria a sessão — a
+  hibernação fica transparente. O Sair continua matando tudo e agora também apaga a reserva.
+  (2) LOGIN NA NUVEM SEM “COMPUTADOR SEM CHROME”: o modo automático (Chrome controlado) é um
+  recurso LOCAL — o servidor da nuvem não tem Chrome nem tela. Quando ele responde indisponível,
+  o painel abre o modo manual (janela comum da Globo — Google/Facebook funcionam nela — e conclusão
+  pelo endereço, com leitura automática da área de transferência) já com a explicação certa.
+  (3) HIBERNAÇÃO TRANSPARENTE: enquanto a aba estiver aberta, o painel toca de leve no servidor a
+  cada 5 minutos (mantém a instância gratuita acordada) e, se a primeira resposta demorar, avisa
+  “Acordando o servidor na nuvem…” — no plano gratuito pode levar até ~1 minuto, uma vez só.
+  v28 — SAIR LIMPA TAMBÉM OS TIMES BUSCADOS: até a v27, o Sair removia só o time vindo do login;
+  os times que você adicionou pelo campo “Buscar time” (e as pontuações deles) ficavam na lista
+  depois de deslogar. Agora o Sair volta o painel ao estado de FÁBRICA: a lista de times vai a
+  ZERO — sai o time da conta E os buscados, com todo o histórico de pontos — e as tabelas voltam
+  a mostrar a orientação. A sessão/token/perfil do navegador continuam sendo mortos como na v25,
+  e os dados brutos de ligas/competições da conta também saem da memória da página.
   v27 — SEM TIME PRÉ-CASTRADO: o painel começa VAZIO. O “Super Fabiao PRO FC” que vinha fixo no
   código (INITIAL_TEAMS) saiu — nenhum time é monitorado sem você pedir. Os times entram por dois
   caminhos: 1) LOGIN — ao entrar com a Globo, o time da sua conta entra sozinho na lista (e as ligas
@@ -213,11 +275,20 @@ const INITIAL_TEAMS = [];
 const KNOCKOUT_PHASES = {};
 let teams = INITIAL_TEAMS.map(t=>({...t, scores:{}, total:0, status:"Aguardando busca"}));
 let currentRound = null;
+let limiteRodada = null;    // v30: última rodada com pontuação buscada/exibida — sempre de 1 até aqui
+let mercadoObs = "";        // v30: status_mercado_obs da API ("Mercado Aberto", "Em andamento"…)
+let mercadoParcial = false; // v30: true = rodada atual em andamento (o parcial entra na pontuação)
 const $ = id => document.getElementById(id);
 function setStatus(msg,type=""){const el=$("status");el.textContent=msg;el.className="status "+type}
 function endpoint(path){ return API_BASE + path; }
+const SF_SESSAO = "sf_sessao_reserva_v1"; // v29: cópia de reserva da credencial (localStorage do painel)
+function guardarSessaoReserva(valor){ if(valor){ try{ localStorage.setItem(SF_SESSAO,String(valor)) }catch{} } }
+function limparSessaoReserva(){ try{ localStorage.removeItem(SF_SESSAO) }catch{} }
+// v29: quando o servidor renova o token, devolve a reserva nova no cabeçalho x-sf-sessao — atualiza.
+function colherSessaoDoServidor(r){ try{ const v=r.headers&&typeof r.headers.get==="function"?r.headers.get("x-sf-sessao"):null; if(v)guardarSessaoReserva(v) }catch{} }
 async function api(path){
   const r=await fetch(endpoint(path),{headers:{"Accept":"application/json"}});
+  colherSessaoDoServidor(r); // v29: renovação do token atualiza a cópia de reserva
   if(!r.ok){
     let msg="HTTP "+r.status+" em "+path;
     try{const d=await r.json();if(d&&d.error)msg=d.error}catch{}
@@ -283,7 +354,9 @@ async function loadTeam(t){
     t.id=found.id;t.slug=found.slug;t.name=found.name;
   }
   t.status="Carregando histórico";
-  const maxRound=Math.max(1,Math.min(38,Number(currentRound)||38));
+  // v30: busca SEMPRE todas as rodadas (1 → limiteRodada): a rodada EM ANDAMENTO inclui o
+  // parcial; com o mercado aberto/fechado (a rodada atual ainda não pontuou), vai até a ANTERIOR.
+  const maxRound=Math.max(0,Math.min(38,Number(limiteRodada)||0));
   const rounds=Array.from({length:maxRound},(_,i)=>i+1);
   // Limita a quatro chamadas simultâneas para evitar bloqueios/rate limit da API.
   const results=await mapLimit(rounds,4,async r=>{
@@ -301,13 +374,18 @@ async function loadTeam(t){
     else errors.push(result.reason?.message||"falha desconhecida");
   });
   t.total=Object.values(t.scores).reduce((a,b)=>a+b,0);
-  if(Object.keys(t.scores).length===0) throw new Error("ID "+t.id+" encontrado, mas nenhuma pontuação foi retornada. "+(errors[0]||""));
+  if(Object.keys(t.scores).length===0){
+    if(maxRound===0){t.status="Mercado aberto — aguardando a 1ª rodada";return} // v30: nada disputado ainda não é erro
+    throw new Error("ID "+t.id+" encontrado, mas nenhuma pontuação foi retornada. "+(errors[0]||""));
+  }
   t.status=errors.length?`Parcial: ${Object.keys(t.scores).length}/${maxRound} rodadas`:"Conectado";
   if(errors.length)t.error=errors.slice(0,2).join("; ");
 }
 function roundColumns(){
-  const [a,b]=$("roundRange").value.split("-").map(Number);
-  return Array.from({length:b-a+1},(_,i)=>a+i);
+  // v30: SEMPRE todas as rodadas — de 1 até limiteRodada (a rodada em andamento, ou a
+  // anterior quando o mercado está aberto). O antigo seletor de janelas (ex.: 34–38) saiu.
+  const b=Math.max(0,Math.min(38,Number(limiteRodada)||0));
+  return Array.from({length:b},(_,i)=>i+1);
 }
 const num=v=>{if(v===null||v===undefined||v==="")return null;const n=Number(v);return Number.isFinite(n)?n:null};
 function positionClass(pos){return pos===1?"gold":pos===2?"silver":pos===3?"bronze":"position"}
@@ -881,14 +959,33 @@ function formatPoints(value){return new Intl.NumberFormat("pt-BR",{minimumFracti
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function renderTeams(){
   $("metricTeams").textContent=teams.length;
+  const fc=$("foldTimesCount");if(fc)fc.textContent="("+teams.length+")";
   if(!teams.length){ // v27: lista vazia orienta em vez de ficar em branco
     $("teamList").innerHTML=`<div class="team-empty">Nenhum time monitorado ainda.<br><b>Entre com a Globo</b> (o time da sua conta entra sozinho)<br>ou use “Buscar time” acima.</div>`;
     return;
   }
   $("teamList").innerHTML=teams.map((t,i)=>`<div class="team"><div class="num">${i+1}</div><div style="min-width:0;flex:1"><div class="name">${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</div><div class="state">${escapeHtml(t.status||"Aguardando")}${t.error?" — "+escapeHtml(t.error):""}</div></div><span>›</span></div>`).join("");
 }
+// v30 — BANNER-RESUMO: a informação essencial (Meu time + times cadastrados com o total de
+// pontos) fica DIRETO no cabeçalho, visível em qualquer tela — celular ou desktop. O detalhe
+// (status de cada time, ligas, tabela completa) fica nas seções ocultas abaixo (details.fold).
+function renderResumo(){
+  const el=$("bannerResumo");if(!el)return;
+  if(!teams.length){
+    el.innerHTML=`<div class="resumo-vazio">Nenhum time monitorado ainda — <b>Entre com a Globo</b> (o time da sua conta entra sozinho) ou use <b>“Buscar time”</b> logo abaixo. As demais informações ficam ocultas: toque no título de cada seção para abrir.</div>`;
+    return;
+  }
+  const mine=teams.find(t=>t.mine);
+  const outros=teams.filter(t=>!t.mine);
+  const situacao=currentRound?`Rodada ${currentRound}${mercadoObs?" • "+escapeHtml(mercadoObs):""}`:"Carregando…";
+  const chip=t=>`<div class="chip"><span class="nome">⚽ ${escapeHtml(t.name)}</span><span class="tot">${formatPoints(t.total)} <small>pts</small></span></div>`;
+  el.innerHTML=(mine
+    ?`<div class="me-card"><span class="lbl">⭐ MEU TIME</span><span class="nome">${escapeHtml(mine.name)}</span><span class="tot">${formatPoints(mine.total)}<small> pts</small></span><span class="sub">${situacao}</span></div>`
+    :`<div class="me-card fantasma"><span class="lbl">MEU TIME</span><span class="nome">Entre com a Globo</span><span class="sub">o time da sua conta entra sozinho na lista</span></div>`)
+    +outros.map(chip).join("");
+}
 function render(){
-  renderTeams();buildScoresTable();renderLeagues();
+  renderTeams();buildScoresTable();renderLeagues();renderResumo();
 }
 async function refreshAll(){
   $("refreshBtn").classList.add("loading");
@@ -898,7 +995,16 @@ async function refreshAll(){
     const reportedRound=Number(status?.rodada_atual||status?.rodada);
     if(!Number.isInteger(reportedRound)||reportedRound<1||reportedRound>38) throw new Error("A API não informou uma rodada válida; não vou assumir a rodada 38 nem calcular um acumulado incorreto.");
     currentRound=reportedRound;
+    // v30: a pontuação por rodada vai ATÉ A RODADA EM ANDAMENTO (o parcial entra na soma).
+    // Mercado ABERTO (ou fechado, antes da bola rolar) → a rodada atual ainda não pontuou:
+    // traz até a ANTERIOR. status_mercado: 1=aberto, 2=fechado, 4=em andamento, 6=encerrando.
+    const sm=Number(status?.status_mercado);
+    mercadoObs=String(status?.status_mercado_obs||"").trim();
+    mercadoParcial=!(sm===1||sm===2);
+    limiteRodada=mercadoParcial?currentRound:currentRound-1;
+    if(limiteRodada<0)limiteRodada=0;
     $("marketRound").textContent=currentRound;
+    const sl=$("scoresLimite");if(sl)sl.textContent=limiteRodada===0?"Aguardando a 1ª rodada":"Rodadas 1–"+limiteRodada+(mercadoParcial?" • parcial":"");
     const outcomes=await Promise.allSettled(teams.map(loadTeam));
     const failures=[];
     outcomes.forEach((result,i)=>{
@@ -913,10 +1019,13 @@ async function refreshAll(){
     await loadPontosCorridos();
     const ok=outcomes.filter(x=>x.status==="fulfilled").length;
     if(!teams.length){ // v27: sem times, a rodada ainda é mostrada + orientação
-      setStatus(`Rodada ${currentRound} carregada. Nenhum time monitorado ainda — entre com a Globo (o time da sua conta entra sozinho) ou busque um time pelo nome acima.`,"ok");
+      setStatus(`Rodada ${currentRound} carregada (${mercadoObs||"mercado"}). Nenhum time monitorado ainda — entre com a Globo (o time da sua conta entra sozinho) ou busque um time pelo nome acima.`,"ok");
     }else if(ok===teams.length){
       const partial=teams.filter(t=>t.error).length;
-      setStatus(`Conexão concluída: ${ok}/${teams.length} time(s). ${partial?partial+" com histórico parcial.":"Histórico completo até a rodada "+currentRound+"."} Pontuação acumulada formatada em padrão brasileiro.`, "ok");
+      const regra=limiteRodada===0?"Mercado aberto: a rodada 1 ainda não disputou — nenhuma pontuação para somar por enquanto."
+        :mercadoParcial?`Histórico até a rodada ${limiteRodada} — EM ANDAMENTO: o parcial da rodada entra na soma (v30).`
+        :`Histórico completo até a rodada ${limiteRodada} — mercado aberto/fechado: a rodada ${currentRound} ainda não pontuou, então vale a anterior (v30).`;
+      setStatus(`Conexão concluída: ${ok}/${teams.length} time(s). ${partial?partial+" com histórico parcial. ":""}${regra} Pontuação acumulada em padrão brasileiro.`, "ok");
     }else{
       setStatus(`Carregamento parcial (${ok}/${teams.length}). Detalhes: ${failures.join(" || ")}`, "error");
     }
@@ -952,7 +1061,6 @@ $("diagClose").addEventListener("click",()=>$("diagDialog").close());
 $("diagCopy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("diagText").value)}catch{$("diagText").select();document.execCommand("copy")}});
 $("searchBtn").addEventListener("click",addSearchTeam);
 $("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")addSearchTeam()});
-$("roundRange").addEventListener("change",render);
 
 /* ===== Login Globo ===== */
 let loggedIn=false;
@@ -967,6 +1075,8 @@ function renderAuth(){
 async function authPost(url,body){
   const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
   const data=await r.json().catch(()=>({}));
+  colherSessaoDoServidor(r); // v29
+  if(data&&data.sessao)guardarSessaoReserva(data.sessao); // v29: login guarda a cópia de reserva
   if(!r.ok){const e=new Error(data.error||"Erro "+r.status);e.data=data;throw e}
   return data;
 }
@@ -983,9 +1093,26 @@ async function syncMyTeam(){
   else teams.unshift({name,id,slug:info.slug||null,league:"Clássica #"+String(teams.length+1).padStart(2,"0"),scores:{},total:0,status:"Aguardando busca",mine:true,fromLogin:true});
 }
 function dropLoginState(){
-  loggedIn=false;leagues=[];pcLeagues=[];pcState={status:"idle",message:""};window.__pcBrutas=null;
-  teams=teams.filter(t=>!t.fromLogin);
-  teams.forEach(t=>{delete t.mine});
+  // v28: Sair = estado de fábrica. Limpa o time vindo do login E os times buscados à mão,
+  // com tudo que veio junto: pontuações por rodada, totais e os dados brutos da conta
+  // (ligas/competições). A lista volta vazia e as tabelas voltam à orientação.
+  // v29: e a cópia de reserva da credencial (nuvem) sai do navegador junto — nada sobra.
+  loggedIn=false;leagues=[];pcLeagues=[];pcState={status:"idle",message:""};
+  window.__ligasBrutas=null;window.__pcBrutas=null;
+  leagueState={status:"idle",message:""};
+  teams=[];
+  limparSessaoReserva();
+}
+// v29 NUVEM: o servidor acordou sem memória (hibernou/reiniciou)? O painel devolve a cópia de
+// reserva; o servidor revalida/renova e recria a sessão. Falha limpa a reserva (não serve mais).
+async function restaurarSessao(){
+  let blob=null;try{blob=localStorage.getItem(SF_SESSAO)}catch{}
+  if(!blob)return false;
+  try{
+    const data=await authPost("/auth/restaurar",{sessao:blob});
+    if(data&&data.loggedIn)return true; // authPost já guardou a reserva atualizada
+    limparSessaoReserva();return false;
+  }catch{ return false } // rede caiu/servidor hibernando: a reserva fica para a próxima tentativa
 }
 async function finishLogin(){
   destacarModoManual(false); // login concluído: para de piscar
@@ -1097,6 +1224,7 @@ async function entrarPelaGlobo(){
       try{
         const r=await fetch("/auth/oidc/auto/status?id="+encodeURIComponent(meuId),{cache:"no-store"});
         d=await r.json().catch(()=>({}));falhas=0;
+        if(d&&d.sessao)guardarSessaoReserva(d.sessao); // v29: reserva chega com a sessão criada
       }catch{
         if(++falhas>5)throw new Error("Perdi a conexão com o servidor local. Ele continua rodando (node server.js)?");
         await new Promise(r=>setTimeout(r,1500));continue;
@@ -1142,7 +1270,7 @@ async function abrirJanelaGlobo(){
     oidcPararPoll();
     const m=String(ex.message||"");
     if(m.includes("Rota não encontrada")) oidcErro("O server.js em execução está DESATUALIZADO (não tem a rota de login). Baixe a versão nova do painel, substitua os arquivos e reinicie o servidor (Ctrl+C, depois node server.js).");
-    else if(/Failed to fetch|NetworkError|Load failed/i.test(m)) oidcErro("Não consegui falar com o servidor local. Ele está rodando? (node server.js — em http://127.0.0.1:3000)");
+    else if(/Failed to fetch|NetworkError|Load failed/i.test(m)) oidcErro("Não consegui falar com o servidor do painel. Se for LOCAL: ele está rodando? (node server.js). Se for a NUVEM: pode estar acordando da hibernação — espere um pouco e tente de novo.");
     else oidcErro(m);
     if(oidcWin&&!oidcWin.closed){try{oidcWin.close()}catch{}}
   }
@@ -1186,7 +1314,9 @@ async function colarEConcluir(){
 //  2. o servidor mata a sessão local, expira o cookie do painel, REVOGA o refresh_token na
 //     Globo e APAGA o perfil do navegador controlado (onde moram os cookies de SSO da Globo);
 //  3. o painel abre a página OFICIAL de logout da Globo numa janelinha — ela apaga os cookies
-//     de SSO da Globo no SEU navegador também — e a fecha sozinha em seguida.
+//     de SSO da Globo no SEU navegador também — e a fecha sozinha em seguida;
+//  4. a lista de times volta a ZERO (v28): o time da conta E os que você buscou saem, com as
+//     pontuações — o painel fica exatamente como na primeira abertura.
 // Resultado: o próximo “Entrar com Globo” pede e-mail e senha de novo.
 let globoLogoutWin=null,globoLogoutTimer=null,saindo=false;
 async function doLogout(){
@@ -1202,7 +1332,7 @@ async function doLogout(){
     try{data=await authPost("/auth/logout")||{}}catch{}
     destacarModoManual(false);
     dropLoginState();renderAuth();render();
-    const msg="Você saiu. Sessão encerrada, token revogado na Globo e cookies apagados — o próximo login vai pedir e-mail e senha.";
+    const msg="Você saiu. Sessão encerrada, token revogado na Globo, cookies apagados e times limpos (a lista voltou a zero, inclusive os buscados) — o próximo login vai pedir e-mail e senha.";
     if(data.globoLogoutUrl){
       try{if(globoLogoutWin&&!globoLogoutWin.closed)globoLogoutWin.close()}catch{}
       try{globoLogoutWin=window.open(data.globoLogoutUrl,"globoLogout","width=430,height=560")}catch{globoLogoutWin=null}
@@ -1232,15 +1362,46 @@ $("oidcPasteBtn").addEventListener("click",colarEConcluir);
 $("oidcPaste").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();concluirOidc()}});
 // Ctrl+V no campo já conclui sozinho (basta o endereço — ou o código — estar colado).
 $("oidcPaste").addEventListener("paste",()=>setTimeout(()=>{const v=$("oidcPaste").value.trim();if(/[?&#]code=/.test(v)||/^[A-Za-z0-9\-._~%]{20,}$/.test(v))concluirOidc()},60));
+/* ===== v30 — Seções ocultas (folds): no celular abrem FECHADAS (o banner já mostra o essencial),
+   na tela larga abrem abertas; a escolha de cada seção fica guardada no navegador. ===== */
+const SF_FOLDS="sf_folds_v1";
+function foldPrefs(){try{return JSON.parse(localStorage.getItem(SF_FOLDS)||"{}")||{}}catch{return{}}}
+function initFolds(){
+  const prefs=foldPrefs();
+  const estreito=(typeof window.matchMedia==="function")&&window.matchMedia("(max-width:900px)").matches;
+  ["foldTimes","foldLigas","foldScores"].forEach(id=>{
+    const d=$(id);if(!d)return;
+    d.open=prefs[id]!==undefined?!!prefs[id]:!estreito;
+    d.addEventListener("toggle",()=>{const p=foldPrefs();p[id]=d.open;try{localStorage.setItem(SF_FOLDS,JSON.stringify(p))}catch{}});
+  });
+}
+initFolds();
 render();renderAuth();
 (async()=>{
   // Se já houver sessão ativa no servidor (ex.: recarregou a página), recupera o time logado.
+  // v29 NUVEM: se o servidor hibernou, a primeira resposta demora — avisa (plano gratuito ~1 min)
+  // e, se ele acordou sem memória, restaura a sessão com a cópia de reserva do navegador.
+  const acordando=setTimeout(()=>{setStatus("Acordando o servidor na nuvem… (no plano gratuito a primeira resposta pode levar até 1 minuto; é uma vez só)")},3000);
   try{
     const me=await (await fetch("/auth/me")).json();
-    if(me.loggedIn){loggedIn=true;try{await syncMyTeam()}catch(e){if(e.status===401){dropLoginState();setStatus("Sua sessão da Globo expirou. Entre novamente.","error")}}renderAuth();render()}
+    if(me.loggedIn)loggedIn=true;
   }catch{}
+  if(!loggedIn)loggedIn=await restaurarSessao();
+  clearTimeout(acordando);
+  if(loggedIn){
+    try{await syncMyTeam()}catch(e){if(e.status===401){dropLoginState();setStatus("Sua sessão da Globo expirou. Entre novamente.","error")}}
+    renderAuth();render();
+  }
   refreshAll();
 })();
+// v29 NUVEM: com esta aba aberta, um toque leve a cada 5 min mantém a instância acordada
+// (o plano gratuito do Render hiberna após ~15 min sem acesso). Fora da nuvem, não faz nada.
+try{
+  const h=(window.location&&window.location.hostname)||"";
+  if(h.includes(".")&&!/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(h)){
+    setInterval(()=>{if(!document.hidden)fetch("/auth/me",{cache:"no-store"}).catch(()=>{})},5*60*1000);
+  }
+}catch{}
 </script>
 </body>
 </html>
