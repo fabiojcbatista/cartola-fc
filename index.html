@@ -75,6 +75,10 @@ h1 b{color:var(--gold)}
 .chip .nome{font-weight:800;font-size:12.5px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .chip .tot{color:var(--gold);font-weight:900;font-size:16px}
 .chip .tot small{color:#c8d6f2;font-size:10px;font-weight:700}
+.me-card.outro{background:linear-gradient(120deg,#ffffff,#f2f7ff 70%);border-color:#d5def0;color:#0a1c3f;box-shadow:0 14px 30px rgba(6,18,48,.12);cursor:pointer}
+.me-card.outro:hover{border-color:#9dbdf0}
+.me-card.outro.sel{border-color:#1d4e9e;box-shadow:0 0 0 3px rgba(29,78,158,.16),0 14px 30px rgba(6,18,48,.12)}
+.me-card.outro .lbl{color:#1d4e9e}
 
 /* ===== Estrutura principal ===== */
 main{display:grid;gap:16px;padding:18px 20px 40px;max-width:1720px;margin:auto}
@@ -425,7 +429,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
       <div class="chart-card" id="chartCard">
         <div class="chart-head"><span class="chart-time" id="chartTime" aria-hidden="true"></span><span class="chart-ico" aria-hidden="true">📈</span><b>Desempenho por rodada</b><small id="chartSub"></small></div>
         <div class="chart-box" id="chartDesempenho"></div>
-        <div class="chart-dica" id="chartDica">💡 Toque no nome de um time na tabela abaixo para ver o gráfico dele.</div>
+        <div class="chart-dica" id="chartDica">💡 Toque no nome de um time na tabela — ou no cartão dele no topo — para ver o gráfico dele.</div>
       </div>
       <div class="table-wrap"><table id="scoresTable"></table></div>
       <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas: vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada corrente entra na soma) — com o mercado aberto, até a última rodada COMPLETA (a rodada futura ainda não pontuou). O seletor “Rodadas exibidas” na barra acima escolhe a JANELA mostrada (ex.: 6–10, últimas 5) — os dados seguem completos e o total continua somando TODAS as rodadas já disputadas.</div>
@@ -482,6 +486,12 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 </dialog>
 <script>
 /*
+  v36 — O CARTÃO DO MEU TIME PARA TODOS: os times pesquisados (“Buscar time”, com ou sem
+  login) agora têm no topo o MESMO cartão do Meu time — escudo, nome, total, situação e a
+  SPARKLINE das últimas 10 rodadas (em azul, para não disputar com o ouro do Meu time) —
+  no lugar do chip antigo. O cartão é CLICÁVEL: seleciona o time no gráfico “Desempenho
+  por rodada” (mesma rota do clique na tabela, v35) e ganha contorno azul quando é o time
+  escolhido. NADA muda na mecânica: v30/v31/v32/v33/v34/v35 intactas.
   v35 — GRÁFICO COMPLETO E SEU: (1) as pontuações ficam AO LADO DE TODOS os pontos — acima
   de cada rodada como no mockup; quando a janela é cheia, elas alternam acima/abaixo e
   arredondam para caber (a última rodada mantém as casas decimais na pílula de ouro);
@@ -1479,10 +1489,11 @@ function renderTeams(){
   }
   $("teamList").innerHTML=teams.map((t,i)=>`<div class="team"><div class="num">${i+1}</div><div style="min-width:0;flex:1"><div class="name">${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</div><div class="state">${escapeHtml(t.status||"Aguardando")}${t.error?" — "+escapeHtml(t.error):""}</div></div><span>›</span></div>`).join("");
 }
-/* v33 — SPARKLINE das últimas 10 rodadas do Meu time (ilustrativa, dentro do cartão de
-   ouro; os números oficiais seguem nas tabelas) e CONTAGEM ANIMADA do total quando ele
-   muda de valor. Em ambientes sem requestAnimationFrame, tudo vira texto estático. */
-function sparkSvg(scores){
+/* v33 — SPARKLINE das últimas 10 rodadas (ilustrativa, dentro do cartão; os números
+   oficiais seguem nas tabelas) e CONTAGEM ANIMADA do total quando ele muda de valor. Em
+   ambientes sem requestAnimationFrame, tudo vira texto estático. v36: a sparkline também
+   aparece nos cartões dos times pesquisados, em azul. */
+function sparkSvg(scores,cor){ // v36: cor opcional — ouro no Meu time, azul nos times pesquisados
   try{
     const rs=Object.keys(scores||{}).map(Number).filter(r=>r>0).sort((a,b)=>a-b).slice(-10);
     if(rs.length<2)return"";
@@ -1491,7 +1502,8 @@ function sparkSvg(scores){
     const pts=vs.map((v,i)=>[P+i*(W-2*P)/(vs.length-1),H-P-((v-mn)/amp)*(H-2*P)]);
     const d="M"+pts.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" L");
     const u=pts[pts.length-1];
-    return `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${d}" fill="none" stroke="#7a4d00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/><circle cx="${u[0].toFixed(1)}" cy="${u[1].toFixed(1)}" r="3" fill="#7a4d00"/></svg>`;
+    const c=cor||"#7a4d00";
+    return `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><path d="${d}" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/><circle cx="${u[0].toFixed(1)}" cy="${u[1].toFixed(1)}" r="3" fill="${c}"/></svg>`;
   }catch(e){return""}
 }
 let sfTotalAnterior=null;
@@ -1518,11 +1530,14 @@ function renderResumo(){
   const mine=teams.find(t=>t.mine);
   const outros=teams.filter(t=>!t.mine);
   const situacao=currentRound?`Rodada ${currentRound}${mercadoObs?" • "+escapeHtml(mercadoObs):""}`:"Carregando…";
-  const chip=t=>`<div class="chip"><span class="nome">⚽ ${escapeHtml(t.name)}</span><span class="tot">${formatPoints(t.total)} <small>pts</small></span></div>`;
+  // v36 — TIMES PESQUISADOS GANHAM O MESMO CARTÃO DO MEU TIME: escudo + nome + total +
+  // situação + SPARKLINE azul, no lugar do chip antigo. Clicável: leva o time ao gráfico.
+  const selG=timeDoGrafico();
+  const cardOutro=t=>`<div class="me-card outro${selG&&String(selG.id)===String(t.id)?" sel":""}" data-time-card="${t.id}" title="Mostrar ${escapeHtml(t.name)} no gráfico"><span class="me-escudo" aria-hidden="true"${t.escudo?` style="background-image:url('${escapeHtml(t.escudo)}'), var(--sf-logo)"`:""}></span><div class="me-info"><span class="lbl">⚽ TIME MONITORADO</span><span class="nome">${escapeHtml(t.name)}</span><span class="tot">${formatPoints(t.total)}<small> pts</small></span><span class="sub">${situacao}</span>${sparkSvg(t.scores,"#1d4e9e")}</div></div>`;
   el.innerHTML=(mine
     ?`<div class="me-card"><span class="me-escudo" aria-hidden="true"${mine.escudo?` style="background-image:url('${escapeHtml(mine.escudo)}'), var(--sf-logo)"`:""}></span><div class="me-info"><span class="lbl">⭐ MEU TIME</span><span class="nome">${escapeHtml(mine.name)}</span><span class="tot">${formatPoints(mine.total)}<small> pts</small></span><span class="sub">${situacao}</span>${sparkSvg(mine.scores)}</div></div>`
     :`<div class="me-card fantasma"><span class="lbl">MEU TIME</span><span class="nome">Entre com a Globo</span><span class="sub">o time da sua conta entra sozinho na lista</span></div>`)
-    +outros.map(chip).join("");
+    +outros.map(cardOutro).join("");
   if(mine){const mt=$("meTotal");if(mt)animaTotalMeuTime(mt,mine.total)} // v33: contagem animada quando o total muda
 }
 // v32: estado inicial amigável — o convite (hero) só existe enquanto não há time na lista.
@@ -1559,6 +1574,17 @@ $("scoresTable").addEventListener("click",e=>{
   if(!cell||!cell.dataset)return;
   graficoTimeId=cell.dataset.time;
   buildScoresTable(); // re-render: marca a linha selecionada e redesenha o gráfico com o time
+  try{if(window.innerWidth&&window.innerWidth<900){const c=$("chartCard");if(c&&c.scrollIntoView)c.scrollIntoView({behavior:"smooth",block:"center"})}}catch(err){}
+});
+// v36 — CLIQUE NO CARTÃO DO TIME TAMBÉM TROCA O GRÁFICO: os cartões dos times pesquisados
+// no topo (mesmo layout do Meu time, com a sparkline azul) selecionam o time no gráfico —
+// a dica abaixo do gráfico avisa sobre as duas rotas (tabela e cartão).
+$("bannerResumo").addEventListener("click",e=>{
+  const alvo=e.target;
+  const card=alvo&&typeof alvo.closest==="function"?alvo.closest(".me-card.outro[data-time-card]"):null;
+  if(!card||!card.dataset)return;
+  graficoTimeId=card.dataset.timeCard;
+  render(); // re-render: marca o cartão selecionado e redesenha o gráfico com o time
   try{if(window.innerWidth&&window.innerWidth<900){const c=$("chartCard");if(c&&c.scrollIntoView)c.scrollIntoView({behavior:"smooth",block:"center"})}}catch(err){}
 });
 if(typeof window.addEventListener==="function"){try{window.addEventListener("scroll",alternarMinibar,{passive:true});window.addEventListener("resize",alternarMinibar)}catch(e){}}
