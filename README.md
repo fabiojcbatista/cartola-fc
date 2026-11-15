@@ -15,6 +15,314 @@
 
 O `server.js` funciona como intermediário entre a página e a API pública do Cartola FC, evitando que o navegador tente acessar a API diretamente e seja bloqueado por CORS.
 
+## Como publicar na NUVEM (Render) — a partir da v29
+
+O painel funciona publicado na internet (ex.: https://superliga-fabiao.onrender.com). Passos:
+
+1. Coloque os 4 arquivos desta pasta (server.js, index.html, package.json, README.txt) num
+   repositório GitHub (ou use o deploy direto do Render por arquivo zip, se preferir).
+2. No Render: **New → Web Service**, conecte o repositório.
+3. Runtime **Node**; Build command pode ficar vazio (não há dependências); Start command:
+   `node server.js` (ou apenas aceite o `npm start` do package.json).
+4. Nenhuma variável de ambiente é obrigatória: a v29 detecta a nuvem sozinha (a plataforma define
+   `PORT`) e passa a ouvir em `0.0.0.0` — antes era preciso definir `HOST=0.0.0.0` à mão.
+
+O que muda no plano gratuito (a instância HIBERNA após ~15 min sem acesso e acorda sozinha no
+próximo acesso, com a memória limpa):
+
+- **A sessão NÃO morre mais com a hibernação (v29)**: o painel guarda uma cópia de reserva da
+  credencial no armazenamento local do SEU navegador; quando o servidor acorda sem memória, o
+  painel a reenvia (`POST /auth/restaurar`), o servidor revalida na API do Cartola (renovando
+  com o refresh_token) e recria a sessão. Você nem percebe. A cópia sai do navegador no Sair.
+- **Primeira carga após hibernar demora até ~1 minuto**: o painel avisa “Acordando o servidor na
+  nuvem…” — é uma vez só; com a aba aberta, o painel mantém a instância acordada (toque leve a
+  cada 5 min).
+- **Login na nuvem**: o modo AUTOMÁTICO (Chrome controlado) é um recurso LOCAL — o servidor da
+  nuvem não tem Chrome nem tela, e o painel cai sozinho no MODO MANUAL: janela comum do navegador
+  (Google/Facebook funcionam nela), você entra, copia o endereço final (Ctrl+L, Ctrl+C) e volta
+  ao painel — a conclusão é automática (leitura da área de transferência). No celular: segure a
+  barra de endereço → Copiar, volte ao painel e cole no campo (iOS não deixa o painel ler a
+  área de transferência sozinho; o campo “Concluir login” resolve).
+- **Privacidade**: a cópia de reserva fica só no navegador de quem usa o painel (não vai para
+  disco do servidor); o painel não carrega nenhum script de terceiros. O Sair revoga o
+  refresh_token na Globo e apaga a cópia — em qualquer dispositivo que usar depois, a sessão
+  antiga deixa de valer.
+
+## Novidades da versão 37 — REDESIGN DE LEGIBILIDADE (feedback de UI/UX)
+
+“O layout é funcional… porém sofre com excesso de cabeçalhos redundantes e densidade visual”
+— cada ponto do review foi aplicado, sem mexer em NADA da mecânica (v30–v36 intactas):
+
+- CABEÇALHOS UNIFICADOS: a barra duplicada “Lista de times monitorados” e o cabeçalho
+  repetido da pontuação saíram — cada bloco fica com UM título (o do próprio fold). O
+  cabeçalho fino das ligas (“Ligas Clássicas (suas ligas no Cartola)”) permanece, com o
+  link “Classificação oficial”.
+- LIGAS CLÁSSICAS EM CARDS: a tabela rígida de 10 colunas virou lista de cartões
+  respiráveis — nome + descrição à esquerda, “👑 Líder: …” e “Dif. p/ líder: …” MANTIDOS
+  (como pedido), e à direita “times | posição “Xº de N” | Pontos” com divisores finos.
+  Listras alternadas sutis; a liga do seu time ganha contorno azul. Turno/Mês/Rodada
+  (rankings nacionais) saíram do card para dar respiro — os dados seguem na API.
+- NÚMEROS COM SEPARADOR DE MILHAR (formatInt): 1991563 → 1.991.563 e 54608º → 54.608º.
+  O “ordinal” foi reescrito sobre o formatInt — vale para clássicas, mata-mata e PC.
+- LISTA DE TIMES EM CARDS: grid claro com escudo, PONTO de status (verde “Conectado”,
+  âmbar carregando, vermelho falha), badge “meu time” e toque que seleciona o time no
+  gráfico (mesma rota do cartão do topo e da célula na tabela). O card do time escolhido
+  ganha contorno azul.
+- ÍCONES VETORIAIS na navegação inferior: casa, pessoas, troféu e barras em SVG de traço
+  fino (sem emoji nativo), mantendo o destaque dourado do item ativo.
+
+Nota técnica: as baterias antigas de mata-mata (v14/v15/knockout) foram reajustadas para
+o mecanismo atual — as colunas de rodadas seguem a JANELA exibida desde a v30 (1..N) e a
+fase da eliminação vem do CHAVEAMENTO REAL/observação ao vivo desde a v15 (posição e
+J/V/E/D como fonte foram aposentadas). A bateria v13 foi arquivada (suplantada pelas
+baterias v14+; quebrava desde a v14 pelos filtros de ligas alheias).
+
+## Novidades da versão 36 — O CARTÃO DO MEU TIME PARA TODOS (a pedido)
+
+“O gráfico que tem no time logado, quero ele nos times pesquisados também” — feito:
+
+- TIMES PESQUISADOS GANHAM O MESMO CARTÃO DO MEU TIME no topo: escudo (da API do Cartola),
+  nome, total de pontos, situação do mercado e a SPARKLINE das últimas 10 rodadas — em azul,
+  para não disputar com o ouro do Meu time. O chip pequeno que existia antes foi aposentado.
+- FUNCIONA SEM LOGIN: buscando um time pelo nome, o cartão aparece já com o histórico
+  carregado (endpoints públicos da API), junto do cartão fantasma “Entre com a Globo”.
+- O CARTÃO É CLICÁVEL: um toque nele e o gráfico “Desempenho por rodada” passa a mostrar
+  esse time (mesma rota do clique na tabela, v35). O cartão do time escolhido ganha um
+  contorno azul; a dica abaixo do gráfico agora cita as duas rotas (tabela e cartão).
+- O CARTÃO DO MEU TIME FICA INTOCATO: dourado, sparkline âmbar, contagem animada (v33)
+  e sem clique — o destaque continua sendo do seu time.
+
+## Novidades da versão 35 — GRÁFICO COMPLETO E SEU (a pedido)
+
+Três mudanças na tela, zero mudança na mecânica (baterias v27/v28/v30/v31/v32 + v34/v35
+passando; a regra das rodadas v30, o seletor v31 e tudo das v32/v33/v34 segue intocado):
+
+- CARD “SEU TIME • 3 MODALIDADES — Uma só Superliga!” REMOVIDO a pedido: a lista de times
+  agora emenda direto na seção das Ligas.
+- PONTUAÇÕES AO LADO DE TODOS OS PONTOS: o gráfico “Desempenho por rodada” agora rotula
+  CADA rodada com o valor (antes, só quando a janela era curta). Na janela completa as
+  pílulas alternam acima/abaixo e arredondam para caber (ex.: 71, 47…); a ÚLTIMA rodada
+  continua com a pílula de OURO e as casas decimais (ex.: 111,59). No celular os rótulos
+  ficam em texto puro e o eixo X mostra rodadas alternadas — legível em tela estreita.
+- O GRÁFICO SEGUE O TIME SELECIONADO: o NOME de cada time na tabela de pontuação ficou
+  clicável — um toque e o desenho passa a mostrar esse time, com o escudo no cabeçalho do
+  gráfico, o nome no subtítulo (“(meu time)” quando for o seu) e a linha do time escolhido
+  destacada em azul na tabela. Clicar de volta no Meu time restaura; a dica “💡 Toque no
+  nome de um time…” só aparece quando existem 2+ times. Recarregar a página volta ao Meu
+  time (a escolha não é persistida de propósito).
+
+## Novidades da versão 34 — DESIGN DO MOCKUP APROVADO + ESCUDO DA API + GRÁFICO POR RODADA
+
+O painel vestiu a roupa do mockup aprovado e ganhou dois pedidos de fora: o escudo do time
+logado vem pelo link que a própria API devolve, e a pontuação por rodada virou gráfico.
+Por dentro, a mecânica não mudou UMA linha: regra das rodadas (v30), seletor “Rodadas
+exibidas” (v31), estado inicial/menu Avançado/skeletons (v32), logo/mini-barra/navegação
+inferior (v33), Sair que limpa tudo (v28) e reserva de sessão da nuvem (v29) — tudo intacto
+(baterias v27/v28/v30/v31/v32 passando: 224 verificações; + 20 verificações novas da v34).
+Por fora, o que mudou:
+
+- PALETA DO MOCKUP: azul-marinho de estádio no topo (com luzes), OURO nos números e no
+  cartão do Meu time, LARANJA na ação principal (Entrar com Globo, Buscar, concluir), FABIÃO
+  em ouro no título e subtítulo em itálico.
+- ESCUDO DO MEU TIME PELA API: o crest do cartão de ouro agora é carregado pelo LINK que a
+  API do Cartola devolve para o time (foto_trofeu; reservas: url_escudo_png e o escudo do
+  clube). Se o link não carregar, entra o escudo da Superliga — o cartão nunca fica sem cara.
+- GRÁFICO “DESEMPENHO POR RODADA”: a seção de pontuação ganhou o gráfico de linha do Meu
+  time em SVG puro (sem biblioteca) — mesma janela do seletor (v31), valor de cada rodada em
+  pílulas claras e a ÚLTIMA em OURO, grade suave e rodadas no eixo. Com muitas rodadas na
+  janela, só a última pílula fica (sem sopa de letras). Sem Meu time (ou com menos de 2
+  rodadas na janela), uma orientação aparece no lugar — nada é inventado. E a pílula “ver
+  detalhes” no acordeão abre a seção.
+- CABEÇALHO DO MOCKUP: avatar + ponto verde “Conectado como …” + botão Sair branco; métricas
+  viraram cartões navy com ícone (👥 📅 🏆) e número em ouro; “Rodadas do campeonato”.
+- BUSCA DO MOCKUP: lupa dentro do campo + botão Buscar laranja (compacto no celular — quem
+  estica é o campo).
+- BANNERS NAVY: “Times cadastrados” virou barra marinho com contador dourado; o selo “SEU
+  TIME • 3 MODALIDADES” ganhou bola decorativa; navegação inferior marinho com o item ativo
+  em ouro e sublinhado; mini-barra de rolagem na mesma família.
+- STATUS VERDE COM CHECK: a mensagem “Conexão concluída…” ganhou o selo ✓ verde do mockup.
+
+## Novidades da versão 33 — NOVO DESIGN “IDENTIDADE DO ESCUDO” (+ logo oficial)
+
+O painel vestiu as cores do próprio escudo e ganhou o emblema verdadeiro. Por dentro, a mecânica
+não mudou UMA linha: regra das rodadas (v30), seletor “Rodadas exibidas” (v31), estado inicial
+amigável, menu “Avançado”, login em 3 passos e skeletons (v32), Sair que limpa tudo (v28) e a
+reserva de sessão da nuvem (v29) — tudo intacto (as baterias v27/v28/v30/v31/v32 continuam
+passando, 224 verificações). Por fora, o que mudou:
+
+- LOGO OFICIAL: o escudo (verde/ouro/azul/laranja) agora é o rosto do painel — no cabeçalho, no
+  convite inicial, no favicon e na mini-barra. Embutido no próprio index.html (nenhum arquivo
+  extra para distribuir).
+- PALETA DO ESCUDO: verde profundo do escudo no cabeçalho e na identidade; OURO da borda nos
+  números e destaques (pontuação, posição, selos); AZUL da fita nos links; LARANJA da camisa na
+  ação principal (entrar, buscar, concluir). Cada modalidade mantém a sua cor (Clássicas = azul,
+  Mata-Mata = verde, Pontos Corridos = roxo, Pontuação por rodada = âmbar).
+- MINI-BARRA DE ROLAGEM: ao descer a página, uma barra compacta (escudo + nome + situação +
+  Entrar/Sair) desce do topo — o contexto e o atalho de login/logout nunca saem de vista.
+- NAVEGAÇÃO INFERIOR no celular: Início · Times · Ligas · Rodadas — um toque abre e rola até a
+  seção (respeita a área de gestos do iPhone — safe-area).
+- BUSCA UNIFICADA: o botão “Buscar time” mora DENTRO do campo (uma linha limpa); botões com
+  altura de toque de 48px e resposta de toque (escala .98).
+- TABELAS LARGAS com COLUNAS FIXAS: nas tabelas de rodadas/histórico, o nº e o NOME do time
+  ficam presos à esquerda enquanto as rodadas rolam horizontalmente — dá para ler a pontuação
+  por rodada no celular sem perder a referência de quem é a linha.
+- CARTÃO DE OURO DO MEU TIME: o banner-resumo ganhou destaque maior e uma mini-linha (sparkline)
+  com as últimas 10 rodadas; o total faz uma contagem animada quando muda de valor.
+- POLIMENTO GERAL: acordeões brancos com ícone de ouro e seta que gira, abas em pílulas (a ativa
+  em verde), foco de teclado em ouro, tipografia Inter, cantos arredondados e sombras suaves,
+  linhas zebradas nas tabelas — tudo respeitando prefers-reduced-motion.
+
+## Novidades da versão 32 — A PAINEL FÁCIL (mockup aprovado, implementado)
+
+A mecânica é a mesma da v31; a experiência seguiu o mockup aprovado (síntese das sugestões de
+Claude, ChatGPT, Gemini e Grok):
+
+1. **Estado inicial amigável** — em vez de uma página que “parece quebrada”, um convite: troféu,
+   “Bem-vindo ao Superliga do Fabião!”, UM botão grande **Entrar com Globo** + **Buscar um time**
+   e a nota **“Seu login é seguro: acontece na página oficial da Globo — o painel recebe só uma
+   chave de acesso e nunca vê a sua senha.”** O convite sai da cena assim que existe time na lista.
+2. **Menu “Avançado”** — o **modo manual** e os **dados brutos da API** saíram da vista principal
+   e agora moram no menu Avançado (com aria-expanded; fecha com clique fora ou Escape). Quando o
+   Google/Facebook é bloqueado na janela controlada, o próprio menu pisca em amarelo e abre
+   sozinho — impossível não achar.
+3. **Login em 3 passos (assistente)** — o mural de instruções do diálogo manual virou um stepper
+   visual com barra de progresso: **1. A janela da Globo abriu → 2. Você entra na Globo → 3. O
+   painel conclui sozinho**, com textos curtos e a nota **“O que é compartilhado?”** (o login é
+   todo no site da Globo; nenhuma senha passa pelo painel; o acesso é revogado no Sair). As
+   instruções longas ficam em **“Instruções detalhadas e problemas comuns”**.
+4. **Progresso visual do login automático** — enquanto o Chrome controlado trabalha, um cartão
+   mostra os mesmos 3 passos (e o passo 3 fica visível até as ligas carregarem), com botão
+   **“Cancelar o login”**.
+5. **Skeleton loaders** — durante o primeiro carregamento (por exemplo, com o servidor da nuvem
+   hibernando), as seções mostram linhas “brilhando” em vez de tabelas vazias; o aviso
+   “Acordando o servidor na nuvem…” (v29) continua.
+6. **Spinners** — “Atualizar dados” e “Buscar time” giram enquanto trabalham.
+7. **Contraste e acessibilidade** — cinzas secundários mais escuros (textos em cinza claro
+   ficaram legíveis ao sol), foco visível ao navegar por teclado, respeito a
+   `prefers-reduced-motion` e tooltips simples (ícone “i”) com a regra de cada seção — o jargão
+   completo segue nas notas de rodapé.
+8. **Nada mudou na mecânica**: regra das rodadas (v30), seletor “Rodadas exibidas” (v31),
+   banner-resumo, seções ocultas (folds) e o Sair que limpa tudo — intactos.
+
+## Novidades da versão 31 — O CONTROLE DE QUAIS RODADAS EXIBIR VOLTOU
+
+Você pediu: *“ajuste para ter de volta o controle de quais rodadas exibir.”* Feito — sem
+desfazer o que a v30 trouxe:
+
+1. **O seletor “Rodadas exibidas” está de volta** na barra superior (entre o “Buscar time” e
+   o “Atualizar dados”). O padrão é **“Todas as rodadas (1–N)”** — exatamente o comportamento
+   da v30. Ele também oferece **“Últimas 5 rodadas”**, **“Últimas 10 rodadas”** e janelas de
+   5 em 5 **montadas a partir da rodada corrente** (1–5, 6–10, 11–15 … até a última com
+   pontuação). Nada de janela fixa “34–38” cair no vazio quando a temporada está começando:
+   as opções se adaptam à rodada atual toda vez que os dados são atualizados.
+2. **Só a EXIBIÇÃO muda — os dados seguem sempre completos**: o painel continua buscando TODAS
+   as rodadas (1 até a última com pontuação; regra da v30: com a rodada em andamento entra o
+   parcial; com o mercado aberto/fechado, vale a anterior). A coluna “Pontuação” da tabela
+   continua sendo a soma de TODAS as rodadas já disputadas, o banner-resumo não muda, e a
+   regra da rodada continua explicada na barra de status. O seletor afeta a pontuação por
+   rodada e o histórico de fase/posição nas ligas (como era antes da v30). Janela além do que
+   já foi disputada mostra “—”, sem inventar número.
+3. **A escolha fica guardada no navegador** (mesmo mecanismo das seções ocultas da v30):
+   recarregou a página, a janela que você deixou continua. Escolha que deixa de existir (ex.:
+   “31–35” quando a temporada reinicia) volta automaticamente para “Todas as rodadas”.
+4. **Sem nova consulta ao trocar**: escolher uma janela só repinta as tabelas — não refaz
+   nenhuma chamada à API do Cartola.
+
+## Novidades da versão 30 — MOBILE/WEB: o essencial no banner, o resto oculto + TODAS as rodadas
+
+Você pediu: *“prepare uma versão para mobile/web; as informações de times cadastrados e Meu
+time poderiam estar no banner inicial e outras informações poderiam ser ocultas. Altere para
+sempre trazer todas as rodadas; e na pontuação por rodada, a atual deve ser até a que está em
+andamento — se o mercado estiver aberto, trazer até a anterior.”* Três mudanças, todas feitas:
+
+1. **O essencial subiu para o BANNER (mobile/web)**: o cabeçalho agora abre com um cartão
+   dourado do **Meu time** (nome, total de pontos, rodada e situação do mercado — ex.:
+   “Rodada 35 • Mercado Aberto”) e um cartão para cada **time cadastrado** (nome + total de
+   pontos). Não logou? O cartão do Meu time vira um convite: “Entre com a Globo — o time da
+   sua conta entra sozinho”. A lista detalhada (status de cada time), as ligas e a pontuação
+   por rodada viraram **seções ocultas**: no celular começam fechadas — um toque no título
+   abre —, na tela larga (desktop) começam abertas, e a escolha de cada seção fica guardada
+   no navegador. A coluna lateral saiu; agora é uma coluna só, que se adapta do celular ao
+   desktop (as tabelas rolam de lado no toque).
+
+2. **SEMPRE todas as rodadas**: o seletor de janelas (“Rodadas 34–38”, “1–5”…) saiu do ar.
+   A pontuação por rodada — e o histórico de fase/posição nas ligas mata-mata e pontos
+   corridos — mostra TODAS as rodadas, de 1 até a última com pontuação, com rolagem
+   horizontal onde precisar.
+
+3. **A regra da rodada atual**: a pontuação vai **ATÉ A RODADA EM ANDAMENTO** — o parcial da
+   rodada corrente entra na tabela e na soma (acompanha ao vivo). **Com o mercado ABERTO**
+   (ou fechado, antes da bola rolar), a rodada listada como “atual” ainda não pontuou —
+   nesse caso o histórico vai **até a ANTERIOR** (a última completa). A regra aparece na
+   barra de status (“Histórico completo até a rodada 34 — mercado aberto/fechado: a rodada
+   35 ainda não pontuou, então vale a anterior”), no subtítulo da tabela (“Rodadas 1–34” ou
+   “Rodadas 1–35 • parcial”) e, na temporada recém-aberta (mercado aberto para a rodada 1),
+   o painel mostra “Aguardando a 1ª rodada” em vez de erro.
+
+## Novidades da versão 29 — PRONTO PARA A NUVEM (a sessão não morre mais)
+
+Você reportou: *“esse site deploy do projeto não funciona — mata sessão e copiar e colar
+automático”* (https://superliga-fabiao.onrender.com). Diagnóstico feito no site no ar, com três
+causas — e as três corrigidas:
+
+1. **“Mata sessão”**: as sessões vivem SÓ na memória do servidor (de propósito) e o plano
+   gratuito do Render hiberna o serviço após ~15 min sem acesso, apagando a memória. Resultado:
+   você entrava, voltava depois e estava deslogado. **Correção (v29)**: cópia de reserva da
+   credencial no navegador do painel + rota `POST /auth/restaurar` no servidor — o servidor
+   acorda, o painel reenvia a reserva, o servidor revalida na API do Cartola (renovando com o
+   refresh_token quando o access_token venceu) e recria a sessão. A sessão agora sobrevive a
+   hibernação, reinicio e novo deploy, e continua morta de verdade no Sair (revogação + limpeza
+   da reserva). Detalhes de privacidade na seção “Como publicar na NUVEM” acima.
+2. **“Copiar e colar automático” não funcionava**: o login automático usa um Chrome controlado
+   NA MÁQUINA DO SERVIDOR — na nuvem não há Chrome nem tela (confirmado no ar: a rota respondia
+   “Não encontrei o Google Chrome nem o Microsoft Edge neste computador”). **Correção (v29)**:
+   na nuvem o servidor responde indisponível com a explicação certa (“Este painel está na NUVEM…”)
+   e o painel abre o modo manual de cara — janela comum da Globo (Google/Facebook funcionam nela)
+   + conclusão automática pelo endereço (leitura da área de transferência; no celular, colar no
+   campo). O automático continua sendo o padrão no uso local, onde funciona de ponta a ponta.
+3. **Deploy meia-boca**: o servidor vinha configurado para ouvir só em `127.0.0.1` (uso local) —
+   na nuvem isso exige definir `HOST=0.0.0.0` à mão e, se esquecido, o serviço fica “no ar, mas
+   inalcançável”. **Correção (v29)**: com `PORT`/`RENDER` no ambiente (a plataforma define), o
+   servidor ouve em `0.0.0.0` sozinho; o cookie de sessão ganha `Secure` atrás de proxy HTTPS e
+   o log de inicialização mostra o modo (local x nuvem).
+
+Extras da v29 no painel: aviso “Acordando o servidor na nuvem…” quando a primeira resposta
+demora (hibernação do plano gratuito), toque de manutenção a cada 5 min com a aba aberta (instância
+acordada enquanto você usa) e mensagens de rede que agora explicam os dois mundos (local x nuvem).
+
+Testes: bateria nova **v29** (painel com stub — reserva guardada no login, boot restaurando a
+sessão quando o servidor acordou sem memória, reserva apagada quando a Globo recusa, Sair
+apagando a reserva, atualização da reserva na renovação; e servidor REAL rodando com API do
+Cartola e OIDC mockados — restaurar cria sessão de verdade e devolve cookie, reserva inválida
+não vira sessão, logout segue matando tudo). Regressões: v27, v28, logout v25, Google v26,
+sem extensão, v15/v16/v20/v23 — todas passando.
+
+## Novidades da versão 28 — O SAIR LIMPA TAMBÉM OS TIMES BUSCADOS
+
+Você pediu: *“limpe também dados do time pesquisado quando desloga”*. Até a v27, o Sair removia
+só o time vindo do login; os times que você adicionou pelo campo “Buscar time” — e as pontuações
+deles — continuavam na lista depois de deslogar. A v28 fecha o ciclo do “Sair mata tudo” (v25):
+
+- **A lista de times volta a ZERO**: sai o time da conta E os buscados, com todo o histórico de
+  pontos por rodada. O painel fica EXATAMENTE como na primeira abertura (métrica “Times
+  monitorados: 0”, lista e tabelas mostrando a orientação).
+- **Dados da conta fora da memória da página**: os dados brutos de ligas e de competições de
+  pontos corridos também são zerados ao deslogar (nada da sua conta fica na aba aberta).
+- **O status conta o que foi feito**: “Você saiu. Sessão encerrada, token revogado na Globo,
+  cookies apagados e times limpos (a lista voltou a zero, inclusive os buscados)…”. A janelinha
+  oficial de logout da Globo segue abrindo e fechando sozinha (v25).
+- **Manter o time monitorado virou decisão da sessão, não do histórico**: cada sessão começa
+  vazia — entre com a Globo (seu time entra sozinho) e/ou busque os times que quiser monitorar.
+
+Testes: bateria nova **v28 com 21 verificações** (roda o script real e o doLogout() COMPLETO):
+cena com time da conta + liga da conta carregada + time buscado → Sair → lista a zero, pontuações
+desaparecem, dados brutos zerados, authbox de volta a “Entrar com Globo”, janelinha oficial da
+Globo aberta com client_id, status explicando, segundo Sair sem quebrar (idempotente). A v27 foi
+termo a termo para o contrato novo (agora 41 verificações). Regressões: v15 (61), v16, sem
+extensão (88), v20 (19), v23 (23), logout v25 (40) e E2E v26 com Chrome real (35) — todas
+passando. E2E real no navegador: time buscado na lista → Sair → lista vazia e orientação de volta
+(preview_v28_sair_limpa_times.png).
+
 ## Novidades da versão 27 — SEM TIME PRÉ-CASTRADO (o painel começa vazio)
 
 Você pediu: *“remova o time inicial”*. Até a v26, o painel vinha com o **Super Fabiao PRO FC**
@@ -31,16 +339,19 @@ tira isso: **nenhum time é monitorado sem você pedir**. O que muda na prática
   1. **LOGIN** — ao entrar com a Globo, o time da sua conta entra sozinho na lista (selo “meu
      time”) e é a partir dele que as ligas clássicas/mata-mata/pontos corridos carregam;
   2. **BUSCA** — o campo “Buscar time” acima adiciona qualquer time do Cartola pelo nome.
-- **Sair continua igual à v25**: ao deslogar, só o time que veio do LOGIN é removido; os times
-  que você buscou à mão continuam na lista (e sem selo “meu time”).
+- **Sair (v28) limpa TUDO**: ao deslogar, TODOS os times saem da lista — o do login E os que
+  você buscou à mão — com as pontuações; o painel volta ao estado de fábrica (v28). Na v27 os
+  buscados ainda ficavam; o pedido foi mudar isso.
 - Se um dia quiser voltar a ter um time fixo de fábrica, é uma linha: preencha
   `INITIAL_TEAMS = [{name:"Nome do time", id:123456, slug:"slug-do-time"}];` no index.html
   (a variável continua lá, agora vazia, com instrução no lugar).
 
-Testes: bateria nova **v27 com 39 verificações** (roda o script real do painel): boot vazio
+Testes: bateria nova **v27 com 39 verificações** (41 hoje, depois do contrato da v28) — roda o
+script real do painel: boot vazio
 sem chamar /time/id/ nem busca automática; orientação nas tabelas; login recolocando o time da
 conta (mine + fromLogin) e religando as ligas; busca manual adicionando/monitorando outro time;
-duplicidade bloqueada; Sair removendo só o time do login; estrutura (INITIAL_TEAMS = []).
+duplicidade bloqueada; Sair removendo só o time do login (na v28, TODOS saem — ver acima);
+estrutura (INITIAL_TEAMS = []).
 Regressões completas: v15 (61), v16, sem extensão (88), v20 (19), v23 (23), logout v25 (40)
 e E2E v26 com Chrome real (35) — todas passando. E2E no navegador com a API REAL do Cartola:
 painel abriu com 0 times/rodada 35; busca por “Super Fabiao PRO FC” achou o time (id 1382686)
