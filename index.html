@@ -83,14 +83,20 @@ h1 b{color:var(--gold)}
 /* ===== Estrutura principal ===== */
 main{display:grid;gap:16px;padding:18px 20px 40px;max-width:1720px;margin:auto}
 .panel{background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-card);overflow:hidden}
-.panel-title{padding:13px 16px;background:linear-gradient(100deg,var(--navy-card),var(--navy));color:#fff;font-weight:800;font-size:17px}
-.team-list{padding:10px}
-.team{display:flex;align-items:center;gap:10px;padding:12px 10px;border-bottom:1px solid var(--line);transition:background .15s ease}
-.team:last-child{border:0}
-.team:hover{background:#f5f8fe}
-.team .num{width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;background:#eaf2ff;color:var(--blue);font-weight:900}
-.team .name{font-weight:750;flex:1}
-.team .state{font-size:11px;color:var(--muted)}
+.team-list{padding:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.tcard{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:14px;background:#eef3fb;border:1px solid #dde6f3;cursor:pointer;transition:border-color .15s ease,background .15s ease;min-width:0}
+.tcard:hover{border-color:#9dbdf0;background:#f3f8ff}
+.tcard.sel{border-color:#1d4e9e;box-shadow:0 0 0 3px rgba(29,78,158,.14)}
+.tcard.meu{background:#fff8e6;border-color:#f2dd9a}
+.tcard .t-escudo{width:40px;height:40px;flex:none;border-radius:10px;background-color:#fff;background-size:86%,contain;background-position:center;background-repeat:no-repeat;border:1px solid #d5def0}
+.tcard .t-info{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.tcard .name{font-weight:800;font-size:13.5px;color:#0a1c3f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tcard .state{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tcard .t-go{flex:none;color:#8ba3c8;font-weight:800}
+.st-dot{width:8px;height:8px;flex:none;border-radius:50%;display:inline-block}
+.st-dot.ok{background:#22a55b}
+.st-dot.wait{background:#e0a400}
+.st-dot.err{background:#d64533}
 .team-empty{padding:18px 12px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.55}
 .team-empty b{color:#b35400}
 .chart-time{display:none;width:30px;height:30px;flex:none;border-radius:9px;background-color:#fff;background-size:86%,contain;background-position:center;background-repeat:no-repeat;border:2px solid #d5def0}
@@ -133,6 +139,25 @@ tbody tr.selecionada td{border-bottom-color:#cfe0fb}
 .points .section-head{background:linear-gradient(100deg,#4a3aa0,#2a2160)}
 .scores .section-head{background:linear-gradient(100deg,#b98a0a,#7a5a08)}
 .section-head small{font-weight:600;opacity:.85}
+.liga-lista{display:flex;flex-direction:column;gap:9px;padding:12px}
+.liga-card{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:16px;border:1px solid #e1e8f3;background:#fff;box-shadow:0 4px 14px rgba(6,18,48,.05);transition:border-color .15s ease}
+.liga-card:nth-child(even){background:#f6f9fe}
+.liga-card:hover{border-color:#9dbdf0}
+.liga-card.sua{border-color:#1d4e9e;background:#f0f6ff;box-shadow:0 0 0 3px rgba(29,78,158,.10)}
+.liga-card .lc-ico{width:42px;height:42px;flex:none;border-radius:12px;display:grid;place-items:center;background:#eaf2ff;font-size:20px}
+.liga-card .lc-info{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.liga-card .lc-info a{color:#0a1c3f;font-weight:800;font-size:14.5px;text-decoration:none;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.liga-card .lc-info a:hover{text-decoration:underline}
+.liga-card .desc{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.liga-card .lc-lider{font-size:11.5px;color:#44598a;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.liga-card .lc-metrics{display:flex;align-items:stretch;flex:none}
+.liga-card .lc-m{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px;padding:2px 13px;border-left:1px solid #e1e8f3;min-width:74px}
+.liga-card .lc-m:first-child{border-left:0}
+.liga-card .lc-m b{font-size:16px;color:#0a1c3f;font-weight:900;white-space:nowrap}
+.liga-card .lc-m span{font-size:10.5px;color:var(--muted);font-weight:700;white-space:nowrap}
+.liga-card .lc-m.pos-badge b{background:#e3edff;color:#1d4e9e;border-radius:9px;padding:2px 9px;font-size:14px}
+.empty-ligas{padding:20px 16px;color:var(--muted);font-size:13px}
+@media (max-width:700px){.liga-card{flex-wrap:wrap}.liga-card .lc-metrics{width:100%;justify-content:space-between}.liga-card .lc-m{padding:2px 8px;min-width:0}}
 
 /* ===== v34 — Cartão do gráfico “Desempenho por rodada” (SVG puro) ===== */
 .chart-card{padding:12px 14px 8px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fbfdff,#fff)}
@@ -298,7 +323,8 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
   .authbox{margin-left:auto}
   .bottomnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:65;background:linear-gradient(180deg,#0e2650,var(--navy));border-top:2px solid rgba(255,210,40,.40);box-shadow:0 -10px 26px rgba(6,18,48,.35);padding:7px 6px calc(7px + env(safe-area-inset-bottom))}
   .bn{flex:1;display:grid;justify-items:center;gap:3px;padding:6px 2px;background:0;border:0;border-radius:12px;font-family:inherit;font-size:10.5px;font-weight:800;color:#9fb0d1;cursor:pointer;transition:transform .12s ease}
-  .bn .bn-ico{font-size:19px;line-height:1;filter:grayscale(1) opacity(.8)}
+  .bn .bn-ico{width:22px;height:22px;display:flex;align-items:center;justify-content:center;filter:grayscale(1) opacity(.8)}
+  .bn .bn-ico svg{display:block}
   .bn.active{color:var(--gold);background:rgba(255,210,40,.10)}
   .bn.active .bn-ico{filter:none}
   .bn.active::after{content:"";width:26px;height:3px;border-radius:99px;background:var(--gold)}
@@ -390,7 +416,6 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
   <details class="fold" id="foldTimes">
     <summary><span class="fold-ico">⚽</span>Times cadastrados<span class="fold-count" id="foldTimesCount">(0)</span><span class="fold-hint">toque para abrir/fechar</span></summary>
     <div class="panel" style="margin-top:12px">
-      <div class="panel-title">🏆 Lista de times monitorados</div>
       <div class="team-list" id="teamList"></div>
     </div>
   </details>
@@ -405,7 +430,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 
     <section class="panel section classic" id="classic">
       <div class="section-head"><span>🏆 Ligas Clássicas <small>(suas ligas no Cartola)</small> <span class="info" title="“Liga Clássica” é o nome oficial do Cartola para as ligas de pontos corridos. Posição e pontos vêm da API — classificação oficial.">i</span></span><small>Classificação oficial</small></div>
-      <div class="table-wrap"><table id="classicTable"></table></div>
+      <div class="liga-lista" id="classicTable"></div>
       <div class="footnote" id="classicNote"></div>
     </section>
 
@@ -425,7 +450,6 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
   <details class="fold" id="foldScores">
     <summary><span class="fold-ico">📈</span><span id="foldScoresTxt">Pontuação por rodada — todas as rodadas</span><span class="ver-detalhes">ver detalhes ›</span><span class="fold-hint">toque para abrir/fechar</span></summary>
     <section class="panel section scores" id="scores" style="margin-top:12px">
-      <div class="section-head"><span>📈 Pontuação por rodada <small>(times monitorados)</small> <span class="info" title="Mostra os pontos do time em cada rodada. Regra: vai até a rodada em andamento (o parcial entra na soma); com o mercado aberto, até a anterior.">i</span></span><small id="scoresLimite">Todas as rodadas</small></div>
       <div class="chart-card" id="chartCard">
         <div class="chart-head"><span class="chart-time" id="chartTime" aria-hidden="true"></span><span class="chart-ico" aria-hidden="true">📈</span><b>Desempenho por rodada</b><small id="chartSub"></small></div>
         <div class="chart-box" id="chartDesempenho"></div>
@@ -438,10 +462,10 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 </main>
 <!-- v33 — navegação inferior: atalhos que abrem e rolam até cada seção (só no celular) -->
 <nav class="bottomnav" id="bottomNav" aria-label="Atalhos do painel">
-  <button type="button" class="bn active" data-goto="topo"><span class="bn-ico">🏠</span>Início</button>
-  <button type="button" class="bn" data-goto="foldTimes"><span class="bn-ico">👥</span>Times</button>
-  <button type="button" class="bn" data-goto="foldLigas"><span class="bn-ico">🏆</span>Ligas</button>
-  <button type="button" class="bn" data-goto="foldScores"><span class="bn-ico">📊</span>Dados</button>
+  <button type="button" class="bn active" data-goto="topo"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3l9 7.6"/><path d="M5.5 9.4V19a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V9.4"/></svg></span>Início</button>
+  <button type="button" class="bn" data-goto="foldTimes"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.2" r="3.1"/><path d="M3.6 19.4c.7-3.4 3-5.4 5.4-5.4s4.7 2 5.4 5.4"/><path d="M15.4 5.7a3.1 3.1 0 0 1 0 5"/><path d="M16.8 14.4c1.8.8 3.1 2.6 3.6 5"/></svg></span>Times</button>
+  <button type="button" class="bn" data-goto="foldLigas"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v3.6a4 4 0 0 1-8 0V4z"/><path d="M8 5.2H5.6a2.4 2.4 0 0 0 2.7 2.8"/><path d="M16 5.2h2.4a2.4 2.4 0 0 1-2.7 2.8"/><path d="M12 11.6v3"/><path d="M9.4 14.6h5.2l.8 4.6H8.6l.8-4.6z"/></svg></span>Ligas</button>
+  <button type="button" class="bn" data-goto="foldScores"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20v-7"/><path d="M12 20V4.5"/><path d="M19 20v-10"/></svg></span>Dados</button>
 </nav>
 <dialog id="loginDialog">
   <!-- v32: o mural de instruções virou assistente em 3 passos (stepper + barra de progresso),
@@ -486,6 +510,17 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 </dialog>
 <script>
 /*
+  v37 — REDESIGN DE LEGIBILIDADE (feedback de UI/UX): (1) CABEÇALHOS UNIFICADOS — a barra
+  duplicada “Lista de times monitorados” e o cabeçalho repetido da pontuação saíram; cada
+  bloco fica com UM título (o do fold). (2) LIGAS CLÁSSICAS EM CARDS: a tabela rígida de
+  10 colunas virou lista de cartões respiráveis — nome, descrição, 👑 Líder e Dif. p/ líder
+  MANTIDOS, total de times, posição “Xº de N” e pontos, com listras alternadas sutis e a
+  liga do meu time com contorno azul. (3) NÚMEROS COM SEPARADOR DE MILHAR (formatInt):
+  1991563 → 1.991.563 e 54608º → 54.608º — o ordinal foi reescrito sobre formatInt e vale
+  para clássicas, mata-mata e pontos corridos. (4) LISTA DE TIMES EM CARDS: grid claro com
+  escudo, ponto de status (verde/âmbar/vermelho), badge “meu time” e toque que seleciona o
+  time no gráfico (o selecionado ganha contorno azul). (5) ÍCONES VETORIAIS na navegação
+  inferior (traço fino, sem emoji). NADA muda na mecânica: v30–v36 intactas.
   v36 — O CARTÃO DO MEU TIME PARA TODOS: os times pesquisados (“Buscar time”, com ou sem
   login) agora têm no topo o MESMO cartão do Meu time — escudo, nome, total, situação e a
   SPARKLINE das últimas 10 rodadas (em azul, para não disputar com o ouro do Meu time) —
@@ -842,7 +877,8 @@ function roundColumns(){
 }
 const num=v=>{if(v===null||v===undefined||v==="")return null;const n=Number(v);return Number.isFinite(n)?n:null};
 function positionClass(pos){return pos===1?"gold":pos===2?"silver":pos===3?"bronze":"position"}
-function ordinal(n){return n===null?"—":n+"º"}
+function formatInt(n){return (n===null||n===undefined||!isFinite(Number(n)))?"—":new Intl.NumberFormat("pt-BR").format(Number(n));} // v37: 1991563 → 1.991.563
+function ordinal(n){return n===null?"—":formatInt(n)+"º"} // v37: 54608º → 54.608º
 function mineId(){const m=teams.find(t=>t.mine);return m?m.id:null}
 
 /* ===== Ligas (exigem login) ===== */
@@ -1332,30 +1368,34 @@ function emptyRow(cols,text){return `<tbody><tr><td colspan="${cols}" class="emp
 function skeletonRow(cols){return `<tbody><tr><td colspan="${cols}" style="padding:14px 16px"><span class="sk" style="width:92%"></span><span class="sk" style="width:78%"></span><span class="sk" style="width:86%"></span></td></tr></tbody>`}
 
 function buildLeagueTable(kind,target,noteId){
+  // v37 — CARDS RESPIRÁVEIS no lugar da tabela de 10 colunas: nome+descrição à esquerda,
+  // 👑 Líder e Dif. p/ líder MANTIDOS embaixo, e à direita “times | posição de N | pontos”.
+  // Números com separador de milhar (formatInt); a liga do meu time ganha o contorno azul.
   const list=leagues.filter(l=>l.kind===kind);
-  const cols=10;
-  let html="<thead><tr><th>#</th><th>Liga</th><th>Times</th><th>Posição</th><th>Pontos</th><th>Turno</th><th>Mês</th><th>Rodada</th><th>Líder</th><th>Dif. p/ líder</th></tr></thead>";
+  let html="";
   if(!list.length){
-    html+=primeiroLoad?skeletonRow(cols):emptyRow(cols,!loggedIn?"Faça login com a Globo para carregar suas ligas.":leagueState.status==="loading"?"Carregando…":"Sem ligas para exibir.");
+    html=`<div class="empty-ligas">${primeiroLoad?`<span class="sk" style="width:92%"></span><span class="sk" style="width:78%"></span><span class="sk" style="width:86%"></span>`:escapeHtml(!loggedIn?"Faça login com a Globo para carregar suas ligas.":leagueState.status==="loading"?"Carregando…":"Sem ligas para exibir.")}</div>`;
   }else{
-    html+="<tbody>";
     list.forEach((l,i)=>{
       const pts=num(l.me?.pontos?.campeonato), lead=num(l.leader?.pontos?.campeonato);
       const diff=(pts!==null&&lead!==null)?lead-pts:null;
       const leaderName=l.leader?getTeamName(l.leader):"";
-      const posTxt=l.pos!==null?`<span class="${positionClass(l.pos)} rank">${ordinal(l.pos)}</span>${l.total?`<span class="sub">de ${l.total}</span>`:""}`:(l.error?`<span class="empty" title="${escapeHtml(l.error)}">erro</span>`:(l.notFound?`<span class="empty" title="Seu time não foi localizado nas primeiras páginas da liga">—</span>`:"—"));
-      html+=`<tr class="me-row"><td class="rank">${i+1}</td>
-        <td class="team-cell"><a href="${cartolaLeagueUrl(l.slug)}" target="_blank" rel="noopener">🏆 ${escapeHtml(l.info.nome||l.slug)}</a>${l.info.descricao?`<span class="sub">${escapeHtml(String(l.info.descricao).slice(0,60))}</span>`:""}</td>
-        <td>${l.total??"—"}</td>
-        <td>${posTxt}</td>
-        <td class="points-val">${pts!==null?formatPoints(pts):"—"}</td>
-        <td>${ordinal(num(l.me?.ranking?.turno))}</td>
-        <td>${ordinal(num(l.me?.ranking?.mes))}</td>
-        <td>${ordinal(num(l.me?.ranking?.rodada))}${num(l.me?.pontos?.rodada)!==null?`<span class="sub">${formatPoints(num(l.me.pontos.rodada))} pts</span>`:""}</td>
-        <td class="team-cell">${leaderName?escapeHtml(leaderName)+(lead!==null?`<span class="sub">${formatPoints(lead)} pts</span>`:""):"—"}</td>
-        <td>${diff===null?"—":(diff<=0?"líder":"−"+formatPoints(diff))}</td></tr>`;
+      const posOk=l.pos!==null&&!l.error&&!l.notFound;
+      const posTxt=posOk?`<b>${formatInt(l.pos)}º</b><span>de ${l.total!=null?formatInt(l.total):"—"}</span>`:(l.error?`<b title="${escapeHtml(l.error)}">erro</b><span>posição</span>`:(l.notFound?`<b title="Seu time não foi localizado nas primeiras páginas da liga">—</b><span>posição</span>`:`<b>—</b><span>posição</span>`));
+      html+=`<div class="liga-card${posOk?" sua":""}">
+        <span class="lc-ico" aria-hidden="true">🏆</span>
+        <div class="lc-info">
+          <a href="${cartolaLeagueUrl(l.slug)}" target="_blank" rel="noopener">${escapeHtml(l.info.nome||l.slug)}</a>
+          ${l.info.descricao?`<span class="desc">${escapeHtml(String(l.info.descricao).slice(0,60))}</span>`:""}
+          <span class="lc-lider">${leaderName?`👑 Líder: ${escapeHtml(leaderName)}${lead!==null?` (${formatPoints(lead)} pts)`:''}`:"👑 Líder: —"}${diff===null?"":(diff<=0?" • seu time é o líder":" • Dif. p/ líder: −"+formatPoints(diff))}</span>
+        </div>
+        <div class="lc-metrics">
+          <div class="lc-m"><b>${l.total!=null?formatInt(l.total):"—"}</b><span>times</span></div>
+          <div class="lc-m pos-badge">${posTxt}</div>
+          <div class="lc-m"><b>${pts!==null?formatPoints(pts):"—"}</b><span>Pontos</span></div>
+        </div>
+      </div>`;
     });
-    html+="</tbody>";
   }
   $(target).innerHTML=html;
   $(noteId).textContent=leagueNote(kind);
@@ -1487,7 +1527,14 @@ function renderTeams(){
     $("teamList").innerHTML=`<div class="team-empty">Nenhum time monitorado ainda.<br><b>Entre com a Globo</b> (o time da sua conta entra sozinho)<br>ou use “Buscar time” acima.</div>`;
     return;
   }
-  $("teamList").innerHTML=teams.map((t,i)=>`<div class="team"><div class="num">${i+1}</div><div style="min-width:0;flex:1"><div class="name">${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</div><div class="state">${escapeHtml(t.status||"Aguardando")}${t.error?" — "+escapeHtml(t.error):""}</div></div><span>›</span></div>`).join("");
+  // v37 — CARDS em grid (escudo + status com ponto colorido + badge) e clicáveis:
+  // o toque seleciona o time no gráfico; o selecionado ganha o contorno azul.
+  const selT=timeDoGrafico();
+  $("teamList").innerHTML=teams.map((t,i)=>{
+    const st=String(t.status||"Aguardando");
+    const dotCls=st.startsWith("Conectado")||st.startsWith("Parcial")?"ok":(st.includes("Falha")?"err":"wait");
+    return `<div class="tcard${t.mine?" meu":""}${selT&&String(selT.id)===String(t.id)?" sel":""}"${t.id?` data-time-card="${t.id}" title="Mostrar ${escapeHtml(t.name)} no gráfico"`:""}><span class="t-escudo" aria-hidden="true"${t.escudo?` style="background-image:url('${escapeHtml(t.escudo)}'), var(--sf-logo)"`:""}></span><div class="t-info"><span class="name">${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</span><span class="state"><i class="st-dot ${dotCls}"></i>${escapeHtml(st)}${t.error?" — "+escapeHtml(t.error):""}</span></div><span class="t-go">›</span></div>`;
+  }).join("");
 }
 /* v33 — SPARKLINE das últimas 10 rodadas (ilustrativa, dentro do cartão; os números
    oficiais seguem nas tabelas) e CONTAGEM ANIMADA do total quando ele muda de valor. Em
@@ -1585,6 +1632,16 @@ $("bannerResumo").addEventListener("click",e=>{
   if(!card||!card.dataset)return;
   graficoTimeId=card.dataset.timeCard;
   render(); // re-render: marca o cartão selecionado e redesenha o gráfico com o time
+  try{if(window.innerWidth&&window.innerWidth<900){const c=$("chartCard");if(c&&c.scrollIntoView)c.scrollIntoView({behavior:"smooth",block:"center"})}}catch(err){}
+});
+// v37 — CLIQUE NO CARD DA LISTA DE TIMES TAMBÉM SELECIONA O GRÁFICO (mesma rota do
+// cartão do topo e da célula na tabela — três rotas, uma mesma escolha).
+$("teamList").addEventListener("click",e=>{
+  const alvo=e.target;
+  const card=alvo&&typeof alvo.closest==="function"?alvo.closest(".tcard[data-time-card]"):null;
+  if(!card||!card.dataset)return;
+  graficoTimeId=card.dataset.timeCard;
+  render(); // re-render: marca o card selecionado e redesenha o gráfico com o time
   try{if(window.innerWidth&&window.innerWidth<900){const c=$("chartCard");if(c&&c.scrollIntoView)c.scrollIntoView({behavior:"smooth",block:"center"})}}catch(err){}
 });
 if(typeof window.addEventListener==="function"){try{window.addEventListener("scroll",alternarMinibar,{passive:true});window.addEventListener("resize",alternarMinibar)}catch(e){}}
