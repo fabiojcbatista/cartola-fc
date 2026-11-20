@@ -826,6 +826,86 @@ async function handleLogout(req, res) {
   return sendJson(res, 200, { loggedIn: false, globoLogoutUrl: OIDC_BASE + "/logout?" + fim, perfilApagado }, { "Set-Cookie": cookieHeader(req, "", 0) });
 }
 
+/* ===== v40 — ACESSO LOCAL: arquivo “passwords” + login/cadastro pelo portão =====
+   O painel só abre depois de nome + senha conferirem com o arquivo PASSWORDS_PATH (por padrão,
+   “passwords” na pasta do servidor). Formato — uma conta por linha, campos separados por “;”:
+       nome;celular;nivel;senha
+   · nivel 1 ou 2 = permitido (contas criadas/liberadas pelo Fabio, editando o arquivo à mão);
+   · nivel 3 = cadastro novo feito pela tela, AGUARDANDO LIBERAÇÃO — o login bloqueia e mostra
+     a orientação para falar com o Fabio Batista no whatsapp. Para liberar alguém, edite o
+     arquivo e troque o 3 pelo 1 (ou 2).
+   Linhas começando com “#” são comentários. Comparação de nome ignora maiúsculas, acentos e
+   espaços duplicados — não dá para cadastrar duas contas com o mesmo nome. */
+const PASSWORDS_PATH = process.env.SF_PASSWORDS_PATH || path.join(ROOT, "passwords");
+const MSG_BLOQUEIO_ACESSO = "Usuário não permitido, fala com Fabio Batista whatsapp: (51) 99462 2192";
+const chaveNome = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/\s+/g, " ");
+
+function lerContas() {
+  let txt = "";
+  try { txt = fs.readFileSync(PASSWORDS_PATH, "utf8"); } catch { return []; }
+  const contas = [];
+  txt.split(/\r?\n/).forEach(linha => {
+    const l = linha.trim();
+    if (!l || l.startsWith("#")) return;
+    const p = l.split(";");
+    if (p.length < 4) return;
+    const nivel = num(p[2]);
+    if (nivel !== 1 && nivel !== 2 && nivel !== 3) return;
+    contas.push({ nome: p[0].trim(), celular: p[1].trim(), nivel, senha: p[3] });
+  });
+  return contas;
+}
+
+// Grava a linha da conta nova (nível 3). Se o arquivo não existe, nasce com o cabeçalho de
+// comentários explicando o formato e como liberar um cadastro.
+function salvarConta(nome, celular, nivel, senha) {
+  try {
+    if (!fs.existsSync(PASSWORDS_PATH)) {
+      fs.writeFileSync(PASSWORDS_PATH,
+        "# Superliga do Fabião — base de acesso (v40)\n" +
+        "# formato de cada linha: nome;celular;nivel;senha\n" +
+        "# nivel 1 ou 2 = entra no painel; nivel 3 = aguardando liberação (bloqueado)\n" +
+        "# para liberar um cadastro novo, troque o 3 pelo 1 (ou 2) e salve o arquivo\n", "utf8");
+    }
+    fs.appendFileSync(PASSWORDS_PATH, nome + ";" + celular + ";" + nivel + ";" + senha + "\n", "utf8");
+    return true;
+  } catch { return false; }
+}
+
+// POST /auth/local/login { nome, senha } — lê o arquivo de senhas e localiza usuário + senha.
+// Encontrou e nível 1/2? permitido:true (o painel entra). Nível 3? bloqueado com a orientação.
+async function handleLocalLogin(req, res) {
+  let body; try { body = await readJson(req); } catch { return sendJson(res, 400, { error: "Requisição inválida." }); }
+  const nome = String(body.nome || "").trim();
+  const senha = String(body.senha || "");
+  if (!nome || !senha) return sendJson(res, 400, { error: "Informe nome e senha." });
+  const conta = lerContas().find(c => chaveNome(c.nome) === chaveNome(nome) && c.senha === senha);
+  if (!conta) return sendJson(res, 401, { error: "Nome ou senha incorretos. Confira e tente de novo." });
+  if (conta.nivel === 3) return sendJson(res, 200, { permitido: false, bloqueado: true, nivel: 3, error: MSG_BLOQUEIO_ACESSO });
+  return sendJson(res, 200, { permitido: true, nivel: conta.nivel, nome: conta.nome });
+}
+
+// POST /auth/local/cadastro { nome, celular, senha, confirmar } — grava como nível 3.
+// Recusa cadastro com nome já existente na base: pede a escrita do nome completo.
+async function handleLocalCadastro(req, res) {
+  let body; try { body = await readJson(req); } catch { return sendJson(res, 400, { error: "Requisição inválida." }); }
+  const nome = String(body.nome || "").trim();
+  const celular = String(body.celular || "").trim();
+  const senha = String(body.senha || "");
+  const confirmar = String(body.confirmar || "");
+  if (!nome || nome.length < 3) return sendJson(res, 400, { error: "Informe seu nome (mínimo 3 letras).", campo: "nome", pedirNomeCompleto: true });
+  if (nome.includes(";") || celular.includes(";") || senha.includes(";")) return sendJson(res, 400, { error: "Não use o caractere “;” no nome, no celular ou na senha.", campo: "nome" });
+  const digitos = celular.replace(/\D/g, "");
+  if (digitos.length < 10 || digitos.length > 11) return sendJson(res, 400, { error: "Informe um celular válido com DDD (10 ou 11 números).", campo: "celular" });
+  if (senha.length < 4) return sendJson(res, 400, { error: "A senha precisa ter pelo menos 4 caracteres.", campo: "senha" });
+  if (senha !== confirmar) return sendJson(res, 400, { error: "As senhas não conferem — a confirmação é diferente da senha.", campo: "confirmar" });
+  if (lerContas().some(c => chaveNome(c.nome) === chaveNome(nome))) {
+    return sendJson(res, 409, { error: "Usuário já cadastrado. Escreva seu nome completo para se cadastrar.", pedirNomeCompleto: true, campo: "nome" });
+  }
+  if (!salvarConta(nome, celular, 3, senha)) return sendJson(res, 500, { error: "Não consegui gravar o cadastro no servidor. Tente de novo." });
+  return sendJson(res, 200, { ok: true, nivel: 3, aviso: "Cadastro salvo! Ele entra como nível 3 (aguardando liberação) — por enquanto o acesso ainda está bloqueado. Fale com Fabio Batista whatsapp: (51) 99462 2192 para liberar." });
+}
+
 async function proxyCartola(apiPath, res, session) {
   let hostIndex = 0;
   // Antes de cada consulta autenticada: se o access_token está perto de vencer (ou venceu),
@@ -890,6 +970,8 @@ const server = http.createServer((req, res) => {
     if (parsed.pathname === "/auth/oidc/go" && req.method === "GET") return handleOidcGo(req, res);
     if (parsed.pathname === "/auth/oidc/exchange" && req.method === "POST") return handleOidcExchange(req, res);
     if (parsed.pathname === "/auth/oidc/done" && req.method === "GET") return handleOidcDone(req, res);
+    if (parsed.pathname === "/auth/local/login" && req.method === "POST") return handleLocalLogin(req, res);
+    if (parsed.pathname === "/auth/local/cadastro" && req.method === "POST") return handleLocalCadastro(req, res);
     if (parsed.pathname === "/auth/me" && req.method === "GET") {
       const s = getSession(req);
       return sendJson(res, 200, { loggedIn: !!s, kind: s ? "oidc" : null, comRenovacao: !!(s && s.refreshToken), venceEm: s ? s.expires : null });
