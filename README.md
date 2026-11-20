@@ -48,6 +48,38 @@ próximo acesso, com a memória limpa):
   refresh_token na Globo e apaga a cópia — em qualquer dispositivo que usar depois, a sessão
   antiga deixa de valer.
 
+## Novidades da versão 39 — MÉDIA DO TIME SELECIONADO em LINHA RETA
+
+Correção na média dos gráficos (individual e unificado):
+
+- A média deixa de ser a média dos times monitorados rodada a rodada (v38) e passa a ser a
+  média DO TIME SELECIONADO: pontuação total ÷ rodadas finalizadas (a mesma pontuação exibida
+  na tabela — soma de todas as rodadas já disputadas, com o parcial da rodada em andamento;
+  se alguma rodada falhou ao carregar, divide pelas rodadas realmente pontuadas).
+- A média é desenhada como LINHA RETA horizontal VERDE atravessando os DOIS gráficos.
+- O NÚMERO aparece EM DESTAQUE numa pílula verde dentro do gráfico (“média 75,22”) — no
+  individual ela fica com resguardo para nunca cobrir a pílula de ouro do último ponto.
+- Ao selecionar outro time (cartão, tabela, card da lista, linha ou chip da legenda), a
+  média e a altura da linha mudam junto: o número passa a ser a média do time selecionado.
+- A legenda continua com o chip “média” (agora com título explicando a fórmula) e a dica do
+  card explica a nova regra.
+
+## Novidades da versão 38 — GRÁFICO UNIFICADO + MÉDIA EM VERDE
+
+O card de pontuação agora tem DOIS gráficos, na MESMA janela do seletor “Rodadas exibidas”:
+
+- “Desempenho por rodada” (individual, do time selecionado — v34/v35) e o novo
+  “Todos os times (unificado)”: todas as linhas monitoradas no mesmo desenho, em SVG puro.
+- NO UNIFICADO, o time SELECIONADO fica em destaque (linha dourada grossa com marcador);
+  os demais ficam finos e discretos. Clicar numa LINHA ou num CHIP da legenda seleciona o
+  time — o gráfico individual passa a mostrá-lo e a linha dele volta ao destaque (mesma
+  rota do v35: cartões do topo, cards da lista e células da tabela continuam valendo).
+- MÉDIA EM VERDE: os DOIS gráficos exibem a média dos times monitorados em cada rodada,
+  tracejada em verde — a comparação com o time é imediata. Com 1 time só, a média não
+  aparece (seria o próprio time) e o subtítulo explica a regra.
+- Legenda clicável com chips coloridos (um por time + chip “média”), badge “meu time” e
+  dica atualizada citando todas as rotas de seleção.
+
 ## Novidades da versão 37 — REDESIGN DE LEGIBILIDADE (feedback de UI/UX)
 
 “O layout é funcional… porém sofre com excesso de cabeçalhos redundantes e densidade visual”
