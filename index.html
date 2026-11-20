@@ -218,6 +218,29 @@ td.team-cell a:hover{text-decoration:underline}
 .sub{display:block;font-size:11px;color:var(--muted);font-weight:600}
 .footnote{font-size:12px;color:var(--muted);padding:11px 14px;background:#f7f9fd;border-top:1px solid var(--line)}
 .hidden{display:none!important}
+/* ===== v40 — PORTÃO DE ACESSO (login/cadastro local) ===== */
+.acesso-overlay{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:linear-gradient(160deg,#0a1c3f 0%,#123067 55%,#1d4e9e 100%);overflow:auto}
+.acesso-card{width:min(420px,100%);background:#fff;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.45);padding:26px 24px 20px;text-align:center}
+.acesso-logo{width:64px;height:64px;margin:0 auto 10px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#ffd21e,#ffb300);font-size:30px;box-shadow:0 6px 18px rgba(255,178,0,.35)}
+.acesso-card h1{color:var(--navy);font-size:22px;font-weight:900;letter-spacing:-.3px}
+.acesso-sub{color:var(--muted);font-size:13px;font-weight:600;margin:4px 0 16px}
+.acesso-form{text-align:left;display:flex;flex-direction:column;gap:6px}
+.acesso-form label{font-size:11.5px;font-weight:800;color:#44598a;text-transform:uppercase;letter-spacing:.4px;margin-top:6px}
+.acesso-form input{width:100%;padding:11px 13px;border:1.6px solid #d5def0;border-radius:11px;font:inherit;font-size:15px;color:#0a1c3f;background:#f7faff;outline:none}
+.acesso-form input:focus{border-color:#1d4e9e;background:#fff;box-shadow:0 0 0 3px rgba(29,78,158,.12)}
+.acesso-form input.erro{border-color:#d33;background:#fff5f5}
+.acesso-btn{margin-top:12px;width:100%;padding:12px;border:0;border-radius:12px;background:linear-gradient(135deg,#1d4e9e,#123067);color:#fff;font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+.acesso-btn:hover{filter:brightness(1.08)}
+.acesso-btn:disabled{opacity:.6;cursor:wait}
+.acesso-msg{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;line-height:1.45;text-align:left}
+.acesso-msg.on{display:block}
+.acesso-msg.erro{background:#fdecec;border:1px solid #f3c1c1;color:#8e2020}
+.acesso-msg.ok{background:#eef8f0;border:1px solid #bfe3c8;color:#1c7a3d}
+.acesso-msg.bloqueio{background:#7f1d1d;border:1px solid #5c1414;color:#fff}
+.acesso-msg a{color:inherit;text-decoration:underline;font-weight:800}
+.acesso-cadastro{margin-top:12px;font-size:13px;color:var(--muted);font-weight:600}
+.acesso-cadastro a{color:#1d4e9e;font-weight:800;text-decoration:none}
+.acesso-cadastro a:hover{text-decoration:underline}
 .loading{opacity:.6;pointer-events:none}
 .diag{width:100%;height:260px;font:12px/1.4 ui-monospace,Consolas,monospace;border:1px solid #ccd6ea;border-radius:10px;padding:10px}
 
@@ -524,6 +547,40 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
     <div class="dlg-actions"><button type="button" id="diagCopy">Copiar</button><button type="button" class="go" id="diagClose">Fechar</button></div>
   </div>
 </dialog>
+<!-- v40 — PORTÃO DE ACESSO: entra com nome e senha (conta nível 1/2 do arquivo “passwords” do
+     servidor). Não tem senha? O link Cadastrar abre o formulário (nome completo, celular, senha
+     e confirmação) e grava como nível 3 — aguardando liberação. Nível 3 não entra: vê a
+     orientação para falar com o Fabio Batista no whatsapp. Toda abertura/recarga da página
+     pede o login de novo (o acesso não fica gravado). -->
+<div class="acesso-overlay hidden" id="acessoOverlay" role="dialog" aria-modal="true" aria-label="Acesso ao painel">
+  <div class="acesso-card">
+    <div class="acesso-logo" aria-hidden="true">🏆</div>
+    <h1>Superliga do Fabião</h1>
+    <p class="acesso-sub">Acesso restrito — entre com nome e senha</p>
+    <form id="formAcessoLogin" class="acesso-form" autocomplete="off">
+      <label for="acNome">Nome</label>
+      <input id="acNome" type="text" placeholder="Seu nome">
+      <label for="acSenha">Senha</label>
+      <input id="acSenha" type="password" placeholder="Sua senha">
+      <button type="submit" class="acesso-btn" id="acBtnEntrar">Entrar</button>
+      <div class="acesso-msg" id="acessoMsg"></div>
+      <p class="acesso-cadastro">Não tem acesso? <a href="#cadastrar" id="acIrCadastro">Cadastrar</a></p>
+    </form>
+    <form id="formAcessoCadastro" class="acesso-form hidden" autocomplete="off">
+      <label for="acCadNome">Nome completo</label>
+      <input id="acCadNome" type="text" placeholder="Seu nome completo">
+      <label for="acCadCel">Celular</label>
+      <input id="acCadCel" type="tel" placeholder="(51) 99999-9999">
+      <label for="acCadSenha">Senha</label>
+      <input id="acCadSenha" type="password" placeholder="Crie uma senha">
+      <label for="acCadConf">Confirmação de senha</label>
+      <input id="acCadConf" type="password" placeholder="Repita a senha">
+      <button type="submit" class="acesso-btn" id="acBtnSalvar">Salvar cadastro</button>
+      <div class="acesso-msg" id="acessoMsgCad"></div>
+      <p class="acesso-cadastro">Já tem acesso? <a href="#login" id="acIrLogin">Voltar ao login</a></p>
+    </form>
+  </div>
+</div>
 <script>
 /*
   v39 — MÉDIA DO TIME SELECIONADO em LINHA RETA: a média deixa de ser traçada rodada a
@@ -2167,6 +2224,7 @@ async function doLogout(){
     try{data=await authPost("/auth/logout")||{}}catch{}
     destacarModoManual(false);
     dropLoginState();renderAuth();render();
+    limparAcesso();mostrarPortao("login"); // v40: o Sair também encerra o acesso local — volta ao portão
     const msg="Você saiu. Sessão encerrada, token revogado na Globo, cookies apagados e times limpos (a lista voltou a zero, inclusive os buscados) — o próximo login vai pedir e-mail e senha.";
     if(data.globoLogoutUrl){
       try{if(globoLogoutWin&&!globoLogoutWin.closed)globoLogoutWin.close()}catch{}
@@ -2221,6 +2279,87 @@ function initFolds(){
 initFolds();
 buildRoundOptions(); // v31: o seletor de rodadas exibidas já nasce pronto (e lê a escolha salva)
 render();renderAuth();
+/* v41 — PORTÃO DE ACESSO LOCAL: nome + senha conferidos pelo servidor no arquivo “passwords”.
+   · Nível 1/2: entra no painel — o acesso vale SÓ nesta abertura: recarregar ou abrir de
+     novo pede login outra vez (nada fica gravado no navegador).
+   · Nível 3 (cadastro aguardando liberação): NÃO entra — mostra a orientação do whatsapp.
+   · Cadastrar: nome completo, celular, senha e confirmação → grava como nível 3. Nome já
+     existente? Recusa e pede a escrita do nome completo. “Sair” volta para este portão. */
+const MSG_BLOQUEIO_ACESSO="Usuário não permitido, fala com Fabio Batista whatsapp: (51) 99462 2192";
+const WHATS_FABIO="https://wa.me/5551994622192";
+/* v41 — o acesso NÃO fica gravado: vale apenas nesta abertura da página. Recarregar, fechar
+   e abrir de novo — todos os casos voltam a pedir nome e senha. Nada vai para o localStorage;
+   só um preset de AUTOMAÇÃO/PRÉVIA (window.__SF_ACESSO_PRESET, usado pelos testes e pelos
+   screenshots) entra sem digitar — em uso real a variável não existe. */
+let acessoMemoria=null;
+function acessoAtual(){
+  try{const p=window.__SF_ACESSO_PRESET;if(p&&(p.nivel===1||p.nivel===2)&&p.nome)return p}catch{}
+  return acessoMemoria;
+}
+function salvarAcesso(nivel,nome){acessoMemoria={nivel,nome}}
+function limparAcesso(){acessoMemoria=null}
+function portaoMsg(id,texto,tipo,html){const el=$(id);if(!el)return;if(html){el.innerHTML=texto||""}else{el.textContent=texto||""}el.className="acesso-msg"+(texto?" on "+(tipo||"erro"):"")}
+function portaoCampoErro(id,marcar){const el=$(id);if(el&&el.classList)el.classList[marcar?"add":"remove"]("erro")}
+function mostrarPortao(modo){
+  const o=$("acessoOverlay");if(!o)return;
+  o.classList.remove("hidden");
+  const login=$("formAcessoLogin"),cad=$("formAcessoCadastro");
+  if(login&&login.classList)login.classList[modo==="cadastro"?"add":"remove"]("hidden");
+  if(cad&&cad.classList)cad.classList[modo==="cadastro"?"remove":"add"]("hidden");
+  const n=modo==="cadastro"?$("acCadNome"):$("acNome");if(n&&n.focus)n.focus();
+}
+function esconderPortao(){const o=$("acessoOverlay");if(o&&o.classList)o.classList.add("hidden")}
+$("acIrCadastro").addEventListener("click",e=>{if(e&&e.preventDefault)e.preventDefault();portaoMsg("acessoMsgCad","");mostrarPortao("cadastro")});
+$("acIrLogin").addEventListener("click",e=>{if(e&&e.preventDefault)e.preventDefault();portaoMsg("acessoMsg","");mostrarPortao("login")});
+$("formAcessoLogin").addEventListener("submit",async e=>{
+  if(e&&e.preventDefault)e.preventDefault();
+  const campoNome=$("acNome"),campoSenha=$("acSenha"),btn=$("acBtnEntrar");
+  portaoCampoErro("acNome",false);portaoCampoErro("acSenha",false);
+  const n=campoNome?String(campoNome.value||"").trim():"",s=campoSenha?String(campoSenha.value||""):"";
+  if(!n||!s){portaoMsg("acessoMsg","Preencha nome e senha para entrar.","erro");if(!n)portaoCampoErro("acNome",true);if(!s)portaoCampoErro("acSenha",true);return}
+  if(btn)btn.disabled=true;
+  portaoMsg("acessoMsg","Conferindo acesso…","ok");
+  try{
+    const data=await authPost("/auth/local/login",{nome:n,senha:s});
+    if(data&&data.permitido){
+      salvarAcesso(data.nivel||1,data.nome||n);
+      esconderPortao();
+      setStatus("Acesso liberado. Bem-vindo, "+(data.nome||n)+"!","ok");
+      await iniciarPainel(); // v40: o painel só carrega com o acesso concedido
+    }else{
+      portaoMsg("acessoMsg",escapeHtml((data&&data.error)||MSG_BLOQUEIO_ACESSO)+' <a href="'+WHATS_FABIO+'" target="_blank" rel="noopener">abrir whatsapp</a>',(data&&data.bloqueado)?"bloqueio":"erro",true);
+    }
+  }catch(err){
+    portaoMsg("acessoMsg",escapeHtml((err&&err.message)||"Não consegui conferir o acesso no servidor. Ele está rodando?"),"erro");
+  }finally{if(btn)btn.disabled=false}
+});
+$("formAcessoCadastro").addEventListener("submit",async e=>{
+  if(e&&e.preventDefault)e.preventDefault();
+  const campoNome=$("acCadNome"),btn=$("acBtnSalvar");
+  ["acCadNome","acCadCel","acCadSenha","acCadConf"].forEach(x=>portaoCampoErro(x,false));
+  const v=x=>$(x)?String($(x).value||"").trim():"";
+  const n=v("acCadNome"),c=v("acCadCel"),s=v("acCadSenha"),cf=v("acCadConf");
+  if(!n||!c||!s||!cf){portaoMsg("acessoMsgCad","Preencha todos os campos: nome completo, celular, senha e confirmação de senha.","erro");["acCadNome","acCadCel","acCadSenha","acCadConf"].forEach(x=>{if(!v(x))portaoCampoErro(x,true)});return}
+  if(s!==cf){portaoMsg("acessoMsgCad","As senhas não conferem — a confirmação é diferente da senha.","erro");portaoCampoErro("acCadConf",true);return}
+  if(btn)btn.disabled=true;
+  portaoMsg("acessoMsgCad","Salvando cadastro…","ok");
+  try{
+    const data=await authPost("/auth/local/cadastro",{nome:n,celular:c,senha:s,confirmar:cf});
+    $("formAcessoCadastro").classList.add("hidden");
+    $("formAcessoLogin").classList.remove("hidden");
+    ["acCadNome","acCadCel","acCadSenha","acCadConf"].forEach(x=>{const el=$(x);if(el)el.value=""});
+    const nomeLogin=$("acNome");if(nomeLogin)nomeLogin.value=n; // já preenchido para tentar entrar
+    portaoMsg("acessoMsg",(data&&data.aviso)||"Cadastro salvo!","ok");
+  }catch(err){
+    const d=(err&&err.data)||{};
+    if(d.pedirNomeCompleto){
+      portaoMsg("acessoMsgCad",escapeHtml((d.error||err.message))+" Escreva o nome completo, com nome e sobrenome (ex.: Fabio Batista Junior).","erro");
+      portaoCampoErro("acCadNome",true);if(campoNome&&campoNome.focus)campoNome.focus();
+    }else{
+      portaoMsg("acessoMsgCad",escapeHtml((err&&err.message)||"Não consegui salvar o cadastro. O servidor está rodando?"),"erro");
+    }
+  }finally{if(btn)btn.disabled=false}
+});
 (async()=>{
   // Se já houver sessão ativa no servidor (ex.: recarregou a página), recupera o time logado.
   // v29 NUVEM: se o servidor hibernou, a primeira resposta demora — avisa (plano gratuito ~1 min)
@@ -2232,12 +2371,22 @@ render();renderAuth();
   }catch{}
   if(!loggedIn)loggedIn=await restaurarSessao();
   clearTimeout(acordando);
+  // v40/v41 — PORTÃO DE ACESSO: sem nível 1/2 liberado no arquivo “passwords” do servidor, o
+  // painel NÃO carrega nada (nem sessão Globo, nem ligas) — fica na tela de login/cadastro.
+  // O login aceito chama iniciarPainel(), a cauda do boot isolada logo abaixo. E, como o
+  // acesso não fica gravado (v41), TODA abertura/recarga da página volta a pedir login.
+  if(!acessoAtual()){mostrarPortao("login");return}
+  await iniciarPainel();
+})();
+// v40 — cauda do boot isolada: só roda com o acesso liberado pelo portão. O keepalive da
+// nuvem, logo abaixo, segue intocado (não expõe nada — só mantém o servidor acordado).
+async function iniciarPainel(){
   if(loggedIn){
     try{await syncMyTeam()}catch(e){if(e.status===401){dropLoginState();setStatus("Sua sessão da Globo expirou. Entre novamente.","error")}}
     renderAuth();render();
   }
   refreshAll();
-})();
+}
 // v29 NUVEM: com esta aba aberta, um toque leve a cada 5 min mantém a instância acordada
 // (o plano gratuito do Render hiberna após ~15 min sem acesso). Fora da nuvem, não faz nada.
 try{
