@@ -168,6 +168,18 @@ tbody tr.selecionada td{border-bottom-color:#cfe0fb}
 .chart-box{margin-top:4px}
 .chart-box svg{width:100%;height:auto;display:block}
 .chart-vazio{padding:16px 6px 10px;font-size:13px;color:var(--muted);line-height:1.55;text-align:center}
+.chart-divisoria{height:1px;background:var(--line);margin:14px 16px 0}
+.chart-todos-head{display:flex;align-items:center;gap:9px;padding:14px 16px 4px}
+.chart-todos-head b{color:var(--navy);font-size:16px;font-weight:850}
+.chart-todos-head small{margin-left:auto;color:var(--muted);font-weight:700;font-size:12px;text-align:right}
+.chart-legenda{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px 0}
+.lg-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;border:1px solid #dde6f3;background:#fff;font:inherit;font-size:11.5px;font-weight:800;color:#0a1c3f;cursor:pointer}
+.lg-chip:hover{border-color:#9dbdf0}
+.lg-chip.sel{border-color:#1d4e9e;background:#eaf2ff;box-shadow:0 0 0 2px rgba(29,78,158,.12)}
+.lg-chip i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.lg-chip.lg-media{cursor:default;background:#f1f8f4;border-color:#c9e7d4;color:#1c7a3d;font-weight:700}
+.graf-todos path[data-team]{cursor:pointer}
+.graf-todos path[data-team]:hover{opacity:1!important}
 
 /* ===== Tabelas — zebra suave, colunas fixas (nº + nome) na rolagem larga ===== */
 .table-wrap{overflow:auto;max-width:100%}
@@ -453,7 +465,11 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
       <div class="chart-card" id="chartCard">
         <div class="chart-head"><span class="chart-time" id="chartTime" aria-hidden="true"></span><span class="chart-ico" aria-hidden="true">📈</span><b>Desempenho por rodada</b><small id="chartSub"></small></div>
         <div class="chart-box" id="chartDesempenho"></div>
-        <div class="chart-dica" id="chartDica">💡 Toque no nome de um time na tabela — ou no cartão dele no topo — para ver o gráfico dele.</div>
+        <div class="chart-divisoria" aria-hidden="true"></div>
+        <div class="chart-todos-head"><span class="chart-ico" aria-hidden="true">👥</span><b>Todos os times (unificado)</b><small id="chartTodosSub"></small></div>
+        <div class="chart-box graf-todos" id="chartTodos"></div>
+        <div class="chart-legenda" id="chartLegenda"></div>
+        <div class="chart-dica" id="chartDica">💡 Toque no nome de um time (tabela, cartão do topo ou card da lista) para ver o gráfico dele — ou toque numa LINHA / num chip da legenda na visão unificada. A linha VERDE reta é a média do time selecionado: pontuação ÷ rodadas finalizadas (o número aparece em destaque).</div>
       </div>
       <div class="table-wrap"><table id="scoresTable"></table></div>
       <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas: vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada corrente entra na soma) — com o mercado aberto, até a última rodada COMPLETA (a rodada futura ainda não pontuou). O seletor “Rodadas exibidas” na barra acima escolhe a JANELA mostrada (ex.: 6–10, últimas 5) — os dados seguem completos e o total continua somando TODAS as rodadas já disputadas.</div>
@@ -510,6 +526,15 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 </dialog>
 <script>
 /*
+  v39 — MÉDIA DO TIME SELECIONADO em LINHA RETA: a média deixa de ser traçada rodada a
+  rodada entre os monitorados e passa a ser a do time SELECIONADO — pontuação total ÷
+  rodadas finalizadas — desenhada como LINHA RETA horizontal VERDE nos DOIS gráficos
+  (individual e unificado), com o número EM DESTAQUE numa pílula verde dentro do gráfico.
+  v38 — GRÁFICO UNIFICADO + MÉDIA EM VERDE: o card de pontuação ganhou um SEGUNDO gráfico,
+  “Todos os times (unificado)”, com todas as linhas monitoradas na mesma janela do seletor —
+  o time selecionado (v35) aparece em destaque (dourado, grosso) e os demais discretos;
+  clicar numa linha ou num chip da legenda seleciona o time (o individual passa a mostrá-lo).
+  Os DOIS gráficos exibem a MÉDIA dos times monitorados em VERDE tracejado (com 2+ times).
   v37 — REDESIGN DE LEGIBILIDADE (feedback de UI/UX): (1) CABEÇALHOS UNIFICADOS — a barra
   duplicada “Lista de times monitorados” e o cabeçalho repetido da pontuação saíram; cada
   bloco fica com UM título (o do fold). (2) LIGAS CLÁSSICAS EM CARDS: a tabela rígida de
@@ -1456,7 +1481,9 @@ function renderDesempenho(){
     return;
   }
   const vs=rs.map(r=>Number(sel.scores[r])||0); // v35: o time SELECIONADO alimenta a linha
-  const top=Math.max(50,Math.ceil(Math.max(...vs)/50)*50);
+  const med=mediaSelecionado(); // v39: média do SELECIONADO — pontuação ÷ rodadas finalizadas
+  const valsTop=med?[...vs,med.valor]:vs;
+  const top=Math.max(50,Math.ceil(Math.max(...valsTop)/50)*50);
   const W=620,H=224,PL=44,PR=18,PT=34,PB=36;
   const px=i=>PL+i*(W-PL-PR)/(rs.length-1);
   const py=v=>PT+(H-PT-PB)*(1-v/top);
@@ -1491,7 +1518,98 @@ function renderDesempenho(){
   const xs=rs.map((r,i)=>i%pula===0?`<text x="${pts[i][0].toFixed(1)}" y="${H-12}" text-anchor="middle" font-size="${fx}" font-weight="700" fill="#3d4e75">${r}</text>`:"").join("");
   const dots=pts.map((p,i)=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i===rs.length-1?5:4.5}" fill="#fff" stroke="#1d4e9e" stroke-width="${i===rs.length-1?3.5:2.5}"/>`).join("");
   const labels=rs.map((r,i)=>rotulo(i,vs[i])).join(""); // v35: TODOS os pontos rotulados
-  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" class="graf-linha" role="img" aria-label="Gráfico de linha: pontos de ${escapeHtml(sel.name)} em cada rodada da janela exibida"><defs><linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d4e9e" stop-opacity=".26"/><stop offset="1" stop-color="#1d4e9e" stop-opacity="0"/></linearGradient></defs>${grid}<path d="${area}" fill="url(#gradArea)"/><path d="${linha}" fill="none" stroke="#1d4e9e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}${xs}</svg>`;
+  const medEl=med?(()=>{ // v39: LINHA RETA da média + número EM DESTAQUE (pílula verde)
+    const yM=py(med.valor);
+    const rot="média "+formatPoints(med.valor);
+    const w=rot.length*6.8+18;
+    const x=Math.max(PL+6,W-PR-w-72); // resguardo: não cobrir a pílula de OURO do último ponto
+    const acima=yM-28>=PT-4?yM-28:yM+11; // pílula acima da linha; se colar no topo, abaixo
+    return `<line x1="${PL}" y1="${yM.toFixed(1)}" x2="${W-PR}" y2="${yM.toFixed(1)}" stroke="#22a55b" stroke-width="2.4"/><g><rect x="${x.toFixed(1)}" y="${acima.toFixed(1)}" width="${w.toFixed(1)}" height="20" rx="10" fill="#22a55b"/><text x="${(x+w/2).toFixed(1)}" y="${(acima+14).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${rot}</text></g>`;
+  })():"";
+  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" class="graf-linha" role="img" aria-label="Gráfico de linha: pontos de ${escapeHtml(sel.name)} em cada rodada da janela exibida, com a média do time selecionado em linha reta verde"><defs><linearGradient id="gradArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d4e9e" stop-opacity=".26"/><stop offset="1" stop-color="#1d4e9e" stop-opacity="0"/></linearGradient></defs>${grid}<path d="${area}" fill="url(#gradArea)"/><path d="${linha}" fill="none" stroke="#1d4e9e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}${medEl}${xs}</svg>`;
+}
+/* v39 — MÉDIA DO TIME SELECIONADO: pontuação total ÷ rodadas finalizadas. O total do time
+   soma TODAS as rodadas já disputadas (1 → limiteRodada; na rodada em andamento entra o
+   parcial). O divisor é o número de rodadas com pontuação registrada — no caso normal, o
+   número da última rodada finalizada; se alguma rodada falhou ao carregar, divide pelas
+   rodadas realmente pontuadas, para a média seguir honesta (nada é inventado). */
+function mediaSelecionado(){
+  const sel=timeDoGrafico();if(!sel)return null;
+  const rs=Object.keys(sel.scores||{}).filter(r=>Number(r)>0&&sel.scores[r]!==undefined);
+  const n=rs.length;if(!n)return null;
+  const total=Number(sel.total)||rs.reduce((a,r)=>a+(Number(sel.scores[r])||0),0);
+  if(!(total>0))return null;
+  return {valor:total/n,rodadas:n,total};
+}
+/* v38 — GRÁFICO UNIFICADO “Todos os times”: todas as linhas monitoradas na MESMA janela do
+   seletor, em SVG puro (mesma linguagem do individual). O time SELECIONADO (v35) fica em
+   destaque (dourado, grosso); os demais finos e discretos. A MÉDIA DO SELECIONADO (v39)
+   aparece em LINHA RETA verde, com o número em destaque. Clicar numa LINHA ou num CHIP da
+   legenda seleciona o time — o gráfico individual passa a mostrá-lo. Sem dados: orientação
+   honesta, nada inventado. */
+function renderDesempenhoTodos(){
+  const box=$("chartTodos");if(!box)return;
+  const leg=$("chartLegenda");
+  const sub=$("chartTodosSub");
+  const sel=timeDoGrafico();
+  const comDados=teams.filter(t=>t.scores&&Object.keys(t.scores).some(r=>Number(r)>0));
+  if(!teams.length){
+    if(sub)sub.textContent="";
+    if(leg)leg.innerHTML="";
+    box.innerHTML=`<div class="chart-vazio">Entre com a Globo ou busque um time para ver todos os monitorados no mesmo gráfico.</div>`;
+    return;
+  }
+  const rs=roundColumns().filter(r=>comDados.some(t=>t.scores[r]!==undefined));
+  if(rs.length<2){
+    if(sub)sub.textContent=comDados.length+" time"+(comDados.length>1?"s":"")+" monitorado"+(comDados.length>1?"s":"");
+    if(leg)leg.innerHTML="";
+    box.innerHTML=`<div class="chart-vazio">O gráfico unificado aparece assim que os times tiverem pelo menos 2 rodadas pontuadas na janela escolhida.</div>`;
+    return;
+  }
+  const med=mediaSelecionado(); // v39: média do time SELECIONADO (linha reta verde)
+  if(sub)sub.textContent=comDados.length+" time"+(comDados.length>1?"s":"")+" monitorado"+(comDados.length>1?"s":"")+(med?" • média do selecionado em verde":"");
+  const vals=[];comDados.forEach(t=>rs.forEach(r=>{if(t.scores[r]!==undefined)vals.push(Number(t.scores[r])||0)}));if(med)vals.push(med.valor);
+  const top=Math.max(50,Math.ceil(Math.max(...vals)/50)*50);
+  const W=620,H=252,PL=44,PR=18,PT=30,PB=36;
+  const px=i=>PL+i*(W-PL-PR)/(rs.length-1);
+  const py=v=>PT+(H-PT-PB)*(1-v/top);
+  let grid="";
+  [0,top/3,top*2/3,top].forEach(v=>{
+    const y=py(v).toFixed(1);
+    grid+=`<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="${v===0?"#d5def0":"#e9effb"}"/>`;
+    if(v)grid+=`<text x="${PL-8}" y="${(py(v)+3.5).toFixed(1)}" text-anchor="end" font-size="10" fill="#7f8db0">${Math.round(v)}</text>`;
+  });
+  const estreito=typeof window!=="undefined"&&window.innerWidth&&window.innerWidth<640;
+  const fx=rs.length>16?9.5:11.5;
+  const pula=estreito&&rs.length>16?2:1;
+  const xs=rs.map((r,i)=>i%pula===0?`<text x="${px(i).toFixed(1)}" y="${H-12}" text-anchor="middle" font-size="${fx}" font-weight="700" fill="#3d4e75">${r}</text>`:"").join("");
+  const medEl=med?(()=>{ // v39: LINHA RETA da média + número EM DESTAQUE (pílula verde)
+    const yM=py(med.valor);
+    const rot="média "+formatPoints(med.valor);
+    const w=rot.length*6.8+18;
+    const x=Math.max(PL+6,W-PR-w-6);
+    const acima=yM-28>=PT-4?yM-28:yM+11;
+    return `<line x1="${PL}" y1="${yM.toFixed(1)}" x2="${W-PR}" y2="${yM.toFixed(1)}" stroke="#22a55b" stroke-width="2.4"/><g><rect x="${x.toFixed(1)}" y="${acima.toFixed(1)}" width="${w.toFixed(1)}" height="20" rx="10" fill="#22a55b"/><text x="${(x+w/2).toFixed(1)}" y="${(acima+14).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${rot}</text></g>`;
+  })():"";
+  const PALETA=["#1d4e9e","#c2410c","#7c3aed","#0369a1","#b45309","#15803d","#be185d","#4d7c0f"];
+  const linhas=comDados.map((t,i)=>{
+    const rsT=rs.filter(r=>t.scores[r]!==undefined);
+    if(rsT.length<1)return"";
+    const pts=rsT.map(r=>[px(rs.indexOf(r)),py(Number(t.scores[r])||0)]);
+    const selT=sel&&String(sel.id)===String(t.id);
+    const cor=selT?"#d89e00":PALETA[i%PALETA.length];
+    const ultima=pts[pts.length-1];
+    const dot=`<circle cx="${ultima[0].toFixed(1)}" cy="${ultima[1].toFixed(1)}" r="${selT?5:3.8}" fill="#fff" stroke="${cor}" stroke-width="${selT?3:2.2}"/>`;
+    if(pts.length<2)return dot;
+    const d="M"+pts.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" L");
+    return `<path d="${d}" fill="none" stroke="${cor}" stroke-width="${selT?3.4:2}" opacity="${selT?1:.55}" stroke-linecap="round" stroke-linejoin="round" data-team="${t.id}"${selT?' class="linha-sel"':""}/>`+dot;
+  }).join("");
+  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" class="graf-linha" role="img" aria-label="Gráfico unificado: todos os times monitorados na janela exibida, com a média do time selecionado em linha reta verde"><defs><linearGradient id="gradTodos" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d4e9e" stop-opacity=".10"/><stop offset="1" stop-color="#1d4e9e" stop-opacity="0"/></linearGradient></defs>${grid}${linhas}${medEl}${xs}</svg>`;
+  if(leg)leg.innerHTML=comDados.map((t,i)=>{
+    const selT=sel&&String(sel.id)===String(t.id);
+    const cor=selT?"#d89e00":PALETA[i%PALETA.length];
+    return `<button type="button" class="lg-chip${selT?" sel":""}" data-time-chip="${t.id}" title="Mostrar ${escapeHtml(t.name)} no gráfico individual"><i style="background:${cor}"></i>${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</button>`;
+  }).join("")+(med?`<span class="lg-chip lg-media" title="Média do time selecionado: pontuação ÷ rodadas finalizadas"><i style="background:#22a55b"></i>média</span>`:"");
 }
 function buildScoresTable(){
   const rounds=roundColumns();
@@ -1511,6 +1629,7 @@ function buildScoresTable(){
   }
   $("scoresTable").innerHTML=html;
   renderDesempenho(); // v34: o gráfico do Meu time usa a mesma janela da tabela
+  renderDesempenhoTodos(); // v38: o unificado usa a mesma janela
 }
 function renderLeagues(){
   buildLeagueTable("classic","classicTable","classicNote");
@@ -1643,6 +1762,21 @@ $("teamList").addEventListener("click",e=>{
   graficoTimeId=card.dataset.timeCard;
   render(); // re-render: marca o card selecionado e redesenha o gráfico com o time
   try{if(window.innerWidth&&window.innerWidth<900){const c=$("chartCard");if(c&&c.scrollIntoView)c.scrollIntoView({behavior:"smooth",block:"center"})}}catch(err){}
+});
+// v38 — CLIQUE na LINHA do gráfico unificado ou no CHIP da legenda também seleciona o
+// time: o individual passa a mostrá-lo e a linha dele fica em destaque no unificado.
+$("chartTodos").addEventListener("click",e=>{
+  const alvo=e.target;
+  const linha=alvo&&typeof alvo.closest==="function"?alvo.closest("[data-team]"):null;
+  if(!linha||!linha.getAttribute)return;
+  graficoTimeId=linha.getAttribute("data-team");
+  render(); // re-render: marca o selecionado nos DOIS gráficos e nos cartões
+});
+$("chartLegenda").addEventListener("click",e=>{
+  const chip=e.target&&typeof e.target.closest==="function"?e.target.closest(".lg-chip[data-time-chip]"):null;
+  if(!chip||!chip.dataset)return;
+  graficoTimeId=chip.dataset.timeChip;
+  render(); // re-render: destaca o time no unificado e mostra no individual
 });
 if(typeof window.addEventListener==="function"){try{window.addEventListener("scroll",alternarMinibar,{passive:true});window.addEventListener("resize",alternarMinibar)}catch(e){}}
 function render(){
