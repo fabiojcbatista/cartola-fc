@@ -48,6 +48,41 @@ próximo acesso, com a memória limpa):
   refresh_token na Globo e apaga a cópia — em qualquer dispositivo que usar depois, a sessão
   antiga deixa de valer.
 
+## Novidades da versão 41 — o LOGIN é pedido TODA VEZ
+
+A pedido do Fabio, o acesso deixou de ficar gravado no navegador (v40 gravava no
+localStorage). Agora:
+
+- RECARREGOU a página? Pedirá nome e senha de novo.
+- FECHOU e abriu o site outra vez? Pedirá nome e senha de novo.
+- O acesso vale apenas enquanto a página estiver aberta — nada é gravado no navegador.
+- O resto segue igual: nível 1/2 entra normalmente depois de digitar; cadastro novo grava
+  no arquivo “passwords” como nível 3; nível 3 vê a mensagem “Usuário não permitido, fala
+  com Fabio Batista whatsapp: (51) 99462 2192”; nome já cadastrado é recusado pedindo o
+  nome completo; “Sair” encerra tudo e volta para a tela de login.
+
+## Novidades da versão 40 — PORTÃO DE ACESSO (login e cadastro local)
+
+O painel agora nasce atrás de uma tela de ACESSO com nome e senha (v40):
+
+- TELA DE LOGIN na frente de tudo: nome + senha. Sem acesso, o painel NÃO carrega nada
+  (nem ligas, nem histórico) — só entra depois do acesso aceito.
+- Não tem senha? O link “Cadastrar” abre o formulário de cadastro: nome completo, celular,
+  senha e confirmação de senha. Ao salvar, o SERVIDOR grava a conta no arquivo “passwords”
+  (uma linha por conta: nome;celular;nivel;senha) com NÍVEL DE ACESSO 3.
+- Cadastro com nome já existente (maiúsculas/acentos à parte) é RECUSADO: a mensagem pede a
+  escrita do nome completo — e o campo nome volta a receber o foco.
+- LOGIN nível 3 (cadastro aguardando liberação): não entra — exibe a mensagem
+  “Usuário não permitido, fala com Fabio Batista whatsapp: (51) 99462 2192” (com link para
+  abrir o whatsapp). Nível 1 ou 2: o servidor lê o arquivo de senhas, localiza usuário e
+  senha válidos e o painel entra normalmente.
+- LIBERAR ALGUÉM: abra o arquivo “passwords” na pasta do servidor e troque o 3 pelo 1 (ou 2)
+  na linha da pessoa. Contas de confiança podem ser criadas à mão no mesmo formato.
+- A escolha fica gravada no navegador (recarregar abre direto); o botão “Sair” encerra TUDO —
+  sessão Globo, times buscados e o acesso local — e volta para a tela de login.
+- Proteções mantidas: same-origin (POST de outro site → 403), limites de tamanho e senhas
+  comparadas dentro do servidor (o arquivo nunca vai para o navegador).
+
 ## Novidades da versão 39 — MÉDIA DO TIME SELECIONADO em LINHA RETA
 
 Correção na média dos gráficos (individual e unificado):
