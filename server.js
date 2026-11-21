@@ -826,14 +826,20 @@ async function handleLogout(req, res) {
   return sendJson(res, 200, { loggedIn: false, globoLogoutUrl: OIDC_BASE + "/logout?" + fim, perfilApagado }, { "Set-Cookie": cookieHeader(req, "", 0) });
 }
 
-/* ===== v40 — ACESSO LOCAL: arquivo “passwords” + login/cadastro pelo portão =====
-   O painel só abre depois de nome + senha conferirem com o arquivo PASSWORDS_PATH (por padrão,
-   “passwords” na pasta do servidor). Formato — uma conta por linha, campos separados por “;”:
-       nome;celular;nivel;senha
+/* ===== v40/v42 — ACESSO LOCAL: arquivo “passwords” + login/cadastro + LOGIN AUTOMÁTICO =====
+   O site entra com LOGIN AUTOMÁTICO (v42): POST /auth/local/auto devolve a conta de entrada
+   sem pedir senha. O login COM senha (POST /auth/local/login) e o cadastro pela tela seguem
+   intactos — a funcionalidade completa fica disponível para uso futuro via API.
+   Arquivo PASSWORDS_PATH (por padrão, “passwords” na pasta do servidor) — uma conta por linha,
+   campos separados por “;”:
+       nome;celular;nivel;senha[;auto]
    · nivel 1 ou 2 = permitido (contas criadas/liberadas pelo Fabio, editando o arquivo à mão);
    · nivel 3 = cadastro novo feito pela tela, AGUARDANDO LIBERAÇÃO — o login bloqueia e mostra
      a orientação para falar com o Fabio Batista no whatsapp. Para liberar alguém, edite o
      arquivo e troque o 3 pelo 1 (ou 2).
+   · o 5º campo “auto” marca a conta usada pelo LOGIN AUTOMÁTICO (ex.: nome;celular;2;senha;auto).
+     Sem marca, o auto usa a primeira conta de nível 2; sem nível 2, a primeira de nível 1;
+     arquivo vazio/inexistente, a conta padrão nível 2 “Fabio Batista”.
    Linhas começando com “#” são comentários. Comparação de nome ignora maiúsculas, acentos e
    espaços duplicados — não dá para cadastrar duas contas com o mesmo nome. */
 const PASSWORDS_PATH = process.env.SF_PASSWORDS_PATH || path.join(ROOT, "passwords");
@@ -851,7 +857,7 @@ function lerContas() {
     if (p.length < 4) return;
     const nivel = num(p[2]);
     if (nivel !== 1 && nivel !== 2 && nivel !== 3) return;
-    contas.push({ nome: p[0].trim(), celular: p[1].trim(), nivel, senha: p[3] });
+    contas.push({ nome: p[0].trim(), celular: p[1].trim(), nivel, senha: p[3], auto: String(p[4] || "").trim().toLowerCase() === "auto" });
   });
   return contas;
 }
@@ -862,10 +868,11 @@ function salvarConta(nome, celular, nivel, senha) {
   try {
     if (!fs.existsSync(PASSWORDS_PATH)) {
       fs.writeFileSync(PASSWORDS_PATH,
-        "# Superliga do Fabião — base de acesso (v40)\n" +
-        "# formato de cada linha: nome;celular;nivel;senha\n" +
+        "# Superliga do Fabião — base de acesso (v40/v42)\n" +
+        "# formato de cada linha: nome;celular;nivel;senha (5º campo “auto” = conta do login automático)\n" +
         "# nivel 1 ou 2 = entra no painel; nivel 3 = aguardando liberação (bloqueado)\n" +
-        "# para liberar um cadastro novo, troque o 3 pelo 1 (ou 2) e salve o arquivo\n", "utf8");
+        "# para liberar um cadastro novo, troque o 3 pelo 1 (ou 2) e salve o arquivo\n" +
+        "# para escolher a conta do login automático, acrescente ;auto na linha dela\n", "utf8");
     }
     fs.appendFileSync(PASSWORDS_PATH, nome + ";" + celular + ";" + nivel + ";" + senha + "\n", "utf8");
     return true;
@@ -883,6 +890,30 @@ async function handleLocalLogin(req, res) {
   if (!conta) return sendJson(res, 401, { error: "Nome ou senha incorretos. Confira e tente de novo." });
   if (conta.nivel === 3) return sendJson(res, 200, { permitido: false, bloqueado: true, nivel: 3, error: MSG_BLOQUEIO_ACESSO });
   return sendJson(res, 200, { permitido: true, nivel: conta.nivel, nome: conta.nome });
+}
+
+// v42 — POST /auth/local/auto: LOGIN AUTOMÁTICO. Devolve, sem pedir senha, a conta de entrada
+// do site: a marcada com 5º campo “auto” (só se nível 1/2 — nível 3 nunca entra), ou a primeira
+// de nível 2, ou a primeira de nível 1; arquivo inexistente/vazio → conta padrão nível 2
+// “Fabio Batista”. O login com validação de senha (acima) segue intacto para uso via API.
+async function handleAutoLogin(req, res) {
+  const contas = lerContas();
+  const conta = contas.find(c => c.auto && (c.nivel === 1 || c.nivel === 2))
+    || contas.find(c => c.nivel === 2) || contas.find(c => c.nivel === 1)
+    || { nome: "Fabio Batista", nivel: 2 };
+  return sendJson(res, 200, { ok: true, nivel: conta.nivel, nome: conta.nome });
+}
+
+// v42 — POST /auth/local/auto: LOGIN AUTOMÁTICO. Devolve, sem pedir senha, a conta de entrada
+// do site: a marcada com 5º campo “auto” (só se nível 1/2 — nível 3 nunca entra), ou a primeira
+// de nível 2, ou a primeira de nível 1; arquivo inexistente/vazio → conta padrão nível 2
+// “Fabio Batista”. O login com validação de senha (acima) segue intacto para uso via API.
+async function handleAutoLogin(req, res) {
+  const contas = lerContas();
+  const conta = contas.find(c => c.auto && (c.nivel === 1 || c.nivel === 2))
+    || contas.find(c => c.nivel === 2) || contas.find(c => c.nivel === 1)
+    || { nome: "Fabio Batista", nivel: 2 };
+  return sendJson(res, 200, { ok: true, nivel: conta.nivel, nome: conta.nome });
 }
 
 // POST /auth/local/cadastro { nome, celular, senha, confirmar } — grava como nível 3.
@@ -970,6 +1001,8 @@ const server = http.createServer((req, res) => {
     if (parsed.pathname === "/auth/oidc/go" && req.method === "GET") return handleOidcGo(req, res);
     if (parsed.pathname === "/auth/oidc/exchange" && req.method === "POST") return handleOidcExchange(req, res);
     if (parsed.pathname === "/auth/oidc/done" && req.method === "GET") return handleOidcDone(req, res);
+    if (parsed.pathname === "/auth/local/auto" && req.method === "POST") return handleAutoLogin(req, res); // v42 login automático
+    if (parsed.pathname === "/auth/local/auto" && req.method === "POST") return handleAutoLogin(req, res); // v42 login automático
     if (parsed.pathname === "/auth/local/login" && req.method === "POST") return handleLocalLogin(req, res);
     if (parsed.pathname === "/auth/local/cadastro" && req.method === "POST") return handleLocalCadastro(req, res);
     if (parsed.pathname === "/auth/me" && req.method === "GET") {
