@@ -550,8 +550,8 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 <!-- v40 — PORTÃO DE ACESSO: entra com nome e senha (conta nível 1/2 do arquivo “passwords” do
      servidor). Não tem senha? O link Cadastrar abre o formulário (nome completo, celular, senha
      e confirmação) e grava como nível 3 — aguardando liberação. Nível 3 não entra: vê a
-     orientação para falar com o Fabio Batista no whatsapp. Toda abertura/recarga da página
-     pede o login de novo (o acesso não fica gravado). -->
+     orientação para falar com o Fabio Batista no whatsapp. v42: a página entra com LOGIN
+     AUTOMÁTICO — o portão fica acionável por window.SFAcesso.mostrarTelaLogin(). -->
 <div class="acesso-overlay hidden" id="acessoOverlay" role="dialog" aria-modal="true" aria-label="Acesso ao painel">
   <div class="acesso-card">
     <div class="acesso-logo" aria-hidden="true">🏆</div>
@@ -2279,9 +2279,11 @@ function initFolds(){
 initFolds();
 buildRoundOptions(); // v31: o seletor de rodadas exibidas já nasce pronto (e lê a escolha salva)
 render();renderAuth();
-/* v41 — PORTÃO DE ACESSO LOCAL: nome + senha conferidos pelo servidor no arquivo “passwords”.
-   · Nível 1/2: entra no painel — o acesso vale SÓ nesta abertura: recarregar ou abrir de
-     novo pede login outra vez (nada fica gravado no navegador).
+/* v42 — PORTÃO DE ACESSO LOCAL: nome + senha conferidos pelo servidor no arquivo “passwords”.
+   · LOGIN AUTOMÁTICO: a página entra SOZINHA — o login é assumido aceito e o painel abre
+     (preset de automação → POST /auth/local/auto → fallback local, nível 2 “Fabio Batista”).
+   · O portão (login/cadastro/bloqueio do nível 3) continua 100% no código e funcional,
+     acionável por window.SFAcesso — nada foi removido; é a API pronta para uso futuro.
    · Nível 3 (cadastro aguardando liberação): NÃO entra — mostra a orientação do whatsapp.
    · Cadastrar: nome completo, celular, senha e confirmação → grava como nível 3. Nome já
      existente? Recusa e pede a escrita do nome completo. “Sair” volta para este portão. */
@@ -2371,12 +2373,10 @@ $("formAcessoCadastro").addEventListener("submit",async e=>{
   }catch{}
   if(!loggedIn)loggedIn=await restaurarSessao();
   clearTimeout(acordando);
-  // v40/v41 — PORTÃO DE ACESSO: sem nível 1/2 liberado no arquivo “passwords” do servidor, o
-  // painel NÃO carrega nada (nem sessão Globo, nem ligas) — fica na tela de login/cadastro.
-  // O login aceito chama iniciarPainel(), a cauda do boot isolada logo abaixo. E, como o
-  // acesso não fica gravado (v41), TODA abertura/recarga da página volta a pedir login.
-  if(!acessoAtual()){mostrarPortao("login");return}
-  await iniciarPainel();
+  // v42 — LOGIN AUTOMÁTICO: nada é pedido ao visitante. bootAcesso() concede o acesso e
+  // chama iniciarPainel(), a cauda do boot isolada logo abaixo. O portão manual (login,
+  // cadastro, bloqueio do nível 3) continua no código, acionável por window.SFAcesso.
+  await bootAcesso();
 })();
 // v40 — cauda do boot isolada: só roda com o acesso liberado pelo portão. O keepalive da
 // nuvem, logo abaixo, segue intocado (não expõe nada — só mantém o servidor acordado).
@@ -2387,6 +2387,59 @@ async function iniciarPainel(){
   }
   refreshAll();
 }
+/* v42 — LOGIN AUTOMÁTICO (assumir que o login é aceito). Ordem de tentativa:
+   1) acesso já concedido nesta abertura (preset de automação/prévia) → entra direto;
+   2) POST /auth/local/auto → o servidor devolve a conta de entrada marcada no arquivo
+      “passwords” (linha com 5º campo “auto”; sem marca, a primeira de nível 2; sem nível 2,
+      a primeira de nível 1; arquivo vazio, a padrão) → entra com ela;
+   3) servidor offline ou página aberta como arquivo local → entra localmente como nível 2
+      (“Fabio Batista”). Em todos os casos o visitante vê o painel aberto.
+   O PORTÃO continua 100% funcional (nada foi removido) — só não é mais mostrado sozinho.
+   Fica pronto para uso futuro via API: window.SFAcesso = { autoLogin, mostrarTelaLogin,
+   mostrarTelaCadastro, entrarAcesso(nome, senha), cadastrarAcesso(dados), sairAcesso,
+   acessoAtual }. O login manual com senha (POST /auth/local/login) segue intacto. */
+async function bootAcesso(){
+  if(acessoAtual()){esconderPortao();await iniciarPainel();return}
+  try{
+    const r=await fetch("/auth/local/auto",{method:"POST",credentials:"include"});
+    if(r&&r.ok){
+      const j=await r.json();
+      if(j&&j.ok&&(j.nivel===1||j.nivel===2)&&j.nome){salvarAcesso(j.nivel,j.nome);esconderPortao();await iniciarPainel();return}
+    }
+  }catch{}
+  salvarAcesso(2,"Fabio Batista"); // fallback: assume o login aceito — o site sempre entra
+  esconderPortao();
+  await iniciarPainel();
+}
+/* v42 — API DE ACESSO para uso futuro (console, integração, automação): o portão inteiro
+   fica acionável por código, com o MESMO fluxo dos formulários da tela. */
+window.SFAcesso={
+  autoLogin:bootAcesso,
+  mostrarTelaLogin:()=>mostrarPortao("login"),
+  mostrarTelaCadastro:()=>mostrarPortao("cadastro"),
+  entrarAcesso:async(usuario,senha)=>{
+    mostrarPortao("login");portaoMsg("acessoMsg","Conferindo acesso…","ok");
+    try{
+      const data=await authPost("/auth/local/login",{nome:String(usuario||"").trim(),senha:String(senha||"")});
+      if(data&&data.permitido){
+        salvarAcesso(data.nivel||1,data.nome||usuario);esconderPortao();
+        setStatus("Acesso liberado. Bem-vindo, "+(data.nome||usuario)+"!","ok");
+        await iniciarPainel();return acessoAtual();
+      }
+      portaoMsg("acessoMsg",escapeHtml((data&&data.error)||MSG_BLOQUEIO_ACESSO)+' <a href="'+WHATS_FABIO+'" target="_blank" rel="noopener">abrir whatsapp</a>',(data&&data.bloqueado)?"bloqueio":"erro",true);
+      return null;
+    }catch(err){portaoMsg("acessoMsg",escapeHtml((err&&err.message)||"Não consegui entrar. O servidor está rodando?"),"erro");return null}
+  },
+  cadastrarAcesso:async(dados)=>{
+    const d=dados||{};mostrarPortao("cadastro");portaoMsg("acessoMsgCad","");
+    ["acCadNome","acCadCel","acCadSenha","acCadConf"].forEach((id,i)=>{const e=$(id);if(e)e.value=[d.nome,d.celular,d.senha,d.confirmar][i]||""});
+    const f=$("formAcessoCadastro");if(!f)return null;
+    if(typeof f.requestSubmit==="function"){f.requestSubmit()}else if(f._ls&&f._ls.submit){await f._ls.submit({preventDefault(){}})}
+    return null;
+  },
+  sairAcesso:doLogout,
+  acessoAtual
+};
 // v29 NUVEM: com esta aba aberta, um toque leve a cada 5 min mantém a instância acordada
 // (o plano gratuito do Render hiberna após ~15 min sem acesso). Fora da nuvem, não faz nada.
 try{
