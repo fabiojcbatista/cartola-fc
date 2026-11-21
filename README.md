@@ -48,6 +48,30 @@ próximo acesso, com a memória limpa):
   refresh_token na Globo e apaga a cópia — em qualquer dispositivo que usar depois, a sessão
   antiga deixa de valer.
 
+## Novidades da versão 42 — LOGIN AUTOMÁTICO (a funcionalidade de acesso continua toda)
+
+O site agora entra SOZINHO, sem pedir nada ao visitante:
+
+- Ao abrir ou recarregar a página, o login é assumido ACEITO e o painel abre direto.
+- O servidor ganhou a rota POST /auth/local/auto, que devolve a conta de entrada sem pedir
+  senha. No arquivo “passwords”, a conta usada é: a linha marcada com o 5º campo “auto”
+  (ex.: nome;celular;2;senha;auto) → sem marca, a primeira de nível 2 → sem nível 2, a
+  primeira de nível 1 → arquivo vazio, a conta padrão “Fabio Batista” (nível 2).
+- Nível 3 nunca entra no automático. Página aberta como arquivo local ou servidor fora do
+  ar? O site entra do mesmo jeito (acesso local nível 2 “Fabio Batista”).
+- NADA foi removido. O portão de acesso (tela de login, cadastro, bloqueio do nível 3 com a
+  mensagem “Usuário não permitido, fala com Fabio Batista whatsapp: (51) 99462 2192”, Sair)
+  continua 100% funcional — só não é mais mostrado sozinho. E agora também é acionável por
+  CÓDIGO, pronto para uso futuro via API:
+
+  window.SFAcesso.autoLogin()                — refaz o login automático;
+  window.SFAcesso.mostrarTelaLogin()         — abre o portão na tela de login;
+  window.SFAcesso.mostrarTelaCadastro()      — abre o formulário de cadastro;
+  window.SFAcesso.entrarAcesso(nome, senha)  — entra com senha (POST /auth/local/login);
+  window.SFAcesso.cadastrarAcesso({nome, celular, senha, confirmar}) — cadastro nível 3;
+  window.SFAcesso.sairAcesso()               — Sair (encerra o acesso e volta ao portão);
+  window.SFAcesso.acessoAtual()              — conta em uso (ou null).
+
 ## Novidades da versão 41 — o LOGIN é pedido TODA VEZ
 
 A pedido do Fabio, o acesso deixou de ficar gravado no navegador (v40 gravava no
