@@ -91,6 +91,19 @@ próximo acesso, com a memória limpa):
   Rótulo e placeholder deixam o formato explícito; as pílulas abaixo do campo confirmam
   o que foi reconhecido.
 
+## Novidades da versão 47 — minibar + menu juntos, pódio com pontuações e cards compactos
+
+- MINIBAR + MENU SEMPRE VISÍVEIS: quando a minibarra “Superliga do Fabião · Sair” aparece
+  ao rolar, o menu de abas desce e fica logo ABAIXO dela — os dois continuam visíveis
+  juntos e nada sobrepõe nada. As seções rolam com folga para os dois (scroll-margin).
+- PÓDIO COM PONTUAÇÕES: cada degrau (ouro/prata/bronze) e cada pílula 4º+ mostra agora a
+  PONTUAÇÃO do time — na Mensal, a SOMA das rodadas da competição; na Eliminatória, a
+  pontuação da rodada que posiciona (em andamento) ou o acumulado na competição (encerrada),
+  junto com o valor Ganho / A ganhar.
+- CARDS DE TIME COMPACTOS (Eliminatória e Mensal no mesmo padrão): os chips de times e os
+  cards do pódio ficaram menores e iguais nas duas abas — nomes, escudos, valores e
+  pontuações cabem melhor no celular.
+
 ## Novidades da versão 46 — ajustes de layout e pódio de resultados
 
 - ABA GERAL: a seção “Times cadastrados” saiu — os cards dos times continuam no banner
