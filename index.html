@@ -255,12 +255,38 @@ details.fold>summary .fold-hint{font-size:11px;font-weight:600;color:var(--muted
 details.fold>summary:after{content:"\25BE";font-size:14px;color:var(--blue);opacity:.9;margin-left:8px;flex:none;transition:transform .25s ease}
 details.fold[open]>summary:after{transform:rotate(180deg)}
 details.fold[open]>summary{border-bottom:1px solid #e6ecf7}
-#foldTimes>summary{background:linear-gradient(115deg,var(--navy-card),var(--navy));color:#fff}
-#foldTimes>summary .fold-ico{background:rgba(255,255,255,.14);box-shadow:none}
-#foldTimes>summary .fold-count{background:rgba(255,210,40,.18);color:var(--gold)}
-#foldTimes>summary .fold-hint{color:#a9b8d6}
-#foldTimes>summary:after{color:#cdd9ef}
-#foldTimes>summary:hover{background:linear-gradient(115deg,#16376d,#0c2049)}
+/* ===== v46 — subtítulos dos gráficos com o preenchimento navy dos títulos de seção ===== */
+.chart-head,.chart-todos-head{margin:0 0 8px;padding:11px 14px;border-radius:14px;background:linear-gradient(115deg,var(--navy-card),var(--navy));color:#fff;box-shadow:0 8px 18px rgba(10,28,63,.28)}
+.chart-head b,.chart-todos-head b{color:#fff}
+.chart-head small,.chart-todos-head small{color:#a9b8d6}
+.chart-head .chart-ico,.chart-todos-head .chart-ico{background:rgba(255,255,255,.14);color:var(--gold);box-shadow:none}
+.chart-head .chart-time{color:#ffd23f}
+.chart-todos-head{margin:14px 2px 8px}
+/* v46 — rolagem nunca fica escondida atrás do menu suspenso */
+details.fold,section.panel,.elim-monta,.elim-principal{scroll-margin-top:72px}
+/* ===== v46 — card de MONTAGEM da competição (eliminatória e mensal) ===== */
+.elim-monta{margin:12px 0 2px;padding:0 14px 14px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#f6f9ff,#eef4ff);box-shadow:var(--shadow-card)}
+.elim-monta-tit{margin:0 -14px;padding:11px 14px;border-radius:16px 16px 0 0;background:linear-gradient(115deg,var(--navy-card),var(--navy));color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;gap:9px}
+.elim-monta-tit small{font-weight:700;font-size:11px;color:#a9b8d6;margin-left:auto;text-align:right}
+.elim-monta label{display:block;font-weight:800;font-size:11.5px;color:#44598a;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px}
+.elim-monta textarea{min-height:96px}
+.elim-monta .elim-premios-resumo{margin-top:10px}
+/* ===== v46 — PÓDIO de resultados (ganhos ou a ganhar) ===== */
+.podio-tit{margin:12px 2px 0;font-weight:900;font-size:13.5px;color:#0a1c3f}
+.podio{display:flex;align-items:flex-end;gap:6px;margin-top:8px;padding:0 6px}
+.podio-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 6px 0;border:1px solid #d5dfef;border-bottom:none;border-radius:14px 14px 0 0;background:#eef3fc}
+.podio-col.ouro{background:linear-gradient(180deg,#fff6d6,#ffe9a3 55%,#f5d768);border-color:#ecc33f;padding-top:18px}
+.podio-col.prata{background:linear-gradient(180deg,#f7fafc,#e8eef6 55%,#d8e0eb);border-color:#c2cede}
+.podio-col.bronze{background:linear-gradient(180deg,#fbf2ea,#f2dcc6 55%,#e5c3a0);border-color:#d3a97e}
+.podio-escudo{width:44px;height:44px;flex:none;border-radius:12px;border:2px solid #fff;background:#fff center/cover no-repeat;box-shadow:0 6px 14px rgba(16,34,72,.28)}
+.podio-nome{max-width:100%;font-weight:850;font-size:12px;color:#0a1c3f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.podio-valor{font-size:11.5px;font-weight:900;color:#6b4a00;background:rgba(255,255,255,.85);border:1px solid rgba(240,164,0,.4);border-radius:99px;padding:3px 9px;white-space:nowrap}
+.podio-degrau{align-self:stretch;margin-top:6px;padding:8px 0 7px;text-align:center;font-weight:900;font-size:13.5px;color:#16243d;background:rgba(16,34,72,.12);border-radius:10px 10px 0 0}
+.podio-col.ouro .podio-degrau{background:rgba(240,164,0,.32);color:#5c3d00}
+.podio-extra{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.podio-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #d5dfef;border-radius:99px;padding:4px 11px;font-size:11.5px;font-weight:800;color:#0a1c3f}
+.podio-chip b{color:var(--blue)}
+@media(max-width:640px){.podio-col{padding:9px 4px 0}.podio-escudo{width:34px;height:34px}.podio-nome{font-size:10.5px}.podio-valor{font-size:10.5px;padding:2px 8px;white-space:normal;line-height:1.25;text-align:center;max-width:100%}.podio-degrau{font-size:12.5px;padding:7px 0 6px}}
 .ver-detalhes{margin-left:auto;font-size:12px;font-weight:800;color:var(--blue);background:#eaf2ff;border:1px solid #cfe0fb;border-radius:99px;padding:4px 12px;white-space:nowrap}
 details.fold,section.panel{scroll-margin-top:70px}
 
@@ -383,6 +409,71 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 
+/* ===== v43 — MENU DE ABAS HORIZONTAL + ELIMINATÓRIA (mobile web redesign) ===== */
+.menu-abas{display:flex;gap:6px;overflow-x:auto;position:sticky;top:0;z-index:60;padding:10px 10px 8px;background:linear-gradient(180deg,#0b1e42,var(--navy));border-bottom:2px solid rgba(255,210,40,.35);box-shadow:0 8px 22px rgba(4,12,30,.35);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.menu-abas::-webkit-scrollbar{display:none}
+.aba-item{flex:none;display:grid;justify-items:center;gap:3px;min-width:76px;padding:9px 10px 7px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(255,255,255,.07);color:#dbe6f8;font:700 11px/1.15 "Segoe UI",system-ui,-apple-system,sans-serif;cursor:pointer;transition:transform .12s ease,background .12s ease}
+.aba-item:active{transform:scale(.96)}
+.aba-item .aba-ico{font-size:19px;line-height:1}
+.aba-item.ativo{background:linear-gradient(145deg,var(--gold-soft),#f0a400);color:#221400;border-color:transparent;box-shadow:0 4px 14px rgba(240,164,0,.38)}
+.aba-off{display:none!important}
+.elim-intro{font-size:13px;color:var(--muted);margin:4px 0 10px}
+#elimCodigos{width:100%;min-height:96px;resize:vertical;font:600 13px/1.5 ui-monospace,SFMono-Regular,monospace;border-radius:12px;border:1px solid #cfe0fb;padding:10px;background:#f7faff;color:var(--blue)}
+.elim-acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.elim-regra{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-size:13px;margin:14px 0 6px;color:var(--blue)}
+.elim-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.elim-chip{display:inline-flex;align-items:center;gap:7px;background:#eaf2ff;border:1px solid #cfe0fb;border-radius:99px;padding:4px 10px;font-size:12.5px;font-weight:700;color:var(--blue)}
+.elim-chip img{width:18px;height:18px;border-radius:50%;object-fit:contain}
+.elim-chip button{border:0;background:#d7e6fb;color:var(--blue);width:20px;height:20px;border-radius:50%;font-weight:900;cursor:pointer;line-height:1;padding:0}
+.elim-msg{font-size:13px;font-weight:700;margin-top:8px;min-height:18px}
+.elim-msg.ok{color:#0a7a3d}.elim-msg.erro{color:#b42318}
+.elim-badge{display:inline-block;font-size:11px;font-weight:900;border-radius:99px;padding:2px 9px;margin-left:6px;white-space:nowrap}
+.elim-badge.elim{background:#fde8e8;color:#b42318;border:1px solid #f3c1bd}
+.elim-badge.camp{background:linear-gradient(145deg,var(--gold-soft),#f0a400);color:#221400}
+.elim-badge.vivo{background:#e6f6ec;color:#0a7a3d;border:1px solid #bfe6cd}
+.elim-sem{font-size:13.5px;color:var(--muted);padding:10px 0}
+#elimTabela td{white-space:nowrap}
+#elimTabela img{width:20px;height:20px;vertical-align:-5px;border-radius:50%;margin-right:6px}
+@media(max-width:900px){.aba-item{min-width:64px;padding:7px 8px 6px;font-size:10px}.aba-item .aba-ico{font-size:17px}}
+/* ===== v44 — ELIMINATÓRIA EM COMPETIÇÃO ===== */
+.elim-linha{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.elim-linha label{display:grid;gap:4px;font-size:12px;font-weight:800;color:var(--blue)}
+.elim-linha select{padding:8px 10px;border-radius:10px;border:1px solid #cfe0fb;background:#fff;color:var(--blue);font-weight:800;font-family:inherit}
+#elimPremios{width:100%;padding:10px 12px;border-radius:12px;border:1px solid #cfe0fb;background:#f7faff;font:700 13px "Segoe UI",system-ui,-apple-system,sans-serif;color:var(--blue);margin-top:4px}
+.elim-principal{background:linear-gradient(135deg,#0d7a43,#095c31);color:#fff;border-radius:14px;padding:14px;display:grid;gap:8px;margin-top:12px;box-shadow:0 8px 20px rgba(9,92,49,.25)}
+.elim-principal[hidden]{display:none}
+.elim-liga-nome{font-size:16px;font-weight:900;letter-spacing:.2px}
+.elim-badge.andamento{background:#fff3d6;color:#8a5a00;border:1px solid #f2df9f}
+.elim-principal .elim-badge.andamento,.elim-principal .elim-badge.vivo{background:rgba(255,255,255,.18);color:#fff;border-color:transparent}
+.elim-camp{background:rgba(255,255,255,.16);border-radius:10px;padding:8px 10px;font-size:14px}
+.elim-camp-premios{font-size:12.5px;opacity:.95;margin-top:4px}
+.elim-ultimo{font-size:13px}
+.elim-faixa{font-size:12.5px;background:rgba(255,255,255,.12);border-radius:10px;padding:7px 10px}
+.elim-faixa-pos{color:#ffd54a}
+.elim-resumo{font-size:11.5px;opacity:.85}
+.elim-premio{display:inline-block;background:#fff7d6;color:#7a5a00;border:1px solid #f0df9a;border-radius:99px;padding:1px 8px;font-size:11px;font-weight:900;margin-left:4px;white-space:nowrap}
+.elim-posfinal{display:inline-block;background:#eef1f7;color:#5a6a86;border-radius:99px;padding:1px 8px;font-size:11px;font-weight:800;margin-left:4px;white-space:nowrap}
+.elim-rodadas{margin-top:14px}
+.elim-rodadas-titulo{font-weight:900;font-size:13px;color:var(--blue);margin-bottom:6px}
+.elim-rodadas-strip{display:flex;gap:6px;overflow-x:auto;padding:6px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.elim-rodadas-strip::-webkit-scrollbar{display:none}
+.er-btn{flex:none;min-width:46px;padding:8px 10px;border-radius:10px;border:1px solid #cfe0fb;background:#fff;font:900 12px "Segoe UI",system-ui,-apple-system,sans-serif;color:var(--blue);cursor:pointer}
+.er-btn.ativo{background:linear-gradient(145deg,var(--gold-soft),#f0a400);color:#221400;border-color:transparent;box-shadow:0 4px 10px rgba(240,164,0,.3)}
+.elim-rodada-painel{margin-top:8px}
+.elim-rod-titulo{font-weight:900;font-size:13.5px;color:var(--blue);margin-bottom:6px}
+.elim-rod-elim{font-size:12.5px;font-weight:700;color:var(--blue);margin:8px 0}
+.elim-rodada-painel td{white-space:nowrap}
+.elim-rodada-painel img{width:20px;height:20px;vertical-align:-5px;border-radius:50%;margin-right:6px}
+.elim-linha-elim td{background:#fdecea}
+.elim-secao-titulo{font-weight:900;font-size:13px;color:var(--blue);margin:12px 0 6px}
+.elim-premios-resumo{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.elim-premios-resumo:empty{display:none}
+@media(max-width:640px){.elim-linha{grid-template-columns:1fr 1fr}}
+.eliminatoria .section-head{background:linear-gradient(100deg,#0d7a43,#095c31)}
+.elim-acoes button{padding:10px 16px;border-radius:12px;border:1px solid #cfe0fb;background:#fff;font:800 13px "Segoe UI",system-ui,-apple-system,sans-serif;color:var(--blue);cursor:pointer;transition:transform .12s ease}
+.elim-acoes button:active{transform:scale(.97)}
+.elim-acoes button.go{background:linear-gradient(100deg,var(--orange),var(--orange-deep));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(255,138,31,.32)}
+#elimRegra select{padding:7px 10px;border-radius:10px;border:1px solid #cfe0fb;background:#fff;color:var(--blue);font-weight:800;font-family:inherit}
 </style>
 </head>
 <body>
@@ -403,6 +494,18 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
   <span class="mb-user" id="mbUser"></span>
   <button type="button" id="mbAuth">Entrar</button>
 </div>
+<!-- v43/v46 — MENU DE ABAS SUSPENSO: cada seção é uma ABA com ícone + texto: Geral
+     (pontuação por rodada com os gráficos) · Clássica · Pontos corridos · Mata-mata ·
+     Eliminatória · Mensal. v46: o menu saiu do bloco main (a grid area
+     prendia o position:sticky) e fica colado no TOPO em todas as telas. -->
+<nav class="menu-abas" id="menuAbas" aria-label="Seções do painel">
+    <button type="button" class="aba-item ativo" id="abaBtnGeral"><span class="aba-ico">📊</span><span>Geral</span></button>
+    <button type="button" class="aba-item" id="abaBtnClassica"><span class="aba-ico">🏆</span><span>Clássica</span></button>
+    <button type="button" class="aba-item" id="abaBtnPontos"><span class="aba-ico">🟣</span><span>Pontos corridos</span></button>
+    <button type="button" class="aba-item" id="abaBtnMataMata"><span class="aba-ico">⚔️</span><span>Mata-mata</span></button>
+    <button type="button" class="aba-item" id="abaBtnElim"><span class="aba-ico">🎯</span><span>Eliminatória</span></button>
+    <button type="button" class="aba-item" id="abaBtnMensal"><span class="aba-ico">🗓️</span><span>Mensal</span></button>
+  </nav>
 <main>
   <!-- v32: estado inicial amigável — um convite (com CTA único e nota de segurança), não uma página “quebrada”. Sai da cena quando existe time na lista. -->
   <section class="hero" id="hero">
@@ -447,21 +550,9 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
     <div class="lp-note">A janela da Globo abriu — entre nela com E-MAIL e SENHA da Conta Globo (evite “Continuar com Google”: se aparecer o aviso “Este navegador ou app pode não ser seguro”, é regra do próprio Google, não é erro do painel — use e-mail e senha nessa mesma janela, ou o modo manual no menu Avançado). Quando a Globo concluir, eu fecho o navegador e carrego as ligas sozinho.</div>
     <div class="lp-acoes"><button type="button" id="autoCancelBtn">Cancelar o login</button></div>
   </div>
-
-  <details class="fold" id="foldTimes">
-    <summary><span class="fold-ico">⚽</span>Times cadastrados<span class="fold-count" id="foldTimesCount">(0)</span><span class="fold-hint">toque para abrir/fechar</span></summary>
-    <div class="panel" style="margin-top:12px">
-      <div class="team-list" id="teamList"></div>
-    </div>
-  </details>
-
   <details class="fold" id="foldLigas">
     <summary><span class="fold-ico">🏆</span>Ligas — Clássicas, Mata-Mata e Pontos Corridos<span class="fold-hint">toque para abrir/fechar</span></summary>
-    <div class="tabs" style="margin-top:12px">
-      <button class="tab active" data-target="classic">🏆 Ligas Clássicas</button>
-      <button class="tab" data-target="knockout">⚔️ Mata-Mata</button>
-      <button class="tab" data-target="points">🟣 Pontos Corridos</button>
-    </div>
+    <!-- v46: os 3 botões intermediários saíram — o MENU DE ABAS escolhe a modalidade -->
 
     <section class="panel section classic" id="classic">
       <div class="section-head"><span>🏆 Ligas Clássicas <small>(suas ligas no Cartola)</small> <span class="info" title="“Liga Clássica” é o nome oficial do Cartola para as ligas de pontos corridos. Posição e pontos vêm da API — classificação oficial.">i</span></span><small>Classificação oficial</small></div>
@@ -492,17 +583,94 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
         <div class="chart-todos-head"><span class="chart-ico" aria-hidden="true">👥</span><b>Todos os times (unificado)</b><small id="chartTodosSub"></small></div>
         <div class="chart-box graf-todos" id="chartTodos"></div>
         <div class="chart-legenda" id="chartLegenda"></div>
-        <div class="chart-dica" id="chartDica">💡 Toque no nome de um time (tabela, cartão do topo ou card da lista) para ver o gráfico dele — ou toque numa LINHA / num chip da legenda na visão unificada. A linha VERDE reta é a média do time selecionado: pontuação ÷ rodadas finalizadas (o número aparece em destaque).</div>
+        <div class="chart-dica" id="chartDica">💡 Toque no nome de um time (tabela, cartão do topo ou card dos times no cabeçalho) para ver o gráfico dele — ou toque numa LINHA / num chip da legenda na visão unificada. A linha VERDE reta é a média do time selecionado: pontuação ÷ rodadas finalizadas (o número aparece em destaque).</div>
       </div>
       <div class="table-wrap"><table id="scoresTable"></table></div>
-      <div class="footnote">Pontos do time em cada rodada (API pública do Cartola). O total é a soma das rodadas já disputadas: vai ATÉ A RODADA EM ANDAMENTO (o parcial da rodada corrente entra na soma) — com o mercado aberto, até a última rodada COMPLETA (a rodada futura ainda não pontuou). O seletor “Rodadas exibidas” na barra acima escolhe a JANELA mostrada (ex.: 6–10, últimas 5) — os dados seguem completos e o total continua somando TODAS as rodadas já disputadas.</div>
     </section>
   </details>
+
+  <!-- v44 — ELIMINATÓRIA EM COMPETIÇÃO: importação no formato NOME DA LIGA=>TIME1;TIME2;TIME3
+       (códigos ou nomes), rodada inicial/final, faixa de premiação POSIÇÃO-VALOR,POSIÇÃO-VALOR,
+       regra de eliminação por rodada, visão principal (status, último eliminado, faixa de
+       premiação, campeões quando finaliza), exibição por aba de rodada e o botão Exportar,
+       que devolve os times no mesmo formato da importação. Tudo guardado no navegador. -->
+  <section class="panel section eliminatoria aba-off" id="abaEliminatoria">
+    <div class="section-head"><span>🎯 Eliminatória <small id="elimHeadLiga">(liga em construção)</small></span></div>
+    <p class="elim-intro">Monte a SUA eliminatória: cole no formato <b>NOME DA LIGA=&gt;TIME1;TIME2;TIME3</b> (os códigos dos times no Cartola ou os nomes), escolha <b>quando começa e quando termina</b>, insira as <b>premiações</b> no formato <b>POS - VALOR</b> (ex.: 1 - 1000, 2 - 500) e <b>quantos times eliminar por rodada</b>. Acompanhe o status, o último eliminado, os premiados e a evolução rodada a rodada.</p>
+    <div class="elim-monta">
+      <div class="elim-monta-tit">⚙️ Montagem da competição<small>liga · rodadas · premiações</small></div>
+      <label for="elimCodigos">Liga e times — NOME DA LIGA=&gt;TIME1;TIME2;TIME3</label>
+      <textarea id="elimCodigos" placeholder="Ex.:&#10;SUPERLIGA DO FABIÃO=>1382686;2752954;3011547&#10;(códigos dos times no Cartola ou nomes — o botão Exportar devolve neste formato)"></textarea>
+      <div class="elim-linha">
+        <label for="elimRodInicio">Começa na <select id="elimRodInicio"></select></label>
+        <label for="elimRodFim">Termina na <select id="elimRodFim"></select></label>
+        <label for="elimRegra">Eliminar por rodada <select id="elimRegra"><option value="1">1 time</option><option value="2">2 times</option><option value="3">3 times</option><option value="4">4 times</option><option value="6">6 times</option></select></label>
+      </div>
+      <label for="elimPremios">Premiações — formato POS - VALOR; POS - VALOR; POS - VALOR</label>
+      <input type="text" id="elimPremios" placeholder="Ex.: 1 - 1000; 2 - 500; 3 - 250 (aceita vírgula ou ponto-e-vírgula)">
+      <div class="elim-premios-resumo" id="elimPremiosResumo"></div>
+      <div class="elim-acoes">
+        <button type="button" class="go" id="elimBtnCadastrar">Importar times</button>
+        <button type="button" id="elimBtnExportar">Exportar formato</button>
+        <button type="button" id="elimBtnLimpar">Limpar eliminatória</button>
+      </div>
+    </div>
+    <div class="elim-msg" id="elimMsg"></div>
+    <div id="elimPrincipal" class="elim-principal" hidden></div>
+    <div class="elim-chips" id="elimChips"></div>
+    <div class="elim-secao-titulo" id="elimTituloClassificacao"></div>
+    <div class="table-wrap"><table id="elimTabela"></table></div>
+    <div class="elim-rodadas" id="elimRodadasBloco">
+      <div class="elim-rodadas-titulo" id="elimTituloRodadas">Exibição por rodada</div>
+      <div class="elim-rodadas-strip" id="elimRodadasStrip"></div>
+      <div class="elim-rodada-painel" id="elimRodadaPainel"></div>
+    </div>
+    <div class="chart-box" id="elimGrafico"></div>
+    <div class="footnote" id="elimNota"></div>
+  </section>
+  <!-- v45 — COMPETIÇÃO MENSAL: o mesmo conteúdo da Eliminatória, mas SEM eliminação —
+       os pontos das rodadas da competição apenas SOMAM. Mesma importação
+       (NOME DA LIGA=>TIME1;TIME2;TIME3), rodadas início→fim e premiações
+       POS - VALOR; POS - VALOR; com a exibição por aba de rodada (pontos DA rodada e
+       os premiados), gráfico de evolução e o botão Exportar. Tudo guardado no navegador. -->
+  <section class="panel section eliminatoria aba-off" id="abaMensal">
+    <div class="section-head"><span>🗓️ Mensal <small id="mensHeadLiga">(liga em construção)</small></span></div>
+    <p class="elim-intro">Monte a SUA competição <b>MENSAL</b>: cole no formato <b>NOME DA LIGA=&gt;TIME1;TIME2;TIME3</b> (os códigos dos times no Cartola ou os nomes), escolha <b>quando começa e quando termina</b> e insira as <b>premiações</b> no formato <b>POS - VALOR; POS - VALOR</b>. Aqui <b>NINGUÉM é eliminado</b> — os pontos das rodadas apenas <b>SOMAM</b>: o líder é quem somar mais. Acompanhe a soma, os premiados e a evolução rodada a rodada.</p>
+    <div class="elim-monta">
+      <div class="elim-monta-tit">⚙️ Montagem da competição<small>liga · rodadas · premiações</small></div>
+      <label for="mensCodigos">Liga e times — NOME DA LIGA=&gt;TIME1;TIME2;TIME3</label>
+      <textarea id="mensCodigos" placeholder="Ex.:&#10;MENSAL DO FABIÃO=>1382686;2752954;3011547&#10;(códigos dos times no Cartola ou nomes — o botão Exportar devolve neste formato)"></textarea>
+      <div class="elim-linha">
+        <label for="mensRodInicio">Começa na <select id="mensRodInicio"></select></label>
+        <label for="mensRodFim">Termina na <select id="mensRodFim"></select></label>
+      </div>
+      <label for="mensPremios">Premiações — formato POS - VALOR; POS - VALOR; POS - VALOR</label>
+      <input type="text" id="mensPremios" placeholder="Ex.: 1 - 1000; 2 - 500; 3 - 250 (aceita vírgula ou ponto-e-vírgula)">
+      <div class="elim-premios-resumo" id="mensPremiosResumo"></div>
+      <div class="elim-acoes">
+        <button type="button" class="go" id="mensBtnCadastrar">Importar times</button>
+        <button type="button" id="mensBtnExportar">Exportar formato</button>
+        <button type="button" id="mensBtnLimpar">Limpar mensal</button>
+      </div>
+    </div>
+    <div class="elim-msg" id="mensMsg"></div>
+    <div id="mensPrincipal" class="elim-principal" hidden></div>
+    <div class="elim-chips" id="mensChips"></div>
+    <div class="elim-secao-titulo" id="mensTituloClassificacao"></div>
+    <div class="table-wrap"><table id="mensTabela"></table></div>
+    <div class="elim-rodadas" id="mensRodadasBloco">
+      <div class="elim-rodadas-titulo" id="mensTituloRodadas">Exibição por rodada</div>
+      <div class="elim-rodadas-strip" id="mensRodadasStrip"></div>
+      <div class="elim-rodada-painel" id="mensRodadaPainel"></div>
+    </div>
+    <div class="chart-box" id="mensGrafico"></div>
+    <div class="footnote" id="mensNota"></div>
+  </section>
 </main>
 <!-- v33 — navegação inferior: atalhos que abrem e rolam até cada seção (só no celular) -->
 <nav class="bottomnav" id="bottomNav" aria-label="Atalhos do painel">
   <button type="button" class="bn active" data-goto="topo"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.6 12 3l9 7.6"/><path d="M5.5 9.4V19a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V9.4"/></svg></span>Início</button>
-  <button type="button" class="bn" data-goto="foldTimes"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.2" r="3.1"/><path d="M3.6 19.4c.7-3.4 3-5.4 5.4-5.4s4.7 2 5.4 5.4"/><path d="M15.4 5.7a3.1 3.1 0 0 1 0 5"/><path d="M16.8 14.4c1.8.8 3.1 2.6 3.6 5"/></svg></span>Times</button>
+  <button type="button" class="bn" data-goto="bannerResumo"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.2" r="3.1"/><path d="M3.6 19.4c.7-3.4 3-5.4 5.4-5.4s4.7 2 5.4 5.4"/><path d="M15.4 5.7a3.1 3.1 0 0 1 0 5"/><path d="M16.8 14.4c1.8.8 3.1 2.6 3.6 5"/></svg></span>Times</button>
   <button type="button" class="bn" data-goto="foldLigas"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v3.6a4 4 0 0 1-8 0V4z"/><path d="M8 5.2H5.6a2.4 2.4 0 0 0 2.7 2.8"/><path d="M16 5.2h2.4a2.4 2.4 0 0 1-2.7 2.8"/><path d="M12 11.6v3"/><path d="M9.4 14.6h5.2l.8 4.6H8.6l.8-4.6z"/></svg></span>Ligas</button>
   <button type="button" class="bn" data-goto="foldScores"><span class="bn-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20v-7"/><path d="M12 20V4.5"/><path d="M19 20v-10"/></svg></span>Dados</button>
 </nav>
@@ -583,6 +751,72 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 </div>
 <script>
 /*
+  v44 — ELIMINATÓRIA EM COMPETIÇÃO: a aba nova da v43 virou uma competição completa.
+  (1) IMPORTAÇÃO NO FORMATO NOME DA LIGA=>TIME1;TIME2;TIME3 — códigos (IDs do Cartola) ou
+  nomes dos times separados por ponto-e-vírgula; sem "=>", o cadastro solto da v43 segue
+  funcionando. O botão EXPORTAR FORMATO devolve/copiar os times exatamente nesse formato.
+  (2) RODADA INICIAL e RODADA FINAL — a competição disputa só dentro dessa faixa: a
+  classificação, a eliminação e o gráfico usam a pontuação ACUMULADA DA COMPETIÇÃO (não o
+  total do Cartola). (3) FAIXA DE PREMIAÇÃO no formato POSIÇÃO-VALOR,POSIÇÃO-VALOR (ex.:
+  1-1000,2-500) — o prêmio aparece na classificação (posição FINAL = ordem de eliminação;
+  o campeão é 1º) e na faixa destacada. (4) VISÃO PRINCIPAL (cartão verde): nome da liga,
+  STATUS (preparando / Rodada X em andamento / competição FINALIZADA), ÚLTIMO ELIMINADO
+  (e em que rodada), os times NA FAIXA DE PREMIAÇÃO agora e, quando finaliza, os CAMPEÕES
+  e os premiados com valores. (5) EXIBIÇÃO POR ABA DE RODADA: tiras R{início}…R{fim} — cada
+  rodada mostra os times NA FAIXA DE PREMIAÇÃO naquele momento, os ELIMINADOS da rodada e
+  a tabela com pontos da rodada + acumulado + situação. Persistência virou
+  sf_eliminatoria_v2 (liga, ids, regra, rodadas, premiação) — a v1 antiga é lida como
+  migração. NADA muda no resto do painel: abas da v43, gráficos, ligas, login — intactos.
+  v46 — SÉRIE DE AJUSTES: (1) a seção “Times cadastrados” sai da aba Geral — os cards
+  dos times já ficam no banner do cabeçalho (clique continua levando ao gráfico); (2) os
+  subtítulos dos gráficos ganham o preenchimento navy dos títulos de seção; (3) o
+  footnote de rodadas abaixo da tabela sai; (4) o menu de abas fica SUSPENSO em todas as
+  telas (sai do <main> — a grid area prendia o sticky — e colado no topo da página);
+  (5) os 3 botões intermediários do fold das ligas saem (o menu já escolhe a modalidade);
+  (6) na Eliminatória e na Mensal, a montagem da competição ganha um card próprio e os
+  resultados viram PÓDIO: degraus ouro/prata/bronze com escudo, posição e o valor GANHO
+  (encerrada) ou A GANHAR (em andamento) + pills para 4º+.
+  v45 — ABA MENSAL: novo menu ao lado da Eliminatória com o MESMO conteúdo —
+  importação NOME DA LIGA=>TIME1;TIME2;TIME3, rodadas início→fim, premiações
+  POS - VALOR; POS - VALOR, cartão com status/projeção/faixa, classificação, exibição
+  por aba de rodada, gráfico de evolução e exportar — MAS NINGUÉM é eliminado: os
+  pontos das rodadas da competição apenas SOMAM (o líder é quem somar mais; ao
+  terminar, o campeão é o 1º da soma). Cada aba de rodada mostra os pontos DA rodada
+  (desempate: acumulado até ela) e os premiados da rodada. Estado próprio
+  (sf_mensal_v1) — não interfere na eliminatória.
+  v44.3 — CLASSIFICAÇÃO PELA RODADA + PREMIAÇÕES COM ; : a classificação (tabela,
+  projeção e exibição por rodada) é SEMPRE pela pontuação DA RODADA (a última disputada
+  da competição; desempate pelo acumulado), não pelo total de pontos — a coluna mostra os
+  pontos da rodada. O CAMPEÃO acompanha: a projeção "se terminasse hoje" segue os pontos
+  da rodada; encerrando pelas rodadas com mais de um vivo, o campeão é o 1º dessa
+  classificação e os vivos recebem as posições finais (com os prêmios visíveis).
+  As premiações agora aceitam VÍRGULA OU PONTO-E-VÍRGULA: "pos - valor; pos-valor;pos-valor"
+  (antes só vírgula — premiações digitadas com ; eram ignoradas e não apareciam).
+  v44.2 — PROJEÇÃO DAS PREMIAÇÕES: enquanto a competição está EM ANDAMENTO, o cartão
+  principal mostra "🏆 Se terminasse hoje: CAMPEÃO seria X — R$ …" com os demais prêmios
+  de agora, e a classificação marca quem TERIA os prêmios na posição atual — o líder com
+  "🏆 posição de CAMPEÃO" e os demais da faixa com "se terminar hoje: R$ …"; quem já foi
+  eliminado continua com a posição FINAL e o prêmio real. O botão "Cadastrar times" virou
+  "Importar times". (Antes, campeões e prêmios só apareciam quando a competição finaliza.)
+  v44.1 — AJUSTES PELA UTILIZAÇÃO REAL: (1) o NOME DA LIGA aparece no cabeçalho da aba,
+  na classificação e na exibição por rodada (antes só no cartão principal); (2) o EXPORTAR
+  devolve os CÓDIGOS dos times (LIGA=>ID1;ID2;…) em vez dos nomes; (3) a regra de
+  eliminação mudou: sai quem tiver a MENOR PONTUAÇÃO DA RODADA (desempate pelo acumulado
+  da competição) — antes saía pelo acumulado; (4) o campo de premiações ficou explícito
+  no formato POS - VALOR (aceita espaços e º/ª) e as premiações aceitas aparecem como
+  pílulas abaixo do campo.
+  v43 — REDESIGN MOBILE WEB COM MENU DE ABAS HORIZONTAL: cada seção do painel vira uma
+  ABA com ÍCONE + TEXTO, no topo (gruda na tela ao rolar): Geral (times cadastrados +
+  pontuação por rodada com os DOIS gráficos), Clássica, Pontos corridos, Mata-mata (o
+  fold das ligas continua com as três modalidades — o menu aciona a modalidade certa) e
+  ELIMINATÓRIA (liga em construção: cole os CÓDIGOS (IDs do Cartola) dos times em campo,
+  cadastre — busca por NOME também funciona —, escolha QUANTOS TIMES ELIMINAR POR RODADA
+  e acompanhe a classificação por pontuação, a EVOLUÇÃO por rodada em SVG e quem foi
+  eliminado (o último que sobra vira CAMPEÃO). A barra de busca + rodadas + Atualizar +
+  Avançado fica FORA das abas — aparece em TODAS elas (pedido do Fabio). A navegação
+  inferior (v33) agora TROCA DE ABA. A aba ativa e a eliminatória ficam guardadas no
+  navegador. NADA sai: folds, tabs internas, gráficos v38/v39, banner-resumo, métricas,
+  modo manual, diálogo de login — tudo intacto.
   v39 — MÉDIA DO TIME SELECIONADO em LINHA RETA: a média deixa de ser traçada rodada a
   rodada entre os monitorados e passa a ser a do time SELECIONADO — pontuação total ÷
   rodadas finalizadas — desenhada como LINHA RETA horizontal VERDE nos DOIS gráficos
@@ -1699,14 +1933,15 @@ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":
 function renderTeams(){
   $("metricTeams").textContent=teams.length;
   const fc=$("foldTimesCount");if(fc)fc.textContent="("+teams.length+")";
+  const tl=$("teamList");if(!tl)return; // v46: a seção “Times cadastrados” saiu — os cards dos times ficam no banner-resumo do cabeçalho
   if(!teams.length){ // v27: lista vazia orienta em vez de ficar em branco
-    $("teamList").innerHTML=`<div class="team-empty">Nenhum time monitorado ainda.<br><b>Entre com a Globo</b> (o time da sua conta entra sozinho)<br>ou use “Buscar time” acima.</div>`;
+    tl.innerHTML=`<div class="team-empty">Nenhum time monitorado ainda.<br><b>Entre com a Globo</b> (o time da sua conta entra sozinho)<br>ou use “Buscar time” acima.</div>`;
     return;
   }
   // v37 — CARDS em grid (escudo + status com ponto colorido + badge) e clicáveis:
   // o toque seleciona o time no gráfico; o selecionado ganha o contorno azul.
   const selT=timeDoGrafico();
-  $("teamList").innerHTML=teams.map((t,i)=>{
+  tl.innerHTML=teams.map((t,i)=>{
     const st=String(t.status||"Aguardando");
     const dotCls=st.startsWith("Conectado")||st.startsWith("Parcial")?"ok":(st.includes("Falha")?"err":"wait");
     return `<div class="tcard${t.mine?" meu":""}${selT&&String(selT.id)===String(t.id)?" sel":""}"${t.id?` data-time-card="${t.id}" title="Mostrar ${escapeHtml(t.name)} no gráfico"`:""}><span class="t-escudo" aria-hidden="true"${t.escudo?` style="background-image:url('${escapeHtml(t.escudo)}'), var(--sf-logo)"`:""}></span><div class="t-info"><span class="name">${escapeHtml(t.name)}${t.mine?'<span class="badge">meu time</span>':""}</span><span class="state"><i class="st-dot ${dotCls}"></i>${escapeHtml(st)}${t.error?" — "+escapeHtml(t.error):""}</span></div><span class="t-go">›</span></div>`;
@@ -1783,6 +2018,9 @@ function alternarMinibar(){
 document.querySelectorAll(".bn").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".bn").forEach(x=>x.classList.toggle("active",x===b));
   const alvo=b.dataset?b.dataset.goto:null;
+  // v43: o atalho agora TROCA DE ABA (Ligas → aba Clássica; os demais → aba Geral) e,
+  // além de trocar, abre o fold do atalho e rola até ele — como antes.
+  try{mostrarAba(alvo==="foldLigas"?"abaClassica":"abaGeral",false)}catch(e){}
   if(!alvo||alvo==="topo"){try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){}return}
   const d=$(alvo);if(!d)return;
   try{d.open=true}catch(e){}
@@ -1808,16 +2046,6 @@ $("bannerResumo").addEventListener("click",e=>{
   if(!card||!card.dataset)return;
   graficoTimeId=card.dataset.timeCard;
   render(); // re-render: marca o cartão selecionado e redesenha o gráfico com o time
-  try{if(window.innerWidth&&window.innerWidth<900){const c=$("chartCard");if(c&&c.scrollIntoView)c.scrollIntoView({behavior:"smooth",block:"center"})}}catch(err){}
-});
-// v37 — CLIQUE NO CARD DA LISTA DE TIMES TAMBÉM SELECIONA O GRÁFICO (mesma rota do
-// cartão do topo e da célula na tabela — três rotas, uma mesma escolha).
-$("teamList").addEventListener("click",e=>{
-  const alvo=e.target;
-  const card=alvo&&typeof alvo.closest==="function"?alvo.closest(".tcard[data-time-card]"):null;
-  if(!card||!card.dataset)return;
-  graficoTimeId=card.dataset.timeCard;
-  render(); // re-render: marca o card selecionado e redesenha o gráfico com o time
   try{if(window.innerWidth&&window.innerWidth<900){const c=$("chartCard");if(c&&c.scrollIntoView)c.scrollIntoView({behavior:"smooth",block:"center"})}}catch(err){}
 });
 // v38 — CLIQUE na LINHA do gráfico unificado ou no CHIP da legenda também seleciona o
@@ -1889,6 +2117,7 @@ async function refreshAll(){
   }finally{
     $("refreshBtn").classList.remove("loading");
     if(primeiroLoad){primeiroLoad=false;render()} // v32: troca os skeletons pelas tabelas/guias reais
+    try{if(elimTimes.length)renderEliminatoria()}catch{} // v43: a eliminatória acompanha as atualizações
   }
 }
 async function addSearchTeam(){
@@ -2270,13 +2499,747 @@ function foldPrefs(){try{return JSON.parse(localStorage.getItem(SF_FOLDS)||"{}")
 function initFolds(){
   const prefs=foldPrefs();
   const estreito=(typeof window.matchMedia==="function")&&window.matchMedia("(max-width:900px)").matches;
-  ["foldTimes","foldLigas","foldScores"].forEach(id=>{
+  ["foldLigas","foldScores"].forEach(id=>{
     const d=$(id);if(!d)return;
     d.open=prefs[id]!==undefined?!!prefs[id]:!estreito;
     d.addEventListener("toggle",()=>{const p=foldPrefs();p[id]=d.open;try{localStorage.setItem(SF_FOLDS,JSON.stringify(p))}catch{}});
   });
 }
 initFolds();
+/* ===== v43 — MENU DE ABAS HORIZONTAL (redesign mobile web) =====
+   Cada seção do painel vira uma ABA com ícone + texto: Geral (times cadastrados +
+   pontuação por rodada com os gráficos), Clássica, Pontos corridos, Mata-mata (o fold
+   das ligas continua com as três modalidades — o menu aciona a modalidade certa) e
+   Eliminatória e Mensal (v45). v46: a Geral mostra só a pontuação por rodada (os cards
+   dos times ficam no banner do cabeçalho). A barra de busca/rodadas/dados NÃO pertence a
+   nenhuma aba — fica em TODAS. A aba escolhida fica guardada no navegador. */
+const SF_ABA="sf_aba_v1";
+const ABAS=[
+  {id:"abaGeral",btn:"abaBtnGeral",blocos:["foldScores"],tab:null},
+  {id:"abaClassica",btn:"abaBtnClassica",blocos:["foldLigas"],tab:"classic"},
+  {id:"abaPontos",btn:"abaBtnPontos",blocos:["foldLigas"],tab:"points"},
+  {id:"abaMataMata",btn:"abaBtnMataMata",blocos:["foldLigas"],tab:"knockout"},
+  {id:"abaEliminatoria",btn:"abaBtnElim",blocos:[],tab:null},
+  {id:"abaMensal",btn:"abaBtnMensal",blocos:[],tab:null}, // v45
+];
+function mostrarTabLiga(target){ // v43: aciona a modalidade certa dentro do fold das ligas
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset&&b.dataset.target===target));
+  ["classic","knockout","points"].forEach(id=>{const s=$(id);if(s)s.classList.toggle("hidden",id!==target)});
+}
+function mostrarAba(id,abrir){
+  // v43: o fold das ligas pertence a TRÊS abas (Clássica, Pontos corridos, Mata-mata) —
+  // por isso os blocos são calculados DE UMA VEZ: visível se pertence à aba ativa.
+  const ativa=ABAS.find(a=>a.id===id)||ABAS.find(a=>a.id==="abaGeral");
+  const blocosOn=new Set(ativa.blocos);
+  ABAS.forEach(a=>{
+    const on=a===ativa;
+    const btn=$(a.btn);if(btn)btn.classList.toggle("ativo",on);
+    const painel=$(a.id);if(painel)painel.classList.toggle("aba-off",!on);
+    if(on&&a.tab)mostrarTabLiga(a.tab);
+  });
+  [...new Set(ABAS.flatMap(a=>a.blocos))].forEach(b=>{
+    const el=$(b);if(!el)return;
+    el.classList.toggle("aba-off",!blocosOn.has(b));
+    if(blocosOn.has(b)&&abrir&&"open" in el)el.open=true; // ir à aba abre a seção
+  });
+  try{localStorage.setItem(SF_ABA,ativa.id)}catch{}
+  if(ativa.id==="abaEliminatoria")carregarEliminatoria(); // v43: a aba nova carrega os pontos ao entrar
+  if(ativa.id==="abaMensal")carregarMensal(); // v45: a mensal carrega os pontos ao entrar
+}
+$("abaBtnGeral").addEventListener("click",()=>mostrarAba("abaGeral",true));
+$("abaBtnClassica").addEventListener("click",()=>mostrarAba("abaClassica",true));
+$("abaBtnPontos").addEventListener("click",()=>mostrarAba("abaPontos",true));
+$("abaBtnMataMata").addEventListener("click",()=>mostrarAba("abaMataMata",true));
+$("abaBtnElim").addEventListener("click",()=>mostrarAba("abaEliminatoria",true));
+$("abaBtnMensal").addEventListener("click",()=>mostrarAba("abaMensal",true));
+try{mostrarAba(localStorage.getItem(SF_ABA)||"abaGeral",false)}catch{mostrarAba("abaGeral",false)}
+/* ===== v44 — ELIMINATÓRIA EM COMPETIÇÃO =====
+   O Fabio monta a competição no formato NOME DA LIGA=>TIME1;TIME2;TIME3 (códigos ou
+   nomes), escolhe a RODADA INICIAL e a RODADA FINAL, a FAIXA DE PREMIAÇÃO no formato
+   POSIÇÃO-VALOR,POSIÇÃO-VALOR (ex.: 1-1000,2-500) e quantos eliminar por rodada. A
+   visão principal mostra o status (preparando / Rodada X em andamento / FINALIZADA),
+   o ÚLTIMO ELIMINADO, os times NA FAIXA DE PREMIAÇÃO agora e, quando finaliza, os
+   CAMPEÕES e os premiados. A exibição POR ABA DE RODADA mostra, a cada rodada, os
+   premiados da rodada e os eliminados. O botão EXPORTAR devolve os times no mesmo
+   formato da importação. Tudo fica guardado no navegador (sf_eliminatoria_v2). */
+const SF_ELIM="sf_eliminatoria_v2";
+let elimTimes=[];   // [{id,name,escudo,scores,total}]
+let elimLiga="";
+let elimCarregando=false;
+let elimRodadaSel=null;
+function elimPrefs(){try{return JSON.parse(localStorage.getItem(SF_ELIM)||"{}")||{}}catch{return{}}}
+function elimParsePremios(txt){
+  const out=[];
+  String(txt||"").split(/[,;]/).forEach(par=>{ // v44.3: aceita vírgula OU ponto-e-vírgula como separador
+    const m=String(par).match(/^\s*(\d+)\s*[ºª°]?\s*-\s*([\d.]+)\s*$/);
+    if(m){const pos=Number(m[1]);const val=Number(String(m[2]).replace(/\.(?=\d{3}\b)/g,""));
+      if(pos>=1&&Number.isFinite(val)&&val>=0)out.push([pos,val]);}
+  });
+  return out;
+}
+function elimFormatBRL(v){return "R$ "+new Intl.NumberFormat("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:2}).format(Number(v)||0)}
+function elimSalvar(){
+  try{localStorage.setItem(SF_ELIM,JSON.stringify({
+    v:2,liga:elimLiga,ids:elimTimes.map(t=>t.id),
+    regra:num($("elimRegra").value)||1,
+    rodInicio:num($("elimRodInicio").value)||1,
+    rodFim:num($("elimRodFim").value)||38,
+    premios:elimParsePremios($("elimPremios").value)
+  }))}catch{}
+}
+function elimPreencherRodadas(){
+  const ini=$("elimRodInicio"),fim=$("elimRodFim");
+  if(!ini||!fim)return;
+  if(!ini.options||!ini.options.length){
+    let ops="";for(let r=1;r<=38;r++)ops+='<option value="'+r+'">'+r+"ª</option>";
+    ini.innerHTML=ops;fim.innerHTML=ops;
+  }
+  const p=elimPrefs();
+  ini.value=String(p.rodInicio||1);fim.value=String(p.rodFim||38);
+}
+function elimCarregarPrefs(){
+  const p=elimPrefs();
+  elimPreencherRodadas();
+  const r=$("elimRegra"),ini=$("elimRodInicio"),fim=$("elimRodFim"),pr=$("elimPremios");
+  if(r&&p.regra)r.value=String(p.regra);
+  if(ini&&p.rodInicio)ini.value=String(p.rodInicio);
+  if(fim&&p.rodFim)fim.value=String(p.rodFim);
+  if(pr&&p.premios&&p.premios.length)pr.value=p.premios.map(x=>x[0]+"-"+x[1]).join(",");
+  if(p.liga)elimLiga=p.liga;
+  if(p.ids&&p.ids.length)elimTimes=p.ids.map(id=>({id:String(id),name:"Time "+id,scores:{},total:0,escudo:null}));
+}
+function elimMsg(texto,tipo){const m=$("elimMsg");if(!m)return;m.textContent=texto||"";m.className="elim-msg"+(tipo?" "+tipo:"")}
+async function elimCadastrar(){
+  const ca=$("elimCodigos");if(!ca)return;
+  const bruto=String(ca.value||"").trim();
+  if(!bruto){elimMsg("Cole no formato NOME DA LIGA=>TIME1;TIME2;TIME3 (códigos dos times no Cartola ou nomes).","erro");return}
+  const linhas=bruto.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const comSeta=linhas.filter(l=>l.includes("=>"));
+  let liga=null;let tokens=[];
+  if(comSeta.length){
+    if(linhas.length>1||comSeta.length>1){elimMsg('Use UMA linha por vez no formato NOME DA LIGA=>TIME1;TIME2;TIME3 — cada eliminatória é importada separadamente.',"erro");return}
+    const idx=bruto.indexOf("=>");
+    liga=bruto.slice(0,idx).replace(/\n/g," ").trim();
+    tokens=bruto.slice(idx+2).split(/[;,\s]+/).map(s=>s.trim()).filter(Boolean);
+    if(!liga){elimMsg("Faltou o NOME DA LIGA antes do =>.","erro");return}
+    if(!tokens.length){elimMsg("Nenhum time informado depois do =>. Use NOME DA LIGA=>TIME1;TIME2;TIME3.","erro");return}
+  }else{
+    tokens=bruto.split(/[\n,;\s]+/).map(s=>s.trim()).filter(Boolean);
+  }
+  elimMsg("Localizando "+tokens.length+" time(s)…","ok");
+  const novos=[];const erros=[];
+  for(const tk of tokens){
+    try{
+      let t=null;
+      if(/^\d+$/.test(tk)){
+        const data=await api("/time/id/"+tk+"/1"); // valida o ID e já pega o nome/escudo
+        t={id:String(tk),name:data?.time?.nome||data?.nome_time||data?.nome||("Time "+tk),scores:{},total:0,escudo:null};
+        const e=data?.time?.foto_trofeu||data?.time?.url_escudo_png||null;
+        if(typeof e==="string"&&/^https:\/\//.test(e))t.escudo=e;
+      }else{
+        const found=await searchTeam(tk);
+        if(found&&found.id)t={id:String(found.id),name:found.name||tk,scores:{},total:0,escudo:null};
+      }
+      if(!t||!t.id){erros.push(tk+" (não encontrado)");continue}
+      if(elimTimes.some(x=>String(x.id)===String(t.id))||novos.some(x=>String(x.id)===String(t.id))){erros.push(t.name+" (já cadastrado)");continue}
+      novos.push(t);
+    }catch(e){erros.push(tk+" (erro: "+((e&&e.message)||"falha")+")")}
+  }
+  elimTimes=elimTimes.concat(novos);
+  if(liga!==null)elimLiga=liga;
+  ca.value="";
+  elimSalvar();
+  const msgOk=novos.length?('Liga "'+elimLiga+'" — cadastrado(s): '+novos.map(t=>t.name).join(", ")+(erros.length?" — não entraram: "+erros.join(", "):"")):(erros.join(", ")||"Nada cadastrado.");
+  elimMsg(msgOk,erros.length&&!novos.length?"erro":"ok");
+  await carregarEliminatoria(msgOk); // v44: a msg de sucesso sobrevive ao carregamento
+}
+function elimRemover(id){
+  elimTimes=elimTimes.filter(t=>String(t.id)!==String(id));
+  elimSalvar();renderEliminatoria();
+}
+async function carregarEliminatoria(msgFinal){
+  if(!elimTimes.length){renderEliminatoria();return}
+  if(elimCarregando)return;elimCarregando=true;
+  elimMsg("Carregando a pontuação de "+elimTimes.length+" time(s) por rodada…","ok");
+  try{
+    const N=Math.max(0,Math.min(38,Number(limiteRodada)||0));
+    const rounds=Array.from({length:N},(_,i)=>i+1);
+    await Promise.all(elimTimes.map(async t=>{
+      const results=await mapLimit(rounds,4,async r=>{
+        const data=await api("/time/id/"+t.id+"/"+r);
+        if(!t.escudo){const e=data?.time?.foto_trofeu||data?.time?.url_escudo_png||null;if(typeof e==="string"&&/^https:\/\//.test(e))t.escudo=e}
+        const publicName=data?.time?.nome||data?.nome_time;if(publicName)t.name=publicName;
+        const p=extractPoints(data);if(p===null)throw new Error("resposta sem pontuação");
+        return [r,p];
+      });
+      t.scores={};
+      results.forEach(res=>{if(res.status==="fulfilled")t.scores[res.value[0]]=res.value[1]});
+      t.total=Object.values(t.scores).reduce((a,b)=>a+b,0);
+    }));
+    elimMsg(typeof msgFinal==="string"?msgFinal:"");
+  }catch(e){elimMsg("Não consegui carregar a pontuação: "+((e&&e.message)||e),"erro")}
+  finally{elimCarregando=false;renderEliminatoria()}
+}
+/* ---- a COMPETIÇÃO: rodadas início→fim; eliminação pela MENOR PONTUAÇÃO DA RODADA; classificação pela pontuação da rodada (v44.3) ---- */
+function elimRodInicio(){return Math.max(1,Math.min(38,num($("elimRodInicio").value)||1))}
+function elimRodFim(){return Math.max(elimRodInicio(),Math.min(38,num($("elimRodFim").value)||38))}
+function elimAcum(t,ate){
+  let s=0;
+  for(let r=elimRodInicio();r<=Math.min(ate,elimRodFim());r++){const v=(t.scores||{})[r];if(typeof v==="number")s+=v}
+  return s;
+}
+function elimCompeticaoRodadas(){
+  const comDados=new Set();
+  elimTimes.forEach(t=>Object.keys(t.scores||{}).forEach(r=>{const rr=Number(r);if(rr>=elimRodInicio()&&rr<=elimRodFim())comDados.add(rr)}));
+  const out=[];
+  for(let r=elimRodInicio();r<=elimRodFim();r++)out.push({r,disputada:comDados.has(r)});
+  return out;
+}
+function elimPremioPorPos(pos){const p=elimParsePremios($("elimPremios").value);const f=p.find(x=>x[0]===pos);return f?f[1]:null}
+function elimProcessar(){
+  const regra=Math.max(1,num($("elimRegra").value)||1);
+  const comp=elimCompeticaoRodadas();
+  const disputadas=comp.filter(c=>c.disputada).map(c=>c.r);
+  const vivos=elimTimes.map(t=>({t,elim:null,posFinal:null}));
+  let campeao=null;
+  const eliminadosPorRodada={};
+  let proxPos=elimTimes.length; // posições finais: 1º é o campeão; sai na ordem inversa da eliminação
+  for(const r of disputadas){
+    const ativos=vivos.filter(e=>!e.elim);
+    if(ativos.length<=1)break;
+    const pts=e=>{const v=(e.t.scores||{})[r];return typeof v==="number"?v:-1e9};
+    ativos.sort((a,b)=>pts(a)-pts(b)||elimAcum(a.t,r)-elimAcum(b.t,r)); // v44.1: sai a MENOR PONTUAÇÃO DA RODADA (desempate: acumulado da competição)
+    const n=Math.min(regra,ativos.length-1);
+    const sai=ativos.slice(0,n);
+    sai.sort((a,b)=>pts(a)-pts(b)||elimAcum(a.t,r)-elimAcum(b.t,r));
+    sai.forEach(e=>{e.elim=r;e.posFinal=proxPos;proxPos--});
+    eliminadosPorRodada[r]=[...sai];
+  }
+  const restantes=vivos.filter(e=>!e.elim);
+  if(restantes.length===1){campeao=restantes[0];campeao.posFinal=1}
+  const finalizou=restantes.length===1||(comp.length>0&&disputadas.length===comp.length);
+  // v44.3: a classificação é SEMPRE pela pontuação DA RODADA (a última disputada da competição)
+  const rodRef=disputadas.length?Math.max(...disputadas):null;
+  const ptsRod=e=>rodRef!==null&&typeof (e.t.scores||{})[rodRef]==="number"?(e.t.scores||{})[rodRef]:-1e9;
+  if(finalizou&&!campeao&&restantes.length>1){
+    // encerrou pelas rodadas com mais de um vivo: o CAMPEÃO é o 1º da classificação da rodada
+    // e os vivos recebem as posições finais na ordem dela (os prêmios ficam visíveis)
+    const ordem=[...restantes].sort((a,b)=>ptsRod(b)-ptsRod(a)||elimAcum(b.t,elimRodFim())-elimAcum(a.t,elimRodFim()));
+    ordem.forEach((e,idx)=>{e.posFinal=idx+1});
+    campeao=ordem[0];
+  }
+  return {vivos,campeao,regra,comp,disputadas,eliminadosPorRodada,restantes,finalizou,rodRef};
+}
+function elimUltimosEliminados(dados){
+  const els=dados.vivos.filter(e=>e.elim);
+  if(!els.length)return null;
+  const maxR=Math.max(...els.map(e=>e.elim));
+  return {rodada:maxR,times:els.filter(e=>e.elim===maxR)};
+}
+/* ---- VISÃO PRINCIPAL: liga, status, último eliminado, faixa de premiação, campeões ---- */
+function renderElimPrincipal(dados){
+  const pr=$("elimPrincipal");if(!pr)return;
+  pr.hidden=!elimTimes.length;
+  if(!elimTimes.length){pr.innerHTML="";return}
+  const ult=elimUltimosEliminados(dados);
+  const faixa=elimParsePremios($("elimPremios").value);
+  const rodFim=elimRodFim();
+  const rodRef=dados.rodRef; // v44.3: a classificação é pela pontuação DA RODADA
+  const ptsRod=e=>rodRef!==null&&typeof (e.t.scores||{})[rodRef]==="number"?(e.t.scores||{})[rodRef]:-1e9;
+  const ranking=[...dados.restantes].sort((a,b)=>ptsRod(b)-ptsRod(a)||elimAcum(b.t,rodFim)-elimAcum(a.t,rodFim));
+  const nomeDe=t=>escapeHtml(t.name||("Time "+t.id));
+  // v46: os classificados da premiação viram PÓDIO — degraus ouro/prata/bronze com o
+  // valor GANHO (encerrada) ou A GANHAR (em andamento); os demais em pills 4º+
+  const kFaixa=faixa.length?Math.max(...faixa.map(x=>x[0])):0;
+  const podioLista=(dados.finalizou&&dados.campeao)
+    ?[...dados.vivos].filter(e=>e.posFinal).sort((a,b)=>a.posFinal-b.posFinal).map(e=>({pos:e.posFinal,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:elimPremioPorPos(e.posFinal)}))
+    :ranking.slice(0,kFaixa).map((e,i)=>({pos:i+1,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:elimPremioPorPos(i+1)}));
+  const podioBloco=podioLista.length
+    ?'<div class="podio-tit">'+((dados.finalizou&&dados.campeao)
+      ?'🏆 Resultado final — os classificados'
+      :('🏆 Se terminasse hoje — quem levaria'))+"</div>"+
+      sfPodioHTML(podioLista,dados.finalizou&&!!dados.campeao)
+    :"";
+  const atual=Number(currentRound)||0;
+  const statusTxt=dados.finalizou
+    ?'<span class="elim-badge camp">competição FINALIZADA</span>'
+    :(dados.disputadas.length
+      ?'<span class="elim-badge andamento">Rodada '+Math.max(elimRodInicio(),Math.min(atual||elimRodFim(),rodFim))+' em andamento</span>'
+      :'<span class="elim-badge vivo">preparando — começa na rodada '+elimRodInicio()+"</span>");
+  pr.innerHTML=
+    '<div class="elim-liga-nome">⚡ '+escapeHtml(elimLiga||"Minha eliminatória")+"</div>"+
+    '<div class="elim-status">'+statusTxt+"</div>"+
+    (podioBloco||"")+
+    (ult?'<div class="elim-ultimo">⬇️ Último eliminado: '+ult.times.map(e=>"<b>"+escapeHtml(e.t.name||("Time "+e.t.id))+"</b>").join(", ")+" (rodada "+ult.rodada+")</div>":"")+
+    '<div class="elim-resumo">'+elimTimes.length+" time(s) · "+(elimTimes.length-dados.restantes.length)+" eliminado(s) · "+dados.restantes.length+" na disputa · competição nas rodadas "+elimRodInicio()+"–"+rodFim+"</div>";
+}
+/* ---- CLASSIFICAÇÃO (sempre pela pontuação DA RODADA — v44.3) + posição final + prêmio ---- */
+function renderEliminatoria(){
+  const chips=$("elimChips"),tb=$("elimTabela"),gr=$("elimGrafico"),nota=$("elimNota");
+  const ligaNome=elimLiga||"Minha eliminatória"; // v44.1: nome da liga visível em toda a aba
+  const headLiga=$("elimHeadLiga");if(headLiga)headLiga.textContent=elimLiga?("— "+elimLiga):"(liga em construção)";
+  const titRod=$("elimTituloRodadas");if(titRod)titRod.innerHTML=elimTimes.length?(escapeHtml(ligaNome)+" — Exibição por rodada"):"Exibição por rodada";
+  const resPr=$("elimPremiosResumo");if(resPr)resPr.innerHTML=elimParsePremios($("elimPremios").value).map(x=>'<span class="elim-premio">'+x[0]+"º → "+elimFormatBRL(x[1])+"</span>").join(" ");
+  if(chips)chips.innerHTML=elimTimes.length
+    ?elimTimes.map(t=>'<span class="elim-chip">'+(t.escudo?'<img src="'+t.escudo+'" alt="">':'')+escapeHtml(t.name||("Time "+t.id))+' <button type="button" data-elim="'+t.id+'" title="Remover da eliminatória">✕</button></span>').join("")
+    :'<span class="elim-sem">Nenhum time cadastrado ainda — cole no formato NOME DA LIGA=>TIME1;TIME2;TIME3 e cadastre.</span>';
+  const dados=elimProcessar();
+  const rodRef=dados.rodRef; // v44.3: a classificação é pela pontuação DA RODADA (a última disputada)
+  const titClass=$("elimTituloClassificacao");
+  if(titClass)titClass.innerHTML=elimTimes.length?("Classificação — <b>"+escapeHtml(ligaNome)+"</b> (pontuação da rodada "+(rodRef!==null?rodRef:"—")+")"):"";
+  renderElimPrincipal(dados);
+  if(tb){
+    if(!elimTimes.length){tb.innerHTML='<tr><td class="elim-sem">A classificação aparece aqui depois de cadastrar os times.</td></tr>'}
+    else{
+      const rodFim=elimRodFim();
+      const ptsRod=e=>rodRef!==null&&typeof (e.t.scores||{})[rodRef]==="number"?(e.t.scores||{})[rodRef]:-1e9;
+      const ord=[...dados.vivos].sort((a,b)=>{ // v44.3: SEMPRE pela pontuação DA RODADA — vivos primeiro (pontos da rodada), depois os eliminados pela posição final
+        if(!!a.elim!==!!b.elim)return a.elim?1:-1;
+        if(a.elim)return (a.posFinal||99)-(b.posFinal||99);
+        return ptsRod(b)-ptsRod(a)||elimAcum(b.t,rodFim)-elimAcum(a.t,rodFim);
+      });
+      const rankVivo=new Map(ord.filter(e=>!e.elim&&dados.campeao!==e).map((e,idx)=>[String(e.t.id),idx+1])); // v44.2: posição ATUAL entre os vivos (projeção dos prêmios)
+      tb.innerHTML='<thead><tr><th>Pos</th><th style="text-align:left">Time</th><th>Pontos na rodada</th><th>Situação</th></tr></thead><tbody>'+
+        ord.map((e,i)=>{
+          const premio=e.posFinal?elimPremioPorPos(e.posFinal):null;
+          const sit=dados.campeao===e?'<span class="elim-badge camp">🏆 CAMPEÃO</span>':e.elim?'<span class="elim-badge elim">eliminado na rodada '+e.elim+"</span>":'<span class="elim-badge vivo">na disputa</span>';
+          const extra=e.posFinal&&e.posFinal!==1?' <span class="elim-posfinal">'+e.posFinal+"º lugar</span>":"";
+          const din=premio!==null?' <span class="elim-premio">'+elimFormatBRL(premio)+"</span>":"";
+          // v44.2: projeção na classificação atual — quem TERIA os prêmios se terminasse hoje
+          const posVivo=rankVivo.get(String(e.t.id));
+          const premioAtual=(!e.elim&&dados.campeao!==e&&posVivo)?elimPremioPorPos(posVivo):null;
+          const proj=premioAtual!==null?((posVivo===1?' <span class="elim-badge camp">🏆 posição de CAMPEÃO</span>':"")+' <span class="elim-premio">se terminar hoje: '+elimFormatBRL(premioAtual)+"</span>"):"";
+          return '<tr><td class="'+positionClass(i+1)+'">'+(i+1)+"º</td>"+
+            '<td style="text-align:left">'+(e.t.escudo?'<img src="'+e.t.escudo+'" alt="">':'')+escapeHtml(e.t.name||("Time "+e.t.id))+"</td>"+
+            "<td>"+(rodRef!==null&&(e.t.scores||{})[rodRef]!==undefined?formatInt((e.t.scores||{})[rodRef]):"—")+"</td>"+
+            "<td>"+sit+extra+din+proj+"</td></tr>";
+        }).join("")+"</tbody>";
+    }
+  }
+  renderElimRodadas(dados);
+  if(gr)gr.innerHTML=elimGraficoSVG();
+  if(nota)nota.textContent="Importação: NOME DA LIGA=>TIME1;TIME2;TIME3 (códigos ou nomes) — o botão Exportar devolve neste formato. Competição nas rodadas "+elimRodInicio()+"–"+elimRodFim()+", eliminar "+dados.regra+" time(s) por rodada (sai quem tiver a MENOR PONTUAÇÃO NA RODADA — desempate pelo acumulado da competição; posições finais seguem a ordem de eliminação). A CLASSIFICAÇÃO é sempre pela pontuação DA RODADA (a última disputada da competição — desempate pelo acumulado), NÃO pelo total de pontos; enquanto a competição não termina, o PÓDIO e a classificação mostram quem TERIA as premiações hoje (se terminasse hoje); ao finalizar, o campeão é o 1º dessa classificação (ou o único sobrevivente) e valem as posições finais. Premiações no formato POS - VALOR; POS - VALOR; POS - VALOR (aceita vírgula ou ponto-e-vírgula, ex.: 1 - 1000; 2 - 500). Lista, rodadas, premiação e regra ficam guardadas neste navegador — recurso em construção.";
+}
+/* ---- EXIBIÇÃO POR ABA DE RODADA: premiados e eliminados a cada rodada ---- */
+function renderElimRodadas(dados){
+  const strip=$("elimRodadasStrip"),painel=$("elimRodadaPainel");
+  if(!strip||!painel)return;
+  if(!elimTimes.length){strip.innerHTML="";painel.innerHTML="";return}
+  if(elimRodadaSel===null||!dados.comp.some(c=>c.r===elimRodadaSel))elimRodadaSel=dados.disputadas.length?Math.max(...dados.disputadas):dados.comp[0].r;
+  strip.innerHTML=dados.comp.map(c=>'<button type="button" class="er-btn'+(c.r===elimRodadaSel?" ativo":"")+'" data-er="'+c.r+'">R'+c.r+"</button>").join("");
+  renderElimRodada(dados);
+}
+function renderElimRodada(dados){
+  const painel=$("elimRodadaPainel");if(!painel||elimRodadaSel===null)return;
+  const r=elimRodadaSel;
+  const c=dados.comp.find(x=>x.r===r);
+  const ativosAntes=dados.vivos.filter(e=>!e.elim||e.elim>=r); // quem chegou vivo à rodada
+  const ptsR=e=>{const v=(e.t.scores||{})[r];return typeof v==="number"?v:-1e9};
+  const ranking=[...ativosAntes].sort((a,b)=>ptsR(b)-ptsR(a)||elimAcum(b.t,r)-elimAcum(a.t,r)); // v44.3: pelos PONTOS DA RODADA (desempate: acumulado até ela)
+  const faixa=elimParsePremios($("elimPremios").value);
+  const k=faixa.length?Math.max(...faixa.map(x=>x[0])):0;
+  const eliminados=dados.eliminadosPorRodada[r]||[];
+  const linhas=ranking.map((e,i)=>{
+    const premio=(i+1)<=k?elimPremioPorPos(i+1):null;
+    const sai=eliminados.includes(e);
+    const sit=dados.campeao===e?'<span class="elim-badge camp">🏆 CAMPEÃO</span>':sai?'<span class="elim-badge elim">eliminado</span>':premio!==null?'<span class="elim-premio">'+elimFormatBRL(premio)+"</span>":'<span class="elim-badge vivo">na disputa</span>';
+    return '<tr'+(sai?' class="elim-linha-elim"':'')+'><td class="'+positionClass(i+1)+'">'+(i+1)+"º</td>"+
+      '<td style="text-align:left">'+(e.t.escudo?'<img src="'+e.t.escudo+'" alt="">':'')+escapeHtml(e.t.name||("Time "+e.t.id))+"</td>"+
+      "<td>"+formatInt((e.t.scores||{})[r]===undefined?null:(e.t.scores||{})[r])+"</td>"+
+      "<td>"+formatInt(elimAcum(e.t,r))+"</td>"+
+      "<td>"+sit+"</td></tr>";
+  });
+  painel.innerHTML=
+    '<div class="elim-rod-titulo">Rodada '+r+" "+(c&&c.disputada?'<span class="elim-badge andamento">com pontuação</span>':'<span class="elim-badge vivo">ainda não disputada</span>')+"</div>"+
+    (faixa.length?'<div class="elim-faixa">💰 Faixa de premiação nesta rodada: '+ranking.slice(0,k).map((e,i)=>"<b>"+(i+1)+"º</b> "+escapeHtml(e.t.name||("Time "+e.t.id))+(elimPremioPorPos(i+1)!==null?" ("+elimFormatBRL(elimPremioPorPos(i+1))+")":"")).join(" · ")+"</div>":"")+
+    '<div class="elim-rod-elim">'+(eliminados.length?"❌ Eliminados nesta rodada: "+eliminados.map(e=>'<span class="elim-badge elim">'+escapeHtml(e.t.name||("Time "+e.t.id))+"</span>").join(" "):"Ninguém foi eliminado nesta rodada.")+"</div>"+
+    '<div class="table-wrap"><table><thead><tr><th>Pos</th><th style="text-align:left">Time</th><th>Pontos na rodada</th><th>Acumulado</th><th>Situação</th></tr></thead><tbody>'+(linhas.join("")||'<tr><td class="elim-sem">Sem times na disputa.</td></tr>')+"</tbody></table></div>";
+}
+/* ---- EVOLUÇÃO por rodada (SVG) — rodadas DA COMPETIÇÃO ---- */
+function elimGraficoSVG(){
+  if(!elimTimes.length)return "";
+  const rodadas=elimCompeticaoRodadas().filter(c=>c.disputada).map(c=>c.r);
+  if(!rodadas.length)return '<div class="elim-sem">Sem rodadas disputadas ainda para desenhar a evolução.</div>';
+  const w=Math.max(320,rodadas.length*44),h=210,pad=34;
+  const cores=["#f0a400","#2f7df6","#a24bf0","#19b26b","#e34d4d","#00b7c3","#ff8a00","#8bc34a"];
+  const max=Math.max(1,...elimTimes.flatMap(t=>rodadas.map(r=>t.scores&&t.scores[r]!==undefined?t.scores[r]:0)));
+  const x=i=>pad+i*((w-pad*2)/Math.max(1,rodadas.length-1));
+  const y=v=>h-pad-(v/max)*(h-pad*2);
+  let out='<svg viewBox="0 0 '+w+" "+h+'" role="img" aria-label="Evolução por rodada dos times da eliminatória" style="width:100%;height:auto;min-height:170px">';
+  out+='<rect x="0" y="0" width="'+w+'" height="'+h+'" rx="12" fill="#f7faff"/>';
+  [0,.5,1].forEach(f=>{const yy=pad+(h-pad*2)*f;out+='<line x1="'+pad+'" y1="'+yy+'" x2="'+(w-pad)+'" y2="'+yy+'" stroke="#dfe8f5" stroke-width="1"/>';out+='<text x="'+(pad-7)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10" fill="#7a8aa8">'+Math.round(max*(1-f))+'</text>'});
+  rodadas.forEach((r,i)=>{out+='<text x="'+x(i)+'" y="'+(h-pad+16)+'" text-anchor="middle" font-size="10" fill="#7a8aa8">R'+r+'</text>'});
+  elimTimes.forEach((t,ti)=>{
+    const pts=rodadas.filter(r=>t.scores&&t.scores[r]!==undefined);
+    if(!pts.length)return;
+    const cor=cores[ti%cores.length];
+    if(pts.length===1){out+='<circle cx="'+x(rodadas.indexOf(pts[0]))+'" cy="'+y(t.scores[pts[0]])+'" r="4" fill="'+cor+'"/>'}
+    else{
+      out+='<polyline fill="none" stroke="'+cor+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" points="'+pts.map(r=>x(rodadas.indexOf(r))+","+y(t.scores[r])).join(" ")+'"/>';
+      pts.forEach(r=>{out+='<circle cx="'+x(rodadas.indexOf(r))+'" cy="'+y(t.scores[r])+'" r="3" fill="'+cor+'"/>'});
+    }
+  });
+  out+="</svg>";
+  return out+'<div class="chart-legenda">'+elimTimes.map((t,ti)=>'<span style="color:'+cores[ti%cores.length]+'">●</span> '+escapeHtml(t.name||("Time "+t.id))).join(" ")+"</div>";
+}
+/* ---- EXPORTAR no formato NOME DA LIGA=>TIME1;TIME2;TIME3 ---- */
+function elimExportarTexto(){
+  const limpa=s=>String(s||"").replace(/[;\n=>]/g," ").trim();
+  return limpa(elimLiga||"Minha eliminatória")+"=>"+elimTimes.map(t=>String(t.id)).join(";"); // v44.1: exporta os CÓDIGOS dos times
+}
+$("elimBtnCadastrar").addEventListener("click",elimCadastrar);
+$("elimBtnExportar").addEventListener("click",()=>{
+  if(!elimTimes.length){elimMsg("Nenhum time para exportar — cadastre primeiro no formato NOME DA LIGA=>TIME1;TIME2;TIME3.","erro");return}
+  const txt=elimExportarTexto();
+  let copiado=false;
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt);copiado=true}}catch{}
+  elimMsg((copiado?"Copiado para a área de transferência — cole onde quiser: ":"Copie este formato: ")+txt,"ok");
+});
+$("elimBtnLimpar").addEventListener("click",()=>{elimTimes=[];elimLiga="";elimRodadaSel=null;elimSalvar();renderEliminatoria();elimMsg("Eliminatória limpa.","ok")});
+$("elimRegra").addEventListener("change",()=>{elimSalvar();renderEliminatoria()});
+$("elimRodInicio").addEventListener("change",()=>{
+  if(num($("elimRodFim").value)<num($("elimRodInicio").value))$("elimRodFim").value=$("elimRodInicio").value;
+  elimRodadaSel=null;elimSalvar();renderEliminatoria();
+});
+$("elimRodFim").addEventListener("change",()=>{
+  if(num($("elimRodFim").value)<num($("elimRodInicio").value))$("elimRodInicio").value=$("elimRodFim").value;
+  elimRodadaSel=null;elimSalvar();renderEliminatoria();
+});
+$("elimPremios").addEventListener("change",()=>{elimSalvar();renderEliminatoria()});
+$("elimChips").addEventListener("click",e=>{
+  const b=e&&e.target;
+  const id=b&&typeof b.getAttribute==="function"?b.getAttribute("data-elim"):null;
+  if(id)elimRemover(id);
+});
+$("elimRodadasStrip").addEventListener("click",e=>{
+  const b=e&&e.target;
+  const v=b&&typeof b.getAttribute==="function"?b.getAttribute("data-er"):null;
+  if(!v)return;
+  elimRodadaSel=num(v);
+  renderElimRodadas(elimProcessar()); // v44.1: re-renderiza strip (marca a aba ativa) + painel
+});
+/* ===== v45 — COMPETIÇÃO MENSAL: a eliminatória SEM eliminação =====
+   Mesma importação (NOME DA LIGA=>TIME1;TIME2;TIME3), mesmas rodadas início→fim e
+   mesma faixa de premiação POS - VALOR; POS - VALOR. NINGUÉM é eliminado: os pontos
+   das rodadas da competição só SOMAM — o líder é quem somar mais e, ao terminar, o
+   campeão é o 1º da soma. A exibição por rodada continua: cada aba de rodada mostra
+   os pontos DA rodada (desempate: acumulado até ela) e os premiados da rodada. */
+const SF_MENSAL="sf_mensal_v1";
+let mensLiga="",mensTimes=[],mensRodadaSel=null,mensCarregando=false;
+function mensPrefs(){try{const p=JSON.parse(localStorage.getItem(SF_MENSAL)||"{}");if(p&&typeof p==="object")return p}catch{}return{}}
+function mensSalvar(){
+  try{localStorage.setItem(SF_MENSAL,JSON.stringify({
+    v:1,liga:mensLiga,ids:mensTimes.map(t=>t.id),
+    rodInicio:num($("mensRodInicio").value)||1,
+    rodFim:num($("mensRodFim").value)||38,
+    premios:elimParsePremios($("mensPremios").value)
+  }))}catch{}
+}
+function mensPreencherRodadas(){
+  const ini=$("mensRodInicio"),fim=$("mensRodFim");
+  if(!ini||!fim)return;
+  if(!ini.options||!ini.options.length){
+    let ops="";for(let r=1;r<=38;r++)ops+='<option value="'+r+'">'+r+"ª</option>";
+    ini.innerHTML=ops;fim.innerHTML=ops;
+  }
+  const p=mensPrefs();
+  ini.value=String(p.rodInicio||1);fim.value=String(p.rodFim||38);
+}
+function mensCarregarPrefs(){
+  mensPreencherRodadas();
+  const p=mensPrefs(),ini=$("mensRodInicio"),fim=$("mensRodFim"),pr=$("mensPremios");
+  if(ini&&p.rodInicio)ini.value=String(p.rodInicio);
+  if(fim&&p.rodFim)fim.value=String(p.rodFim);
+  if(pr&&p.premios&&p.premios.length)pr.value=p.premios.map(x=>x[0]+"-"+x[1]).join(",");
+  if(p.liga)mensLiga=p.liga;
+  if(p.ids&&p.ids.length)mensTimes=p.ids.map(id=>({id:String(id),name:"Time "+id,scores:{},total:0,escudo:null}));
+}
+function mensMsg(texto,tipo){const m=$("mensMsg");if(!m)return;m.textContent=texto||"";m.className="elim-msg"+(tipo?" "+tipo:"")}
+async function mensCadastrar(){
+  const ca=$("mensCodigos");if(!ca)return;
+  const bruto=String(ca.value||"").trim();
+  if(!bruto){mensMsg("Cole no formato NOME DA LIGA=>TIME1;TIME2;TIME3 (códigos dos times no Cartola ou nomes).","erro");return}
+  const linhas=bruto.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const comSeta=linhas.filter(l=>l.includes("=>"));
+  let liga=null;let tokens=[];
+  if(comSeta.length){
+    if(linhas.length>1||comSeta.length>1){mensMsg('Use UMA linha por vez no formato NOME DA LIGA=>TIME1;TIME2;TIME3 — cada competição é importada separadamente.',"erro");return}
+    const idx=bruto.indexOf("=>");
+    liga=bruto.slice(0,idx).replace(/\n/g," ").trim();
+    tokens=bruto.slice(idx+2).split(/[;,\s]+/).map(s=>s.trim()).filter(Boolean);
+    if(!liga){mensMsg("Faltou o NOME DA LIGA antes do =>.","erro");return}
+    if(!tokens.length){mensMsg("Nenhum time informado depois do =>. Use NOME DA LIGA=>TIME1;TIME2;TIME3.","erro");return}
+  }else{
+    tokens=bruto.split(/[\n,;\s]+/).map(s=>s.trim()).filter(Boolean);
+  }
+  mensMsg("Localizando "+tokens.length+" time(s)…","ok");
+  const novos=[];const erros=[];
+  for(const tk of tokens){
+    try{
+      let t=null;
+      if(/^\d+$/.test(tk)){
+        const data=await api("/time/id/"+tk+"/1"); // valida o ID e já pega o nome/escudo
+        t={id:String(tk),name:data?.time?.nome||data?.nome_time||data?.nome||("Time "+tk),scores:{},total:0,escudo:null};
+        const e=data?.time?.foto_trofeu||data?.time?.url_escudo_png||null;
+        if(typeof e==="string"&&/^https:\/\//.test(e))t.escudo=e;
+      }else{
+        const found=await searchTeam(tk);
+        if(found&&found.id)t={id:String(found.id),name:found.name||tk,scores:{},total:0,escudo:null};
+      }
+      if(!t||!t.id){erros.push(tk+" (não encontrado)");continue}
+      if(mensTimes.some(x=>String(x.id)===String(t.id))||novos.some(x=>String(x.id)===String(t.id))){erros.push(t.name+" (já cadastrado)");continue}
+      novos.push(t);
+    }catch(e){erros.push(tk+" (erro: "+((e&&e.message)||"falha")+")")}
+  }
+  mensTimes=mensTimes.concat(novos);
+  if(liga!==null)mensLiga=liga;
+  ca.value="";
+  mensSalvar();
+  const msgOk=novos.length?('Liga "'+mensLiga+'" — cadastrado(s): '+novos.map(t=>t.name).join(", ")+(erros.length?" — não entraram: "+erros.join(", "):"")):(erros.join(", ")||"Nada cadastrado.");
+  mensMsg(msgOk,erros.length&&!novos.length?"erro":"ok");
+  await carregarMensal(msgOk); // a msg de sucesso sobrevive ao carregamento
+}
+function mensRemover(id){
+  mensTimes=mensTimes.filter(t=>String(t.id)!==String(id));
+  mensSalvar();renderMensal();
+}
+async function carregarMensal(msgFinal){
+  if(!mensTimes.length){renderMensal();return}
+  if(mensCarregando)return;mensCarregando=true;
+  mensMsg("Carregando a pontuação de "+mensTimes.length+" time(s) por rodada…","ok");
+  try{
+    const N=Math.max(0,Math.min(38,Number(limiteRodada)||0));
+    const rounds=Array.from({length:N},(_,i)=>i+1);
+    await Promise.all(mensTimes.map(async t=>{
+      const results=await mapLimit(rounds,4,async r=>{
+        const data=await api("/time/id/"+t.id+"/"+r);
+        if(!t.escudo){const e=data?.time?.foto_trofeu||data?.time?.url_escudo_png||null;if(typeof e==="string"&&/^https:\/\//.test(e))t.escudo=e}
+        const publicName=data?.time?.nome||data?.nome_time;if(publicName)t.name=publicName;
+        const p=extractPoints(data);if(p===null)throw new Error("resposta sem pontuação");
+        return [r,p];
+      });
+      t.scores={};
+      results.forEach(res=>{if(res.status==="fulfilled")t.scores[res.value[0]]=res.value[1]});
+      t.total=Object.values(t.scores).reduce((a,b)=>a+b,0);
+    }));
+    mensMsg(typeof msgFinal==="string"?msgFinal:"");
+  }catch(e){mensMsg("Não consegui carregar a pontuação: "+((e&&e.message)||e),"erro")}
+  finally{mensCarregando=false;renderMensal()}
+}
+/* ---- a MENSAL: rodadas início→fim, SEM eliminação — a pontuação só soma ---- */
+function mensRodInicio(){return Math.max(1,Math.min(38,num($("mensRodInicio").value)||1))}
+function mensRodFim(){return Math.max(mensRodInicio(),Math.min(38,num($("mensRodFim").value)||38))}
+function mensAcum(t,ate){
+  let s=0;
+  for(let r=mensRodInicio();r<=Math.min(ate,mensRodFim());r++){const v=(t.scores||{})[r];if(typeof v==="number")s+=v}
+  return s;
+}
+function mensCompeticaoRodadas(){
+  const comDados=new Set();
+  mensTimes.forEach(t=>Object.keys(t.scores||{}).forEach(r=>{const rr=Number(r);if(rr>=mensRodInicio()&&rr<=mensRodFim())comDados.add(rr)}));
+  const out=[];
+  for(let r=mensRodInicio();r<=mensRodFim();r++)out.push({r,disputada:comDados.has(r)});
+  return out;
+}
+function mensPremioPorPos(pos){const p=elimParsePremios($("mensPremios").value);const f=p.find(x=>x[0]===pos);return f?f[1]:null}
+function mensProcessar(){
+  const comp=mensCompeticaoRodadas();
+  const disputadas=comp.filter(c=>c.disputada).map(c=>c.r);
+  const times=mensTimes.map(t=>({t,elim:null,posFinal:null})); // v45: NINGUÉM é eliminado
+  const rodFim=mensRodFim();
+  const rodRef=disputadas.length?Math.max(...disputadas):null;
+  const ptsUlt=e=>rodRef!==null&&typeof (e.t.scores||{})[rodRef]==="number"?(e.t.scores||{})[rodRef]:-1e9;
+  // a classificação é a SOMA dos pontos das rodadas da competição (desempate: quem pontuou mais na última rodada disputada)
+  const ordenados=[...times].sort((a,b)=>mensAcum(b.t,rodFim)-mensAcum(a.t,rodFim)||ptsUlt(b)-ptsUlt(a));
+  const finalizou=comp.length>0&&disputadas.length===comp.length;
+  let campeao=null;
+  if(finalizou&&ordenados.length){ordenados.forEach((e,idx)=>{e.posFinal=idx+1});campeao=ordenados[0]}
+  return {times,campeao,comp,disputadas,ordenados,finalizou,rodRef};
+}
+/* ---- VISÃO PRINCIPAL DA MENSAL: liga, status, líder/projeção, faixa de premiação ---- */
+function renderMensPrincipal(dados){
+  const pr=$("mensPrincipal");if(!pr)return;
+  pr.hidden=!mensTimes.length;
+  if(!mensTimes.length){pr.innerHTML="";return}
+  const faixa=elimParsePremios($("mensPremios").value);
+  const rodFim=mensRodFim();
+  const ranking=dados.ordenados;
+  const nomeDe=t=>escapeHtml(t.name||("Time "+t.id));
+  // v46: os classificados da premiação viram PÓDIO — valor GANHO (encerrada) ou A GANHAR
+  const kFaixa=faixa.length?Math.max(...faixa.map(x=>x[0])):0;
+  const podioLista=(dados.finalizou&&dados.campeao)
+    ?[...dados.ordenados].filter(e=>e.posFinal).sort((a,b)=>a.posFinal-b.posFinal).map(e=>({pos:e.posFinal,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:mensPremioPorPos(e.posFinal)}))
+    :ranking.slice(0,kFaixa).map((e,i)=>({pos:i+1,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:mensPremioPorPos(i+1)}));
+  const podioBloco=podioLista.length
+    ?'<div class="podio-tit">'+((dados.finalizou&&dados.campeao)
+      ?'🏆 Resultado final — os classificados'
+      :('🏆 Se terminasse hoje — quem levaria'))+"</div>"+
+      sfPodioHTML(podioLista,dados.finalizou&&!!dados.campeao)
+    :"";
+  const atual=Number(currentRound)||0;
+  const statusTxt=dados.finalizou
+    ?'<span class="elim-badge camp">competição FINALIZADA</span>'
+    :(dados.disputadas.length
+      ?'<span class="elim-badge andamento">Rodada '+Math.max(mensRodInicio(),Math.min(atual||rodFim,rodFim))+' em andamento</span>'
+      :'<span class="elim-badge vivo">preparando — começa na rodada '+mensRodInicio()+"</span>");
+  pr.innerHTML=
+    '<div class="elim-liga-nome">⚡ '+escapeHtml(mensLiga||"Minha competição mensal")+"</div>"+
+    '<div class="elim-status">'+statusTxt+"</div>"+
+    (podioBloco||"")+
+    '<div class="elim-resumo">'+mensTimes.length+" time(s) · NINGUÉM é eliminado — a pontuação só soma · competição nas rodadas "+mensRodInicio()+"–"+rodFim+"</div>";
+}
+/* ---- CLASSIFICAÇÃO DA MENSAL (SOMA dos pontos das rodadas) + prêmios ---- */
+function renderMensal(){
+  const chips=$("mensChips"),tb=$("mensTabela"),gr=$("mensGrafico"),nota=$("mensNota");
+  const ligaNome=mensLiga||"Minha competição mensal";
+  const headLiga=$("mensHeadLiga");if(headLiga)headLiga.textContent=mensLiga?("— "+mensLiga):"(liga em construção)";
+  const titClass=$("mensTituloClassificacao");if(titClass)titClass.innerHTML=mensTimes.length?("Classificação — <b>"+escapeHtml(ligaNome)+"</b> (SOMA dos pontos das rodadas "+mensRodInicio()+"–"+mensRodFim()+")"):"";
+  const titRod=$("mensTituloRodadas");if(titRod)titRod.innerHTML=mensTimes.length?(escapeHtml(ligaNome)+" — Exibição por rodada"):"Exibição por rodada";
+  const resPr=$("mensPremiosResumo");if(resPr)resPr.innerHTML=elimParsePremios($("mensPremios").value).map(x=>'<span class="elim-premio">'+x[0]+"º → "+elimFormatBRL(x[1])+"</span>").join(" ");
+  if(chips)chips.innerHTML=mensTimes.length
+    ?mensTimes.map(t=>'<span class="elim-chip">'+(t.escudo?'<img src="'+t.escudo+'" alt="">':'')+escapeHtml(t.name||("Time "+t.id))+' <button type="button" data-mens="'+t.id+'" title="Remover da competição">✕</button></span>').join("")
+    :'<span class="elim-sem">Nenhum time cadastrado ainda — cole no formato NOME DA LIGA=>TIME1;TIME2;TIME3 e importe.</span>';
+  const dados=mensProcessar();
+  const rodFim=mensRodFim();
+  renderMensPrincipal(dados);
+  if(tb){
+    if(!mensTimes.length){tb.innerHTML='<tr><td class="elim-sem">A classificação aparece aqui depois de importar os times.</td></tr>'}
+    else{
+      tb.innerHTML='<thead><tr><th>Pos</th><th style="text-align:left">Time</th><th>Pontos (soma)</th><th>Situação</th></tr></thead><tbody>'+
+        dados.ordenados.map((e,i)=>{
+          const premio=e.posFinal?mensPremioPorPos(e.posFinal):null;
+          const sit=dados.campeao===e?'<span class="elim-badge camp">🏆 CAMPEÃO</span>':(dados.finalizou?'<span class="elim-badge vivo">classificação final</span>':'<span class="elim-badge vivo">na disputa</span>');
+          const extra=e.posFinal&&e.posFinal!==1?' <span class="elim-posfinal">'+e.posFinal+"º lugar</span>":"";
+          const din=premio!==null?' <span class="elim-premio">'+elimFormatBRL(premio)+"</span>":"";
+          // em andamento: quem TERIA os prêmios pela soma de hoje
+          const premioAtual=(e.posFinal===null)?mensPremioPorPos(i+1):null;
+          const proj=premioAtual!==null?((i===0?' <span class="elim-badge camp">🏆 posição de CAMPEÃO</span>':"")+' <span class="elim-premio">se terminar hoje: '+elimFormatBRL(premioAtual)+"</span>"):"";
+          return '<tr><td class="'+positionClass(i+1)+'">'+(i+1)+"º</td>"+
+            '<td style="text-align:left">'+(e.t.escudo?'<img src="'+e.t.escudo+'" alt="">':'')+escapeHtml(e.t.name||("Time "+e.t.id))+"</td>"+
+            "<td>"+formatInt(mensAcum(e.t,rodFim))+"</td>"+
+            "<td>"+sit+extra+din+proj+"</td></tr>";
+        }).join("")+"</tbody>";
+    }
+  }
+  renderMensRodadas(dados);
+  if(gr)gr.innerHTML=mensGraficoSVG();
+  if(nota)nota.textContent="Importação: NOME DA LIGA=>TIME1;TIME2;TIME3 (códigos ou nomes) — o botão Exportar devolve neste formato. Competição nas rodadas "+mensRodInicio()+"–"+mensRodFim()+". NINGUÉM é eliminado: a classificação é a SOMA dos pontos das rodadas (desempate: quem pontuou mais na última rodada disputada); enquanto a competição não termina, o PÓDIO e a classificação mostram quem TERIA as premiações hoje (se terminasse hoje); ao terminar, o campeão é o 1º da soma. Premiações no formato POS - VALOR; POS - VALOR; POS - VALOR (aceita vírgula ou ponto-e-vírgula, ex.: 1 - 1000; 2 - 500). Lista, rodadas e premiação ficam guardadas neste navegador.";
+}
+/* ---- MENSAL: exibição por aba de rodada — premiados e pontos a cada rodada ---- */
+function renderMensRodadas(dados){
+  const strip=$("mensRodadasStrip"),painel=$("mensRodadaPainel");
+  if(!strip||!painel)return;
+  if(!mensTimes.length){strip.innerHTML="";painel.innerHTML="";return}
+  if(mensRodadaSel===null||!dados.comp.some(c=>c.r===mensRodadaSel))mensRodadaSel=dados.disputadas.length?Math.max(...dados.disputadas):dados.comp[0].r;
+  strip.innerHTML=dados.comp.map(c=>'<button type="button" class="er-btn'+(c.r===mensRodadaSel?" ativo":"")+'" data-mr="'+c.r+'">R'+c.r+"</button>").join("");
+  renderMensRodada(dados);
+}
+function renderMensRodada(dados){
+  const painel=$("mensRodadaPainel");if(!painel||mensRodadaSel===null)return;
+  const r=mensRodadaSel;
+  const c=dados.comp.find(x=>x.r===r);
+  const ptsR=e=>{const v=(e.t.scores||{})[r];return typeof v==="number"?v:-1e9};
+  const ranking=[...dados.times].sort((a,b)=>ptsR(b)-ptsR(a)||mensAcum(b.t,r)-mensAcum(a.t,r)); // pelos PONTOS DA RODADA (desempate: acumulado até ela)
+  const faixa=elimParsePremios($("mensPremios").value);
+  const k=faixa.length?Math.max(...faixa.map(x=>x[0])):0;
+  const linhas=ranking.map((e,i)=>{
+    const premio=(i+1)<=k?mensPremioPorPos(i+1):null;
+    const sit=dados.campeao===e?'<span class="elim-badge camp">🏆 CAMPEÃO</span>':premio!==null?'<span class="elim-premio">'+elimFormatBRL(premio)+"</span>":'<span class="elim-badge vivo">na disputa</span>';
+    return '<tr><td class="'+positionClass(i+1)+'">'+(i+1)+"º</td>"+
+      '<td style="text-align:left">'+(e.t.escudo?'<img src="'+e.t.escudo+'" alt="">':'')+escapeHtml(e.t.name||("Time "+e.t.id))+"</td>"+
+      "<td>"+formatInt((e.t.scores||{})[r]===undefined?null:(e.t.scores||{})[r])+"</td>"+
+      "<td>"+formatInt(mensAcum(e.t,r))+"</td>"+
+      "<td>"+sit+"</td></tr>";
+  });
+  painel.innerHTML=
+    '<div class="elim-rod-titulo">Rodada '+r+" "+(c&&c.disputada?'<span class="elim-badge andamento">com pontuação</span>':'<span class="elim-badge vivo">ainda não disputada</span>')+"</div>"+
+    (faixa.length?'<div class="elim-faixa">💰 Faixa de premiação nesta rodada: '+ranking.slice(0,k).map((e,i)=>"<b>"+(i+1)+"º</b> "+escapeHtml(e.t.name||("Time "+e.t.id))+(mensPremioPorPos(i+1)!==null?" ("+elimFormatBRL(mensPremioPorPos(i+1))+")":"")).join(" · ")+"</div>":"")+
+    '<div class="elim-rod-elim">🗓️ Mensal: NINGUÉM é eliminado — os pontos da rodada somam ao acumulado.</div>'+
+    '<div class="table-wrap"><table><thead><tr><th>Pos</th><th style="text-align:left">Time</th><th>Pontos na rodada</th><th>Acumulado</th><th>Situação</th></tr></thead><tbody>'+(linhas.join("")||'<tr><td class="elim-sem">Sem times na disputa.</td></tr>')+"</tbody></table></div>";
+}
+/* ---- MENSAL: evolução por rodada (SVG) — rodadas DA COMPETIÇÃO ---- */
+function mensGraficoSVG(){
+  if(!mensTimes.length)return "";
+  const rodadas=mensCompeticaoRodadas().filter(c=>c.disputada).map(c=>c.r);
+  if(!rodadas.length)return '<div class="elim-sem">Sem rodadas disputadas ainda para desenhar a evolução.</div>';
+  const w=Math.max(320,rodadas.length*44),h=210,pad=34;
+  const cores=["#f0a400","#2f7df6","#a24bf0","#19b26b","#e34d4d","#00b7c3","#ff8a00","#8bc34a"];
+  const max=Math.max(1,...mensTimes.flatMap(t=>rodadas.map(r=>t.scores&&t.scores[r]!==undefined?t.scores[r]:0)));
+  const x=i=>pad+i*((w-pad*2)/Math.max(1,rodadas.length-1));
+  const y=v=>h-pad-(v/max)*(h-pad*2);
+  let out='<svg viewBox="0 0 '+w+" "+h+'" role="img" aria-label="Evolução por rodada dos times da competição mensal" style="width:100%;height:auto;min-height:170px">';
+  out+='<rect x="0" y="0" width="'+w+'" height="'+h+'" rx="12" fill="#f7faff"/>';
+  [0,.5,1].forEach(f=>{const yy=pad+(h-pad*2)*f;out+='<line x1="'+pad+'" y1="'+yy+'" x2="'+(w-pad)+'" y2="'+yy+'" stroke="#dfe8f5" stroke-width="1"/>';out+='<text x="'+(pad-7)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10" fill="#7a8aa8">'+Math.round(max*(1-f))+'</text>'});
+  rodadas.forEach((r,i)=>{out+='<text x="'+x(i)+'" y="'+(h-pad+16)+'" text-anchor="middle" font-size="10" fill="#7a8aa8">R'+r+'</text>'});
+  mensTimes.forEach((t,ti)=>{
+    const pts=rodadas.filter(r=>t.scores&&t.scores[r]!==undefined);
+    if(!pts.length)return;
+    const cor=cores[ti%cores.length];
+    if(pts.length===1){out+='<circle cx="'+x(rodadas.indexOf(pts[0]))+'" cy="'+y(t.scores[pts[0]])+'" r="4" fill="'+cor+'"/>'}
+    else{
+      out+='<polyline fill="none" stroke="'+cor+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" points="'+pts.map(r=>x(rodadas.indexOf(r))+","+y(t.scores[r])).join(" ")+'"/>';
+      pts.forEach(r=>{out+='<circle cx="'+x(rodadas.indexOf(r))+'" cy="'+y(t.scores[r])+'" r="3" fill="'+cor+'"/>'});
+    }
+  });
+  out+="</svg>";
+  return out+'<div class="chart-legenda">'+mensTimes.map((t,ti)=>'<span style="color:'+cores[ti%cores.length]+'">●</span> '+escapeHtml(t.name||("Time "+t.id))).join(" ")+"</div>";
+}
+/* ---- MENSAL: exportar no formato NOME DA LIGA=>TIME1;TIME2;TIME3 ---- */
+function mensExportarTexto(){
+  const limpa=s=>String(s||"").replace(/[;\n=>]/g," ").trim();
+  return limpa(mensLiga||"Minha competição mensal")+"=>"+mensTimes.map(t=>String(t.id)).join(";");
+}
+$("mensBtnCadastrar").addEventListener("click",mensCadastrar);
+$("mensBtnExportar").addEventListener("click",()=>{
+  if(!mensTimes.length){mensMsg("Nenhum time para exportar — importe primeiro no formato NOME DA LIGA=>TIME1;TIME2;TIME3.","erro");return}
+  const txt=mensExportarTexto();
+  let copiado=false;
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt);copiado=true}}catch{}
+  mensMsg((copiado?"Copiado para a área de transferência — cole onde quiser: ":"Copie este formato: ")+txt,"ok");
+});
+$("mensBtnLimpar").addEventListener("click",()=>{mensTimes=[];mensLiga="";mensRodadaSel=null;mensSalvar();renderMensal();mensMsg("Competição mensal limpa.","ok")});
+$("mensRodInicio").addEventListener("change",()=>{
+  if(num($("mensRodFim").value)<num($("mensRodInicio").value))$("mensRodFim").value=$("mensRodInicio").value;
+  mensRodadaSel=null;mensSalvar();renderMensal();
+});
+$("mensRodFim").addEventListener("change",()=>{
+  if(num($("mensRodFim").value)<num($("mensRodInicio").value))$("mensRodInicio").value=$("mensRodFim").value;
+  mensRodadaSel=null;mensSalvar();renderMensal();
+});
+$("mensPremios").addEventListener("change",()=>{mensSalvar();renderMensal()});
+$("mensChips").addEventListener("click",e=>{
+  const b=e&&e.target;
+  const id=b&&typeof b.getAttribute==="function"?b.getAttribute("data-mens"):null;
+  if(id)mensRemover(id);
+});
+$("mensRodadasStrip").addEventListener("click",e=>{
+  const b=e&&e.target;
+  const v=b&&typeof b.getAttribute==="function"?b.getAttribute("data-mr"):null;
+  if(!v)return;
+  mensRodadaSel=num(v);
+  renderMensRodadas(mensProcessar());
+});
+mensCarregarPrefs();
+/* ===== v46 — PÓDIO DE RESULTADOS (Eliminatória e Mensal) =====
+   Mostra os CLASSIFICADOS da premiação em degraus (ouro/prata/bronze) com escudo,
+   posição e o VALOR ganho (competição encerrada) ou a ganhar (em andamento); os demais
+   premiados aparecem em pills. Usado pelas duas competições. */
+function sfPodioHTML(premiados,finalizada){
+  if(!premiados||!premiados.length)return "";
+  const degrau=(e,cls)=>{
+    const badge=(finalizada&&e.pos===1)?"🏆 CAMPEÃO":(e.pos+"º");
+    const valor=(e.valor!==null&&e.valor!==undefined)?'<span class="podio-valor">'+(finalizada?"Ganho: ":"A ganhar: ")+elimFormatBRL(e.valor)+"</span>":"";
+    return '<div class="podio-col '+cls+'">'+(e.escudo?'<span class="podio-escudo" aria-hidden="true" style="background-image:url(\''+escapeHtml(e.escudo)+'\'), var(--sf-logo)"></span>':'')+'<span class="podio-nome">'+escapeHtml(e.nome||("Time "+e.id))+"</span>"+valor+'<div class="podio-degrau">'+badge+"</div></div>";
+  };
+  const p1=premiados[0],p2=premiados[1],p3=premiados[2];
+  const cols=[];
+  if(p2)cols.push(degrau(p2,"prata"));
+  if(p1)cols.push(degrau(p1,"ouro"));
+  if(p3)cols.push(degrau(p3,"bronze"));
+  const extras=premiados.slice(3).map(e=>'<span class="podio-chip"><b>'+e.pos+"º</b> "+escapeHtml(e.nome||("Time "+e.id))+(e.valor!==null&&e.valor!==undefined?" — "+elimFormatBRL(e.valor):"")+"</span>").join("");
+  return '<div class="podio">'+cols.join("")+"</div>"+(extras?'<div class="podio-extra">'+extras+"</div>":"");
+}
+elimCarregarPrefs();
 buildRoundOptions(); // v31: o seletor de rodadas exibidas já nasce pronto (e lê a escolha salva)
 render();renderAuth();
 /* v42 — PORTÃO DE ACESSO LOCAL: nome + senha conferidos pelo servidor no arquivo “passwords”.
