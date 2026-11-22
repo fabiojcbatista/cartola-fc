@@ -48,6 +48,140 @@ próximo acesso, com a memória limpa):
   refresh_token na Globo e apaga a cópia — em qualquer dispositivo que usar depois, a sessão
   antiga deixa de valer.
 
+## Ajustes da versão 44.1 — corrigindo a utilização real
+
+- NOME DA LIGA EXIBIDO em toda a aba: no cabeçalho ("🎯 Eliminatória — <liga>"), na
+  classificação ("Classificação — <liga>") e na exibição por rodada ("<liga> — Exibição
+  por rodada"), além do cartão verde principal.
+- EXPORTAR FORMATO agora devolve os CÓDIGOS dos times (LIGA=>ID1;ID2;…) — antes exportava
+  os nomes. O formato exportado é reimportável direto no campo de cadastro.
+- REGRA DE ELIMINAÇÃO CORRIGIDA: sai quem tiver a MENOR PONTUAÇÃO DA RODADA (desempate
+  pelo acumulado da competição) — antes eliminava pelo acumulado das rodadas. A
+  classificação continua ordenada pela pontuação da competição.
+- CAMPO DE PREMIAÇÕES explicitado no formato POS - VALOR (ex.: 1 - 1000, 2 - 500), com
+  espaços e º/ª aceitos, e as premiações reconhecidas aparecem como pílulas ("1º → R$ 1.000")
+  logo abaixo do campo, confirmando o que foi cadastrado.
+
+## Ajustes da versão 44.2 — campeões e prêmios visíveis antes do fim
+
+- PROJEÇÃO "SE TERMINASSE HOJE": enquanto a competição está EM ANDAMENTO, o cartão
+  principal mostra "🏆 Se terminasse hoje: CAMPEÃO seria X — R$ 1.000" com os demais
+  prêmios de agora (antes, campeões e premiações só apareciam quando a competição
+  finaliza — por isso pareciam ausentes).
+- NA CLASSIFICAÇÃO, quem TERIA os prêmios aparece marcado na posição atual entre os
+  times vivos: o líder com "🏆 posição de CAMPEÃO" e os demais da faixa com
+  "se terminar hoje: R$ X". Quem já foi eliminado continua com a posição FINAL e o
+  prêmio real. Ao finalizar, a projeção dá lugar ao CAMPEÃO e aos prêmios definitivos.
+- O botão "Cadastrar times" virou "Importar times".
+
+## Ajustes da versão 44.3 — classificação pela rodada + premiações com ;
+
+- CLASSIFICAÇÃO SEMPRE PELA PONTUAÇÃO DA RODADA (a última disputada da competição),
+  NÃO pelo total de pontos: os vivos ficam em ordem dos pontos da rodada (desempate pelo
+  acumulado) e os eliminados aparecem logo abaixo pela posição final. A coluna da tabela
+  passou a se chamar "Pontos na rodada". A exibição por rodada também ordena pelos pontos
+  DA rodada (desempate: acumulado até ela).
+- CAMPEÃO coerente com essa classificação: a projeção "se terminasse hoje" segue os pontos
+  da rodada; quando a competição encerra pelas rodadas com mais de um time na disputa, o
+  CAMPEÃO é o 1º dessa classificação e os vivos recebem as posições finais (os prêmios
+  aparecem). Encerrando por eliminação completa, o campeão continua sendo o sobrevivente.
+- PREMIAÇÕES COM PONTO-E-VÍRGULA: o campo agora aceita vírgula OU ponto-e-vírgula —
+  "pos - valor; pos-valor;pos-valor" funciona igual a "pos-valor,pos-valor". Antes só a
+  vírgula era aceita e premiações digitadas com ; eram ignoradas (por isso não apareciam).
+  Rótulo e placeholder deixam o formato explícito; as pílulas abaixo do campo confirmam
+  o que foi reconhecido.
+
+## Novidades da versão 46 — ajustes de layout e pódio de resultados
+
+- ABA GERAL: a seção “Times cadastrados” saiu — os cards dos times continuam no banner
+  do cabeçalho (escudo, nome, total, sparkline) e o clique neles ainda leva o time ao
+  gráfico. O texto de rodadas abaixo da tabela de pontuação também saiu.
+- SUBTÍTULOS DOS GRÁFICOS: “Desempenho por rodada” e “Todos os times (unificado)” agora
+  usam o preenchimento navy dos títulos de seção (faixa escura com ícone dourado).
+- MENU DE ABAS SEMPRE VISÍVEL: o menu saiu do bloco main (a grid area prendia o
+  position:sticky) e fica colado no TOPO da página em todas as telas, ao rolar; as
+  seções ganharam scroll-margin para nunca ficar escondidas atrás dele. O atalho
+  inferior “Times” leva agora aos cards no cabeçalho.
+- FOLD DAS LIGAS: os 3 botões intermediários (Clássicas / Mata-Mata / Pontos Corridos)
+  saíram — o menu de abas escolhe a modalidade diretamente.
+- ELIMINATÓRIA E MENSAL: a montagem da competição ganhou um CARD próprio (título navy,
+  labels padronizados) e os RESULTADOS viraram PÓDIO — degraus ouro/prata/bronze com
+  escudo, posição e o valor GANHO (competição encerrada) ou A GANHAR (em andamento),
+  com pills para 4º colocado em diante.
+
+## Novidades da versão 45 — novo menu MENSAL (a eliminatória sem eliminação)
+
+- ABA NOVA "🗓️ Mensal" no menu de abas, ao lado da Eliminatória, com o MESMO conteúdo:
+  importação NOME DA LIGA=>TIME1;TIME2;TIME3 (códigos ou nomes), rodadas início→fim,
+  premiações POS - VALOR; POS - VALOR; POS - VALOR, cartão com status/projeção/faixa de
+  premiação, classificação, exibição por aba de rodada, gráfico de evolução e o botão
+  Exportar (mesmo formato da importação).
+- NINGUÉM é eliminado na mensal: os pontos das rodadas da competição apenas SOMAM — a
+  classificação é essa soma (desempate: quem pontuou mais na última rodada disputada).
+  Em andamento, o cartão mostra "🏆 Se terminasse hoje: CAMPEÃO seria X" com os prêmios
+  de agora; encerrando todas as rodadas, o CAMPEÃO é o 1º da soma e os prêmios ficam
+  definitivos (2º lugar, 3º lugar…).
+- A exibição por rodada continua: cada aba de rodada mostra os pontos DA rodada
+  (desempate: acumulado até ela), os premiados da rodada e o acumulado — com o aviso
+  de que ninguém sai.
+- Estado próprio (sf_mensal_v1): a mensal não interfere na eliminatória — as duas
+  competências ficam gravadas lado a lado no navegador.
+
+## Novidades da versão 44 — ELIMINATÓRIA EM COMPETIÇÃO
+
+A aba Eliminatória (v43) virou uma competição completa:
+
+- IMPORTAÇÃO NO FORMATO NOME DA LIGA=>TIME1;TIME2;TIME3 — cole a liga nomeada com os
+  códigos dos times (IDs do Cartola) ou os nomes, separados por ponto-e-vírgula. Sem o
+  "=>", o cadastro solto da v43 (IDs/nomes por vírgula ou linha) continua funcionando.
+  Mais de uma linha com "=>" recebe orientação: uma eliminatória por vez.
+- EXPORTAR FORMATO — o botão copia os times exatamente no mesmo formato
+  (NOME DA LIGA=>TIME1;TIME2;…), pronto para reimportar ou compartilhar.
+- RODADA INICIAL e RODADA FINAL — a competição disputa só dentro dessa faixa: classificação,
+  eliminações, gráfico e premiação usam a pontuação ACUMULADA DA COMPETIÇÃO (não o total
+  do Cartola). Mudar as rodadas recalcula tudo na hora.
+- FAIXA DE PREMIAÇÃO no formato POSIÇÃO-VALOR,POSIÇÃO-VALOR (ex.: 1-1000,2-500) — os
+  prêmios aparecem na classificação (a posição FINAL segue a ordem de eliminação: o
+  campeão é 1º; o último eliminado é 2º; em caso de eliminação em bloco, o pior fica
+  com a pior posição) e na faixa destacada em ouro.
+- VISÃO PRINCIPAL (cartão verde) com o nome da liga e o STATUS: "preparando — começa na
+  rodada X", "Rodada X em andamento" ou "competição FINALIZADA" — quando finaliza, mostra
+  o CAMPEÃO e os premiados com valores. Também marca o ÚLTIMO ELIMINADO (e em que rodada),
+  os times NA FAIXA DE PREMIAÇÃO agora e o resumo (times · eliminados · na disputa ·
+  rodadas da competição).
+- EXIBIÇÃO POR ABA DE RODADA — tiras R{início}…R{fim}: cada rodada mostra os times NA
+  FAIXA DE PREMIAÇÃO naquele momento, os ELIMINADOS da rodada (linha vermelha na tabela)
+  e a tabela com pontos da rodada + acumulado + situação; rodadas futuras aparecem como
+  "ainda não disputada". O gráfico de evolução (SVG) segue as rodadas da competição.
+- Persistência atualizada para sf_eliminatoria_v2 (liga, ids, regra, rodada inicial/final
+  e premiação); registros antigos da v1 continuam sendo lidos. NADA muda no resto do
+  painel: abas da v43, gráficos, ligas, login automático — intactos.
+
+## Novidades da versão 43 — REDESIGN MOBILE com MENU DE ABAS + ELIMINATÓRIA (liga em construção)
+
+O painel foi reorganizado em ABAS horizontais com ÍCONE + TEXTO, no topo do painel (a barra
+gruda na tela ao rolar):
+
+- 📊 GERAL — os times cadastrados + a pontuação por rodada com os DOIS gráficos (o do time
+  selecionado e o unificado) + a tabela e a média (v34–v39 intactas).
+- 🏆 CLÁSSICA — as ligas clássicas em cards (o fold das ligas continua com as três
+  modalidades; o menu aciona a modalidade certa).
+- 🟣 PONTOS CORRIDOS — as ligas de confronto direto.
+- ⚔️ MATA-MATA — as ligas de chaveamento (fase por rodada).
+- 🎯 ELIMINATÓRIA — LIGA NOVA, EM CONSTRUÇÃO: cole os CÓDIGOS (IDs do Cartola) dos times
+  em campo — ou os NOMES, que a busca localiza —, cadastre, escolha QUANTOS TIMES ELIMINAR
+  POR RODADA (1 a 6; sai sempre o de menor pontuação acumulada, garantindo que sobra um
+  campeão) e acompanhe: chips dos cadastrados (com ✕ para remover), CLASSIFICAÇÃO ordenada
+  por pontuação total, EVOLUÇÃO por rodada em gráfico SVG (na mesma janela do seletor de
+  rodadas), quem foi ELIMINADO e em que rodada, e o 🏆 CAMPEÃO quando sobra um. A lista e
+  a regra ficam registradas no navegador (sf_eliminatoria_v1).
+
+A barra de BUSCA + RODADAS + ATUALIZAR + AVANÇADO fica FORA das abas — aparece em TODAS
+elas (pedido do Fabio). A navegação inferior do celular (Início · Times · Ligas · Dados)
+continua lá e agora TROCA DE ABA. NADA foi perdido: folds com abrir/fechar guardados,
+tabs internas das ligas, banner-resumo, métricas, mini-barra, modo manual, login Globo,
+login automático (v42) e a API window.SFAcesso — tudo funcionando como antes.
+
 ## Novidades da versão 42 — LOGIN AUTOMÁTICO (a funcionalidade de acesso continua toda)
 
 O site agora entra SOZINHO, sem pedir nada ao visitante:
