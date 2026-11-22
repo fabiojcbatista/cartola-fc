@@ -263,7 +263,7 @@ details.fold[open]>summary{border-bottom:1px solid #e6ecf7}
 .chart-head .chart-time{color:#ffd23f}
 .chart-todos-head{margin:14px 2px 8px}
 /* v46 — rolagem nunca fica escondida atrás do menu suspenso */
-details.fold,section.panel,.elim-monta,.elim-principal{scroll-margin-top:72px}
+details.fold,section.panel,.elim-monta,.elim-principal{scroll-margin-top:116px}
 /* ===== v46 — card de MONTAGEM da competição (eliminatória e mensal) ===== */
 .elim-monta{margin:12px 0 2px;padding:0 14px 14px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#f6f9ff,#eef4ff);box-shadow:var(--shadow-card)}
 .elim-monta-tit{margin:0 -14px;padding:11px 14px;border-radius:16px 16px 0 0;background:linear-gradient(115deg,var(--navy-card),var(--navy));color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;gap:9px}
@@ -271,6 +271,12 @@ details.fold,section.panel,.elim-monta,.elim-principal{scroll-margin-top:72px}
 .elim-monta label{display:block;font-weight:800;font-size:11.5px;color:#44598a;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px}
 .elim-monta textarea{min-height:96px}
 .elim-monta .elim-premios-resumo{margin-top:10px}
+/* ===== v47 — cards de time COMPACTOS e IGUAIS nas duas abas (chips) ===== */
+.elim-chip{font-size:11.5px;padding:3px 8px;gap:5px}
+.elim-chip img{width:16px;height:16px}
+.elim-chip button{width:18px;height:18px;font-size:10.5px}
+/* ===== v47 — pódio compacto com a PONTUAÇÃO de cada time ===== */
+.podio-pts{font-size:10.5px;font-weight:800;color:#44598a;background:#eaf2ff;border:1px solid #cfe0fb;border-radius:99px;padding:1px 8px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 /* ===== v46 — PÓDIO de resultados (ganhos ou a ganhar) ===== */
 .podio-tit{margin:12px 2px 0;font-weight:900;font-size:13.5px;color:#0a1c3f}
 .podio{display:flex;align-items:flex-end;gap:6px;margin-top:8px;padding:0 6px}
@@ -278,15 +284,15 @@ details.fold,section.panel,.elim-monta,.elim-principal{scroll-margin-top:72px}
 .podio-col.ouro{background:linear-gradient(180deg,#fff6d6,#ffe9a3 55%,#f5d768);border-color:#ecc33f;padding-top:18px}
 .podio-col.prata{background:linear-gradient(180deg,#f7fafc,#e8eef6 55%,#d8e0eb);border-color:#c2cede}
 .podio-col.bronze{background:linear-gradient(180deg,#fbf2ea,#f2dcc6 55%,#e5c3a0);border-color:#d3a97e}
-.podio-escudo{width:44px;height:44px;flex:none;border-radius:12px;border:2px solid #fff;background:#fff center/cover no-repeat;box-shadow:0 6px 14px rgba(16,34,72,.28)}
-.podio-nome{max-width:100%;font-weight:850;font-size:12px;color:#0a1c3f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.podio-valor{font-size:11.5px;font-weight:900;color:#6b4a00;background:rgba(255,255,255,.85);border:1px solid rgba(240,164,0,.4);border-radius:99px;padding:3px 9px;white-space:nowrap}
-.podio-degrau{align-self:stretch;margin-top:6px;padding:8px 0 7px;text-align:center;font-weight:900;font-size:13.5px;color:#16243d;background:rgba(16,34,72,.12);border-radius:10px 10px 0 0}
+.podio-escudo{width:36px;height:36px;flex:none;border-radius:10px;border:2px solid #fff;background:#fff center/cover no-repeat;box-shadow:0 6px 14px rgba(16,34,72,.28)}
+.podio-nome{max-width:100%;font-weight:850;font-size:11.5px;color:#0a1c3f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.podio-valor{font-size:11px;font-weight:900;color:#6b4a00;background:rgba(255,255,255,.85);border:1px solid rgba(240,164,0,.4);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.podio-degrau{align-self:stretch;margin-top:5px;padding:6px 0 5px;text-align:center;font-weight:900;font-size:12.5px;color:#16243d;background:rgba(16,34,72,.12);border-radius:10px 10px 0 0}
 .podio-col.ouro .podio-degrau{background:rgba(240,164,0,.32);color:#5c3d00}
 .podio-extra{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .podio-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #d5dfef;border-radius:99px;padding:4px 11px;font-size:11.5px;font-weight:800;color:#0a1c3f}
 .podio-chip b{color:var(--blue)}
-@media(max-width:640px){.podio-col{padding:9px 4px 0}.podio-escudo{width:34px;height:34px}.podio-nome{font-size:10.5px}.podio-valor{font-size:10.5px;padding:2px 8px;white-space:normal;line-height:1.25;text-align:center;max-width:100%}.podio-degrau{font-size:12.5px;padding:7px 0 6px}}
+@media(max-width:640px){.podio-col{padding:8px 4px 0}.podio-escudo{width:30px;height:30px}.podio-nome{font-size:10px}.podio-valor{font-size:9.5px;padding:2px 6px;white-space:normal;line-height:1.25;text-align:center;max-width:100%}.podio-pts{font-size:9.5px;padding:1px 6px}.podio-degrau{font-size:12px;padding:6px 0 5px}}
 .ver-detalhes{margin-left:auto;font-size:12px;font-weight:800;color:var(--blue);background:#eaf2ff;border:1px solid #cfe0fb;border-radius:99px;padding:4px 12px;white-space:nowrap}
 details.fold,section.panel{scroll-margin-top:70px}
 
@@ -767,6 +773,12 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
   a tabela com pontos da rodada + acumulado + situação. Persistência virou
   sf_eliminatoria_v2 (liga, ids, regra, rodadas, premiação) — a v1 antiga é lida como
   migração. NADA muda no resto do painel: abas da v43, gráficos, ligas, login — intactos.
+  v47 — MENU SUSPENSO + MINIBAR JUNTOS: quando o minibar (título do site + Sair)
+  aparece ao rolar, o menu de abas desce e fica logo abaixo dele — os dois sempre
+  visíveis. PÓDIO COM PONTUAÇÕES: cada degrau mostra a pontuação do time (soma da
+  competição; na eliminatória em andamento, a pontuação da rodada que posiciona) e
+  os cards de time (chips e pódio) ficam no MESMO padrão COMPACTO nas abas
+  Eliminatória e Mensal.
   v46 — SÉRIE DE AJUSTES: (1) a seção “Times cadastrados” sai da aba Geral — os cards
   dos times já ficam no banner do cabeçalho (clique continua levando ao gráfico); (2) os
   subtítulos dos gráficos ganham o preenchimento navy dos títulos de seção; (3) o
@@ -2013,6 +2025,9 @@ function alternarMinibar(){
   const mb=$("minibar");if(!mb)return;
   let y=0;try{y=window.scrollY||window.pageYOffset||0}catch(e){}
   mb.classList.toggle("show",y>150);
+  // v47: o minibar é fixo no topo — o MENU DE ABAS desce para baixo dele quando ele
+  // aparece (os dois ficam visíveis juntos, nada sobrepõe nada)
+  try{const m=$("menuAbas");if(m){m.style.top=(mb.classList.contains("show")&&mb.offsetHeight>0?Math.round(mb.offsetHeight):0)+"px"}}catch(e){}
 }
 // v33 — NAVEGAÇÃO INFERIOR: abre a seção (details) e rola até ela; “Início” volta ao topo.
 document.querySelectorAll(".bn").forEach(b=>b.addEventListener("click",()=>{
@@ -2752,8 +2767,8 @@ function renderElimPrincipal(dados){
   // valor GANHO (encerrada) ou A GANHAR (em andamento); os demais em pills 4º+
   const kFaixa=faixa.length?Math.max(...faixa.map(x=>x[0])):0;
   const podioLista=(dados.finalizou&&dados.campeao)
-    ?[...dados.vivos].filter(e=>e.posFinal).sort((a,b)=>a.posFinal-b.posFinal).map(e=>({pos:e.posFinal,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:elimPremioPorPos(e.posFinal)}))
-    :ranking.slice(0,kFaixa).map((e,i)=>({pos:i+1,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:elimPremioPorPos(i+1)}));
+    ?[...dados.vivos].filter(e=>e.posFinal).sort((a,b)=>a.posFinal-b.posFinal).map(e=>({pos:e.posFinal,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:elimPremioPorPos(e.posFinal),pts:formatPoints(elimAcum(e.t,rodFim))+" pts"}))
+    :ranking.slice(0,kFaixa).map((e,i)=>({pos:i+1,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:elimPremioPorPos(i+1),pts:rodRef!==null&&typeof (e.t.scores||{})[rodRef]==="number"?(formatPoints((e.t.scores||{})[rodRef])+" pts"):""}));
   const podioBloco=podioLista.length
     ?'<div class="podio-tit">'+((dados.finalizou&&dados.campeao)
       ?'🏆 Resultado final — os classificados'
@@ -3068,8 +3083,8 @@ function renderMensPrincipal(dados){
   // v46: os classificados da premiação viram PÓDIO — valor GANHO (encerrada) ou A GANHAR
   const kFaixa=faixa.length?Math.max(...faixa.map(x=>x[0])):0;
   const podioLista=(dados.finalizou&&dados.campeao)
-    ?[...dados.ordenados].filter(e=>e.posFinal).sort((a,b)=>a.posFinal-b.posFinal).map(e=>({pos:e.posFinal,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:mensPremioPorPos(e.posFinal)}))
-    :ranking.slice(0,kFaixa).map((e,i)=>({pos:i+1,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:mensPremioPorPos(i+1)}));
+    ?[...dados.ordenados].filter(e=>e.posFinal).sort((a,b)=>a.posFinal-b.posFinal).map(e=>({pos:e.posFinal,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:mensPremioPorPos(e.posFinal),pts:formatPoints(mensAcum(e.t,rodFim))+" pts"}))
+    :ranking.slice(0,kFaixa).map((e,i)=>({pos:i+1,nome:e.t.name||("Time "+e.t.id),escudo:e.t.escudo,valor:mensPremioPorPos(i+1),pts:formatPoints(mensAcum(e.t,rodFim))+" pts"}));
   const podioBloco=podioLista.length
     ?'<div class="podio-tit">'+((dados.finalizou&&dados.campeao)
       ?'🏆 Resultado final — os classificados'
@@ -3229,14 +3244,15 @@ function sfPodioHTML(premiados,finalizada){
   const degrau=(e,cls)=>{
     const badge=(finalizada&&e.pos===1)?"🏆 CAMPEÃO":(e.pos+"º");
     const valor=(e.valor!==null&&e.valor!==undefined)?'<span class="podio-valor">'+(finalizada?"Ganho: ":"A ganhar: ")+elimFormatBRL(e.valor)+"</span>":"";
-    return '<div class="podio-col '+cls+'">'+(e.escudo?'<span class="podio-escudo" aria-hidden="true" style="background-image:url(\''+escapeHtml(e.escudo)+'\'), var(--sf-logo)"></span>':'')+'<span class="podio-nome">'+escapeHtml(e.nome||("Time "+e.id))+"</span>"+valor+'<div class="podio-degrau">'+badge+"</div></div>";
+    const pts=e.pts?'<span class="podio-pts">'+e.pts+"</span>":"";
+    return '<div class="podio-col '+cls+'">'+(e.escudo?'<span class="podio-escudo" aria-hidden="true" style="background-image:url(\''+escapeHtml(e.escudo)+'\'), var(--sf-logo)"></span>':'')+'<span class="podio-nome">'+escapeHtml(e.nome||("Time "+e.id))+"</span>"+pts+valor+'<div class="podio-degrau">'+badge+"</div></div>";
   };
   const p1=premiados[0],p2=premiados[1],p3=premiados[2];
   const cols=[];
   if(p2)cols.push(degrau(p2,"prata"));
   if(p1)cols.push(degrau(p1,"ouro"));
   if(p3)cols.push(degrau(p3,"bronze"));
-  const extras=premiados.slice(3).map(e=>'<span class="podio-chip"><b>'+e.pos+"º</b> "+escapeHtml(e.nome||("Time "+e.id))+(e.valor!==null&&e.valor!==undefined?" — "+elimFormatBRL(e.valor):"")+"</span>").join("");
+  const extras=premiados.slice(3).map(e=>'<span class="podio-chip"><b>'+e.pos+"º</b> "+escapeHtml(e.nome||("Time "+e.id))+(e.pts?" · "+e.pts:"")+(e.valor!==null&&e.valor!==undefined?" — "+elimFormatBRL(e.valor):"")+"</span>").join("");
   return '<div class="podio">'+cols.join("")+"</div>"+(extras?'<div class="podio-extra">'+extras+"</div>":"");
 }
 elimCarregarPrefs();
