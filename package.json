@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node tests/rodar_todos.mjs",
+    "test:server": "node tests/test_v40_server.mjs",
+    "test:codigo": "node tests/rodar_codigo.mjs",
+    "test:mobile": "node tests/test_v30_mobile_rodadas.mjs",
+    "test:v47": "node tests/test_v47_ajustes.mjs",
+    "test:seguranca": "node tests/test_v50_seguranca.mjs"
   },
   "engines": {
     "node": ">=18"
