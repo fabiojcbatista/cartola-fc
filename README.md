@@ -1,5 +1,61 @@
 # Superliga do Fabião — Cartola FC
 
+## Ajustes da versão 50 (com base no relatório de testes de segurança)
+
+🔴 Urgentes corrigidos:
+- Arquivos sensíveis não são mais servidos: só o painel (index.html) é entregue — /passwords,
+  /server.js, /README.txt, /.gitignore e /extensao_chrome devolvem 404.
+- O proxy da API não é mais proxy aberto: caminhos com "//" ou outro host são rejeitados.
+- O login automático sem senha foi REMOVIDO: agora o login cria SESSÃO no servidor (cookie
+  HttpOnly, 30 dias) e as rotas /api/cartola só respondem com sessão (local ou Globo).
+- Senhas: hash scrypt com salt (linhas antigas em texto puro viram hash no 1º login correto),
+  mínimo de 6 caracteres, 5 tentativas erradas em 10 minutos bloqueiam por 10 minutos,
+  quebras de linha/tabulação são barradas no nome, celular e senha, e o 409 de cadastro
+  ficou com mensagem neutra (não confirma quem já tem conta). .gitignore agora cobre o arquivo.
+
+🟠 Demais segurança:
+- Cabeçalhos em todas as respostas: CSP, nosniff, X-Frame-Options DENY, Referrer-Policy, HSTS.
+- O escudo do time só entra na página por escudoUrl() (aceita https:// e data:image) — defesa
+  em profundidade contra XSS nos 6 pontos de injeção encontrados.
+
+🟡 Funcional e desempenho:
+- Tabela e cards agora são RANKING: ordenados pela pontuação, "##" é a posição, o líder é
+  destacado e a Pontuação veio para logo depois do nome (não fica na coluna 32).
+- Times monitorados persistem no localStorage (recarregar não zera mais a lista; Sair limpa).
+- Cache no servidor: rodadas encerradas (1h) e rodada corrente (5min) — 2ª consulta devolve
+  HIT sem bater na API do Cartola.
+- gzip ligado: o painel cai de ~310KB para ~100KB na transferência.
+
+🎨 UI/UX e acessibilidade:
+- Laranja de ação escurecido (contraste AA com texto branco), dourados sobre claro ≥4,5.
+- Em 320px a página não estoura (grid minmax + searchbar flexível); fontes de UI ≥12px.
+- Mensagens humanas: busca vazia, busca sem resultado, falha de rede, ID inexistente na
+  eliminatória/mensal e premiação em formato estranho — sem jargão técnico.
+- "Limpar eliminatória" pede confirmação; dicas duplicadas e a lupa repetida foram removidas;
+  um único botão "Entrar com Globo" (cabeçalho).
+- aria-live no status e nas mensagens da eliminatória, skip link, aria-current nas abas,
+  caption+scope nas tabelas, cards e nomes de time agora funcionam com teclado (Enter/Espaço).
+- Gráfico: eixo Y mostra o ZERO, rótulos não cobrem o eixo X e a pílula da média foi para a
+  esquerda (não cobre mais os pontos).
+- Head: meta description, theme-color e Open Graph (o preview no WhatsApp/Telegram melhora).
+
+## Como testar (manualmente, sem instalar nada além do Node)
+
+Requisito: Node 18 ou superior. Não há dependências externas — os testes leem o
+código do painel, sobem o servidor real numa porta de teste e verificam o comportamento.
+
+  npm install            (opcional — não instala nada, só confirma o package.json)
+  npm start              sobe o servidor (mesmo comando usado na nuvem)
+  npm test               roda TODAS as 13 baterias de teste, uma a uma, com resumo
+  npm run test:server    só a bateria do servidor (sobe o server de verdade e testa as rotas)
+  npm run test:codigo    só as baterias que verificam o código do painel
+  npm run test:mobile    só a bateria mobile (rodadas, carrossel, botões de toque)
+  npm run test:seguranca  só a bateria de segurança (estáticos, SSRF, portão, headers, cache)
+  npm run test:v47       só a bateria da versão 47 (menu/minibar, pódio com pontos, compacto)
+
+Cada bateria imprime "ok" por verificação e termina com "N ok, 0 falharam".
+Se alguma falhar, o comando devolve erro e o runner mostra qual bateria foi.
+
 ## Como executar
 
 1. Instale o **Node.js 18 ou superior**.
