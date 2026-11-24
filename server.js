@@ -5,6 +5,7 @@ const http = require("http");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const crypto = require("crypto");
 const os = require("os");
 const { spawn } = require("child_process");
@@ -53,8 +54,29 @@ const OIDC_SCOPE = process.env.OIDC_SCOPE || "openid profile glbid";
 const sessions = new Map();
 const oidcFlows = new Map();
 
+// v50 — cabeçalhos de segurança em TODAS as respostas + gzip quando o cliente aceita.
+const CAB_SEGURANCA = {
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+};
+const CSP_PAINEL = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
+  "img-src 'self' data: https:; connect-src 'self'; font-src 'self' data:; frame-ancestors 'none'; " +
+  "base-uri 'self'; form-action 'self'; object-src 'none'";
 function send(res, status, body, type = "text/plain; charset=utf-8", extra = {}) {
-  res.writeHead(status, { "Content-Type": type, ...extra });
+  const headers = { "Content-Type": type, ...CAB_SEGURANCA, ...extra };
+  if (String(type).toLowerCase().startsWith("text/html")) headers["Content-Security-Policy"] = CSP_PAINEL;
+  const req = res.req;
+  if (req && status === 200 && !headers["Content-Encoding"] && Buffer.byteLength(body) > 1024 &&
+      String(req.headers["accept-encoding"] || "").toLowerCase().includes("gzip")) {
+    headers["Content-Encoding"] = "gzip";
+    headers["Vary"] = "Accept-Encoding";
+    res.writeHead(status, headers);
+    res.end(zlib.gzipSync(Buffer.isBuffer(body) ? body : Buffer.from(body)));
+    return;
+  }
+  res.writeHead(status, headers);
   res.end(body);
 }
 function sendJson(res, status, obj, extra = {}) {
@@ -826,13 +848,14 @@ async function handleLogout(req, res) {
   return sendJson(res, 200, { loggedIn: false, globoLogoutUrl: OIDC_BASE + "/logout?" + fim, perfilApagado }, { "Set-Cookie": cookieHeader(req, "", 0) });
 }
 
-/* ===== v40/v42 — ACESSO LOCAL: arquivo “passwords” + login/cadastro + LOGIN AUTOMÁTICO =====
-   O site entra com LOGIN AUTOMÁTICO (v42): POST /auth/local/auto devolve a conta de entrada
-   sem pedir senha. O login COM senha (POST /auth/local/login) e o cadastro pela tela seguem
-   intactos — a funcionalidade completa fica disponível para uso futuro via API.
+/* ===== v40/v42/v50 — ACESSO LOCAL: arquivo “passwords” + login/cadastro COM SENHA =====
+   v50 (relatório de segurança): o LOGIN AUTOMÁTICO sem senha foi removido — só entra quem
+   acerta nome + senha. As senhas ficam SEMPRE como hash scrypt (salt aleatório por conta);
+   linhas antigas em texto puro são convertidas no primeiro login certo (upgrade transparente).
+   Limite de tentativas: 5 erros por nome+IP em 10 minutos bloqueia por 10 minutos.
    Arquivo PASSWORDS_PATH (por padrão, “passwords” na pasta do servidor) — uma conta por linha,
    campos separados por “;”:
-       nome;celular;nivel;senha[;auto]
+       nome;celular;nivel;senha_hash[;auto]
    · nivel 1 ou 2 = permitido (contas criadas/liberadas pelo Fabio, editando o arquivo à mão);
    · nivel 3 = cadastro novo feito pela tela, AGUARDANDO LIBERAÇÃO — o login bloqueia e mostra
      a orientação para falar com o Fabio Batista no whatsapp. Para liberar alguém, edite o
@@ -844,6 +867,28 @@ async function handleLogout(req, res) {
    espaços duplicados — não dá para cadastrar duas contas com o mesmo nome. */
 const PASSWORDS_PATH = process.env.SF_PASSWORDS_PATH || path.join(ROOT, "passwords");
 const MSG_BLOQUEIO_ACESSO = "Usuário não permitido, fala com Fabio Batista whatsapp: (51) 99462 2192";
+// v50 — hash de senha (scrypt + salt) e comparação em tempo constante
+function hashSenha(senha) {
+  const salt = crypto.randomBytes(16).toString("hex");
+  return "scrypt$" + salt + "$" + crypto.scryptSync(String(senha), salt, 32).toString("hex");
+}
+function confereSenha(senha, guardado) {
+  const g = String(guardado || "");
+  if (!g.startsWith("scrypt$")) return null; // formato antigo (texto puro): quem compara é o login (upgrade)
+  const [, salt, hash] = g.split("$");
+  if (!salt || !hash) return false;
+  const calc = crypto.scryptSync(String(senha), salt, 32).toString("hex");
+  const a = Buffer.from(calc), b = Buffer.from(hash);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+// limite de tentativas por nome+IP: 5 erros em 10 min → bloqueio de 10 min
+const tentativasLogin = new Map();
+function ipDe(req) {
+  const xf = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim();
+  return xf || (req.socket && req.socket.remoteAddress) || "?";
+}
+function semQuebra(s) { return String(s || "").replace(/[\r\n\t]+/g, " ").trim(); }
+
 const chaveNome = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/\s+/g, " ");
 
 function lerContas() {
@@ -868,11 +913,11 @@ function salvarConta(nome, celular, nivel, senha) {
   try {
     if (!fs.existsSync(PASSWORDS_PATH)) {
       fs.writeFileSync(PASSWORDS_PATH,
-        "# Superliga do Fabião — base de acesso (v40/v42)\n" +
-        "# formato de cada linha: nome;celular;nivel;senha (5º campo “auto” = conta do login automático)\n" +
+        "# Superliga do Fabião — base de acesso (v50)\n" +
+        "# formato de cada linha: nome;celular;nivel;senha_hash\n" +
         "# nivel 1 ou 2 = entra no painel; nivel 3 = aguardando liberação (bloqueado)\n" +
         "# para liberar um cadastro novo, troque o 3 pelo 1 (ou 2) e salve o arquivo\n" +
-        "# para escolher a conta do login automático, acrescente ;auto na linha dela\n", "utf8");
+        "# v50: as senhas ficam como hash scrypt (linhas antigas em texto puro viram hash no 1º login)\n", "utf8");
     }
     fs.appendFileSync(PASSWORDS_PATH, nome + ";" + celular + ";" + nivel + ";" + senha + "\n", "utf8");
     return true;
@@ -883,37 +928,56 @@ function salvarConta(nome, celular, nivel, senha) {
 // Encontrou e nível 1/2? permitido:true (o painel entra). Nível 3? bloqueado com a orientação.
 async function handleLocalLogin(req, res) {
   let body; try { body = await readJson(req); } catch { return sendJson(res, 400, { error: "Requisição inválida." }); }
-  const nome = String(body.nome || "").trim();
+  const nome = semQuebra(body.nome);
   const senha = String(body.senha || "");
   if (!nome || !senha) return sendJson(res, 400, { error: "Informe nome e senha." });
-  const conta = lerContas().find(c => chaveNome(c.nome) === chaveNome(nome) && c.senha === senha);
-  if (!conta) return sendJson(res, 401, { error: "Nome ou senha incorretos. Confira e tente de novo." });
+  // limite de tentativas (achado do relatório: 60 erros seguidos sem bloqueio)
+  const chave = chaveNome(nome) + "|" + ipDe(req);
+  const agora = Date.now();
+  const recentes = (tentativasLogin.get(chave) || []).filter(t => agora - t < 10 * 60 * 1000);
+  if (recentes.length >= 5) {
+    return sendJson(res, 429, { error: "Muitas tentativas incorretas. Aguarde 10 minutos antes de tentar de novo." });
+  }
+  const conta = lerContas().find(c => chaveNome(c.nome) === chaveNome(nome));
+  let ok = conta ? confereSenha(senha, conta.senha) : false;
+  if (ok === null) { // linha antiga em texto puro: compara, e no acerto grava o hash
+    ok = conta.senha === senha;
+    if (ok) migrarParaHash(conta.nome, senha);
+  }
+  if (!conta || !ok) {
+    recentes.push(agora);
+    tentativasLogin.set(chave, recentes);
+    return sendJson(res, 401, { error: "Nome ou senha incorretos. Confira e tente de novo." });
+  }
+  tentativasLogin.delete(chave);
   if (conta.nivel === 3) return sendJson(res, 200, { permitido: false, bloqueado: true, nivel: 3, error: MSG_BLOQUEIO_ACESSO });
-  return sendJson(res, 200, { permitido: true, nivel: conta.nivel, nome: conta.nome });
+  // v50 — sessão server-side: a partir de agora o acesso vale por cookie HttpOnly
+  const ttlLocal = 30 * 24 * 60 * 60;
+  const sid = crypto.randomBytes(24).toString("hex");
+  sessions.set(sid, { kind: "local", nome: conta.nome, nivel: conta.nivel, expires: Date.now() + ttlLocal * 1000 });
+  return sendJson(res, 200, { permitido: true, nivel: conta.nivel, nome: conta.nome, kind: "local" },
+    { "Set-Cookie": cookieHeader(req, sid, ttlLocal) });
 }
 
-// v42 — POST /auth/local/auto: LOGIN AUTOMÁTICO. Devolve, sem pedir senha, a conta de entrada
-// do site: a marcada com 5º campo “auto” (só se nível 1/2 — nível 3 nunca entra), ou a primeira
-// de nível 2, ou a primeira de nível 1; arquivo inexistente/vazio → conta padrão nível 2
-// “Fabio Batista”. O login com validação de senha (acima) segue intacto para uso via API.
-async function handleAutoLogin(req, res) {
-  const contas = lerContas();
-  const conta = contas.find(c => c.auto && (c.nivel === 1 || c.nivel === 2))
-    || contas.find(c => c.nivel === 2) || contas.find(c => c.nivel === 1)
-    || { nome: "Fabio Batista", nivel: 2 };
-  return sendJson(res, 200, { ok: true, nivel: conta.nivel, nome: conta.nome });
-}
-
-// v42 — POST /auth/local/auto: LOGIN AUTOMÁTICO. Devolve, sem pedir senha, a conta de entrada
-// do site: a marcada com 5º campo “auto” (só se nível 1/2 — nível 3 nunca entra), ou a primeira
-// de nível 2, ou a primeira de nível 1; arquivo inexistente/vazio → conta padrão nível 2
-// “Fabio Batista”. O login com validação de senha (acima) segue intacto para uso via API.
-async function handleAutoLogin(req, res) {
-  const contas = lerContas();
-  const conta = contas.find(c => c.auto && (c.nivel === 1 || c.nivel === 2))
-    || contas.find(c => c.nivel === 2) || contas.find(c => c.nivel === 1)
-    || { nome: "Fabio Batista", nivel: 2 };
-  return sendJson(res, 200, { ok: true, nivel: conta.nivel, nome: conta.nome });
+// v50 — reescreve a linha da conta com a senha em hash (upgrade transparente do formato antigo)
+function migrarParaHash(nome, senhaAntiga) {
+  try {
+    const linhas = fs.readFileSync(PASSWORDS_PATH, "utf8").split(/\r?\n/);
+    const alvo = chaveNome(nome);
+    let mudou = false;
+    const novas = linhas.map(l => {
+      const t = l.trim();
+      if (!t || t.startsWith("#")) return l;
+      const p = t.split(";");
+      if (p.length >= 4 && p[3] !== "auto" && !p[3].startsWith("scrypt$") && chaveNome(p[0]) === alvo) {
+        mudou = true;
+        p[3] = hashSenha(senhaAntiga);
+        return p.join(";");
+      }
+      return l;
+    });
+    if (mudou) fs.writeFileSync(PASSWORDS_PATH, novas.join("\n"), "utf8");
+  } catch {}
 }
 
 // POST /auth/local/cadastro { nome, celular, senha, confirmar } — grava como nível 3.
@@ -926,15 +990,30 @@ async function handleLocalCadastro(req, res) {
   const confirmar = String(body.confirmar || "");
   if (!nome || nome.length < 3) return sendJson(res, 400, { error: "Informe seu nome (mínimo 3 letras).", campo: "nome", pedirNomeCompleto: true });
   if (nome.includes(";") || celular.includes(";") || senha.includes(";")) return sendJson(res, 400, { error: "Não use o caractere “;” no nome, no celular ou na senha.", campo: "nome" });
+    if (/[\r\n\t]/.test(nome + celular + senha)) return sendJson(res, 400, { error: "Nome, celular e senha não podem ter quebras de linha ou tabulação.", campo: "nome" });
   const digitos = celular.replace(/\D/g, "");
   if (digitos.length < 10 || digitos.length > 11) return sendJson(res, 400, { error: "Informe um celular válido com DDD (10 ou 11 números).", campo: "celular" });
-  if (senha.length < 4) return sendJson(res, 400, { error: "A senha precisa ter pelo menos 4 caracteres.", campo: "senha" });
+  if (senha.length < 6) return sendJson(res, 400, { error: "A senha precisa ter pelo menos 6 caracteres.", campo: "senha" });
   if (senha !== confirmar) return sendJson(res, 400, { error: "As senhas não conferem — a confirmação é diferente da senha.", campo: "confirmar" });
   if (lerContas().some(c => chaveNome(c.nome) === chaveNome(nome))) {
-    return sendJson(res, 409, { error: "Usuário já cadastrado. Escreva seu nome completo para se cadastrar.", pedirNomeCompleto: true, campo: "nome" });
+    // v50 — mensagem neutra (o relatório apontava enumeração de contas pelo 409)
+    return sendJson(res, 409, { error: "Não consegui cadastrar esse nome — ele já existe na base ou está incompleto. Escreva seu nome completo.", pedirNomeCompleto: true, campo: "nome" });
   }
-  if (!salvarConta(nome, celular, 3, senha)) return sendJson(res, 500, { error: "Não consegui gravar o cadastro no servidor. Tente de novo." });
+  if (!salvarConta(nome, celular, 3, hashSenha(senha))) return sendJson(res, 500, { error: "Não consegui gravar o cadastro no servidor. Tente de novo." });
   return sendJson(res, 200, { ok: true, nivel: 3, aviso: "Cadastro salvo! Ele entra como nível 3 (aguardando liberação) — por enquanto o acesso ainda está bloqueado. Fale com Fabio Batista whatsapp: (51) 99462 2192 para liberar." });
+}
+
+// v50 — cache das consultas ao Cartola: chave = caminho completo. Rodadas encerradas são
+// imutáveis (1 h); a rodada corrente pode mudar (5 min); /mercado/status renova a “rodada
+// conhecida” a cada resposta.
+const cacheRodadas = new Map();
+let rodadaConhecida = 0;
+function cacheavelRodada(apiPath) {
+  const m = apiPath.match(/^\/time\/id\/[^/]+\/(\d+)/);
+  if (!m) return 0;
+  const n = parseInt(m[1], 10);
+  if (!rodadaConhecida || n >= rodadaConhecida) return 5 * 60 * 1000;
+  return 60 * 60 * 1000;
 }
 
 async function proxyCartola(apiPath, res, session) {
@@ -942,7 +1021,7 @@ async function proxyCartola(apiPath, res, session) {
   // Antes de cada consulta autenticada: se o access_token está perto de vencer (ou venceu),
   // renova sozinho com o refresh_token. Sem refresh ou com renovação falha e token vencido,
   // responde 401 para o painel pedir um novo login.
-  if (session && apiPath.startsWith("/auth/")) {
+  if (session && apiPath.startsWith("/auth/") && session.kind === "oidc") {
     if (session.expires < Date.now() + 60000) {
       const ok = await refreshSession(session);
       if (!ok && session.expires < Date.now()) {
@@ -953,7 +1032,7 @@ async function proxyCartola(apiPath, res, session) {
     }
   }
   // A credencial só é enviada para endpoints autenticados (/auth/...).
-  const authHeaders = session && apiPath.startsWith("/auth/") ? authHeadersFor(session) : {};
+  const authHeaders = session && apiPath.startsWith("/auth/") && session.kind === "oidc" ? authHeadersFor(session) : {};
   function attempt() {
     const url = new URL(apiPath, API_HOSTS[hostIndex]);
     const lib = url.protocol === "http:" ? http : https;
@@ -975,7 +1054,17 @@ async function proxyCartola(apiPath, res, session) {
           hostIndex++;
           return attempt();
         }
-        send(res, upstream.statusCode || 502, data, upstream.headers["content-type"] || "application/json; charset=utf-8", Object.keys(authHeaders).length ? { "Cache-Control": "no-store" } : {});
+        // v50 — aprende a rodada atual e grava respostas cacheáveis
+        if (upstream.statusCode === 200 && req.method === "GET") {
+          if (apiPath.startsWith("/mercado/status")) {
+            try { rodadaConhecida = JSON.parse(data).rodada_atual || rodadaConhecida; } catch {}
+          }
+          const ttl = cacheavelRodada(apiPath);
+          if (ttl && data.length < 500000) cacheRodadas.set(apiPath, { corpo: data, tipo: upstream.headers["content-type"] || "application/json; charset=utf-8", quando: Date.now() });
+        }
+        const extraCache = Object.keys(authHeaders).length ? { "Cache-Control": "no-store" }
+          : (cacheavelRodada(apiPath) ? { "Cache-Control": "public, max-age=300", "X-SF-Cache": "MISS" } : {});
+        send(res, upstream.statusCode || 502, data, upstream.headers["content-type"] || "application/json; charset=utf-8", extraCache);
       });
     });
     req.on("timeout", () => req.destroy(new Error("Tempo esgotado ao consultar Cartola FC")));
@@ -1001,13 +1090,14 @@ const server = http.createServer((req, res) => {
     if (parsed.pathname === "/auth/oidc/go" && req.method === "GET") return handleOidcGo(req, res);
     if (parsed.pathname === "/auth/oidc/exchange" && req.method === "POST") return handleOidcExchange(req, res);
     if (parsed.pathname === "/auth/oidc/done" && req.method === "GET") return handleOidcDone(req, res);
-    if (parsed.pathname === "/auth/local/auto" && req.method === "POST") return handleAutoLogin(req, res); // v42 login automático
-    if (parsed.pathname === "/auth/local/auto" && req.method === "POST") return handleAutoLogin(req, res); // v42 login automático
+    // v50: o LOGIN AUTOMÁTICO SEM SENHA foi removido (achado do relatório: liberava acesso a
+    // qualquer pessoa). A entrada é sempre por /auth/local/login (nome + senha).
     if (parsed.pathname === "/auth/local/login" && req.method === "POST") return handleLocalLogin(req, res);
     if (parsed.pathname === "/auth/local/cadastro" && req.method === "POST") return handleLocalCadastro(req, res);
     if (parsed.pathname === "/auth/me" && req.method === "GET") {
       const s = getSession(req);
-      return sendJson(res, 200, { loggedIn: !!s, kind: s ? "oidc" : null, comRenovacao: !!(s && s.refreshToken), venceEm: s ? s.expires : null });
+      return sendJson(res, 200, { loggedIn: !!s, kind: s ? (s.kind || "oidc") : null, comRenovacao: !!(s && s.refreshToken),
+        nome: s && s.nome, nivel: s && s.nivel, venceEm: s ? s.expires : null });
     }
     if (parsed.pathname === "/auth/logout" && req.method === "POST") return handleLogout(req, res);
     return sendJson(res, 404, { error: "Rota não encontrada." });
@@ -1015,21 +1105,44 @@ const server = http.createServer((req, res) => {
 
   if (parsed.pathname.startsWith("/api/cartola/")) {
     const apiPath = parsed.pathname.replace(/^\/api\/cartola/, "") + parsed.search;
+    // v50 — o destino é sempre a API do Cartola (achado do relatório: /api/cartola//host/…
+    // virava proxy aberto). Bloqueia caminho sem "/" inicial, "//" (troca de host) e
+    // qualquer URL resolvida cujo host não seja um dos hosts oficiais da API.
+    const invalido = () => sendJson(res, 400, { error: "Caminho inválido para a API do Cartola." });
+    if (!apiPath.startsWith("/") || apiPath.startsWith("//") || apiPath.includes("://")) return invalido();
+    let hostOk = false;
+    try { const u = new URL(apiPath, API_HOSTS[0]); hostOk = API_HOSTS.some(h => u.host === new URL(h).host); } catch {}
+    if (!hostOk) return invalido();
+    // v50 — cache: rodadas encerradas não mudam; mercado/status muda devagar.
+    if (req.method === "GET") {
+      const ttl = cacheavelRodada(apiPath);
+      if (ttl) {
+        const c = cacheRodadas.get(apiPath);
+        if (c && Date.now() - c.quando < ttl) {
+          return send(res, 200, c.corpo, c.tipo, { "Cache-Control": "public, max-age=300", "X-SF-Cache": "HIT" });
+        }
+      }
+    }
     const session = getSession(req);
-    if (apiPath.startsWith("/auth/") && !session) {
-      return sendJson(res, 401, { error: "Faça login com sua conta Globo." });
+    // v50 — portão de verdade: sem sessão (local ou Globo) a API do painel não responde
+    if (!session) {
+      return sendJson(res, 401, { error: "Acesso restrito — entre com nome e senha (ou com a conta Globo)." });
     }
     return proxyCartola(apiPath, res, session);
   }
 
-  let requested = parsed.pathname === "/" ? "/index.html" : parsed.pathname;
-  const file = path.join(ROOT, path.normalize(requested).replace(/^(\.\.[/\\])+/, ""));
-  fs.readFile(file, (err, content) => {
-    if (err) return send(res, 404, "Arquivo não encontrado");
-    const ext = path.extname(file).toLowerCase();
-    const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".json": "application/json; charset=utf-8" };
-    send(res, 200, content, types[ext] || "application/octet-stream");
-  });
+  // v50 — ALLOWLIST: só o painel é entregue como arquivo. passwords, server.js, README,
+  // .gitignore e extensao_chrome não são mais servidos (achado do relatório: /passwords
+  // devolvia nome;celular;nível;senha em texto puro).
+  if (parsed.pathname === "/" || parsed.pathname === "/index.html") {
+    fs.readFile(path.join(ROOT, "index.html"), (err, content) => {
+      if (err) return send(res, 500, "Painel não encontrado no servidor");
+      send(res, 200, content, "text/html; charset=utf-8", { "Cache-Control": "no-cache" });
+    });
+    return;
+  }
+  if (parsed.pathname === "/favicon.ico") return send(res, 204, "");
+  return send(res, 404, "Arquivo não encontrado");
 });
 server.listen(PORT, HOST, () => console.log(EM_NUVEM
   ? `Superliga do Fabião na NUVEM: ouvindo em ${HOST}:${PORT} (a plataforma publica a URL do serviço)`
